@@ -1,0 +1,38 @@
+{
+  "name": "swichers/acsf-client",
+  "type": "library",
+  "description": "A Client library for Acquia's ACSF service.",
+  "license": "GPL-3.0",
+  "authors": [
+    {
+      "name": "Steven Wichers",
+      "email": "me@stevenwichers.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "doctrine/annotations": "^1.7",
+    "symfony/config": "^4.3",
+    "symfony/console": "^4.3",
+    "symfony/dependency-injection": "^4.3",
+    "symfony/finder": "^4.3",
+    "symfony/http-client": "^4.3",
+    "symfony/yaml": "^4.3"
+  },
+  "require-dev": {
+    "localheinz/composer-normalize": "^1.3"
+  },
+  "config": {
+    "platform": {
+      "php": "7.2"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "swichers\\Acsf\\Annotation\\": "src/Annotation",
+      "swichers\\Acsf\\Client\\": "src/Client",
+      "swichers\\Acsf\\Discovery\\": "src/Discovery"
+    }
+  },
+  "minimum-stability": "stable"
+}

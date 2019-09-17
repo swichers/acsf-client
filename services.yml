@@ -1,0 +1,23 @@
+services:
+  doctrine.annotation.reader:
+    class: Doctrine\Common\Annotations\AnnotationReader
+  symfony.http_client:
+    class: Symfony\Component\HttpClient\HttpClient
+  acsf.client:
+    class: swichers\Acsf\Client\Client
+    arguments: ["@symfony.http_client", "@acsf.action.manager", "@acsf.entity.manager", []]
+  acsf.client.factory:
+    class: swichers\Acsf\Client\ClientFactory
+    arguments: ["@symfony.http_client", "@acsf.action.manager", "@acsf.entity.manager"]
+  acsf.action.discoverer:
+    class: swichers\Acsf\Discovery\Discoverer
+    arguments: ["swichers\\Acsf\\Client\\Action", "Client/Action", ".", "swichers\\Acsf\\Client\\Annotation\\Action", "@doctrine.annotation.reader"]
+  acsf.entity.discoverer:
+    class: swichers\Acsf\Discovery\Discoverer
+    arguments: ["swichers\\Acsf\\Client\\Entity", "Client/Entity", ".", "swichers\\Acsf\\Client\\Annotation\\Entity", "@doctrine.annotation.reader"]
+  acsf.action.manager:
+    class: swichers\Acsf\Client\Discovery\ActionManager
+    arguments: ["@acsf.action.discoverer"]
+  acsf.entity.manager:
+    class: swichers\Acsf\Client\Discovery\EntityManager
+    arguments: ["@acsf.entity.discoverer"]

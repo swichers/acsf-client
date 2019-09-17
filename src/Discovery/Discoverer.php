@@ -1,0 +1,101 @@
+<?php declare(strict_types = 1);
+
+namespace swichers\Acsf\Discovery;
+
+use Doctrine\Common\Annotations\Reader;
+use ReflectionClass;
+use Symfony\Component\Finder\Finder;
+
+class Discoverer implements DiscovererInterface {
+
+  /**
+   * The namespace to search for classes within.
+   *
+   * @var string
+   */
+  protected $namespace;
+
+  /**
+   * The directory to scan for class files.
+   *
+   * @var string
+   */
+  protected $directory;
+
+  /**
+   * The directory to base all paths from.
+   *
+   * @var string
+   */
+  protected $rootDir;
+
+  /**
+   * The fully-namespaced annotation class to scan for.
+   *
+   * @var string
+   */
+  protected $annotationClass;
+
+  /**
+   * A Doctrine annotation parser.
+   *
+   * @var \Doctrine\Common\Annotations\Reader
+   */
+  protected $annotationReader;
+
+  /**
+   * An array of items with annotations matching this Discoverer.
+   *
+   * @var array
+   */
+  protected $items = [];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(string $namespace, string $directory, string $rootDir, string $annotationClass, Reader $annotationReader) {
+    $this->namespace = $namespace;
+    $this->annotationReader = $annotationReader;
+    $this->directory = $directory;
+    $this->rootDir = $rootDir;
+    $this->annotationClass = $annotationClass;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getItems() : array {
+    if (!$this->items) {
+      $this->discoverItems();
+    }
+
+    return $this->items;
+  }
+
+  /**
+   * Discovers items.
+   *
+   * @throws \ReflectionException
+   */
+  protected function discoverItems() : void {
+    $path = $this->rootDir . '/src/' . $this->directory;
+    $finder = new Finder();
+    $finder->files()->in($path);
+
+    /** @var \Symfony\Component\Finder\SplFileInfo $file */
+    foreach ($finder as $file) {
+      $class = $this->namespace . '\\' . $file->getBasename('.php');
+      $annotation = $this->annotationReader->getClassAnnotation(new ReflectionClass($class), $this->annotationClass);
+      if (!$annotation) {
+        continue;
+      }
+
+      /** @var \swichers\Acsf\Client\Annotation\Entity $annotation */
+      $this->items[$annotation->getName()] = [
+        'class' => $class,
+        'annotation' => $annotation,
+      ];
+    }
+  }
+
+}
