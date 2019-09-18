@@ -1,23 +1,29 @@
 services:
   doctrine.annotation.reader:
-    class: Doctrine\Common\Annotations\AnnotationReader
-  symfony.http_client:
-    class: Symfony\Component\HttpClient\HttpClient
+    class: 'Doctrine\Common\Annotations\AnnotationReader'
+  acsf.http_client:
+    factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
   acsf.client:
     class: swichers\Acsf\Client\Client
-    arguments: ["@symfony.http_client", "@acsf.action.manager", "@acsf.entity.manager", []]
-  acsf.client.factory:
-    class: swichers\Acsf\Client\ClientFactory
-    arguments: ["@symfony.http_client", "@acsf.action.manager", "@acsf.entity.manager"]
+    arguments: ['@acsf.http_client', '@acsf.action.manager', '@acsf.entity.manager', '%acsf.client.connection%']
   acsf.action.discoverer:
-    class: swichers\Acsf\Discovery\Discoverer
-    arguments: ["swichers\\Acsf\\Client\\Action", "Client/Action", ".", "swichers\\Acsf\\Client\\Annotation\\Action", "@doctrine.annotation.reader"]
+    class: swichers\Acsf\Client\Discovery\Discoverer
+    arguments: ['swichers\Acsf\Client\Endpoints\Action', 'Endpoints/Action', '%acsf.discoverer.root_dir%', 'swichers\Acsf\Client\Annotation\Action', '@doctrine.annotation.reader']
   acsf.entity.discoverer:
-    class: swichers\Acsf\Discovery\Discoverer
-    arguments: ["swichers\\Acsf\\Client\\Entity", "Client/Entity", ".", "swichers\\Acsf\\Client\\Annotation\\Entity", "@doctrine.annotation.reader"]
+    class: swichers\Acsf\Client\Discovery\Discoverer
+    arguments: ['swichers\Acsf\Client\Endpoints\Entity', 'Endpoints/Entity', '%acsf.discoverer.root_dir%', 'swichers\Acsf\Client\Annotation\Entity', '@doctrine.annotation.reader']
   acsf.action.manager:
     class: swichers\Acsf\Client\Discovery\ActionManager
-    arguments: ["@acsf.action.discoverer"]
+    arguments: ['@acsf.action.discoverer']
   acsf.entity.manager:
     class: swichers\Acsf\Client\Discovery\EntityManager
-    arguments: ["@acsf.entity.discoverer"]
+    arguments: ['@acsf.entity.discoverer']
+
+
+parameters:
+  acsf.client.connection:
+    environment: dev
+    domain: ~
+    username: ~
+    api_key: ~
+  acsf.discoverer.root_dir: '.'

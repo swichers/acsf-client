@@ -24,4 +24,5 @@ class Entity {
   public function getName() {
     return $this->name;
   }
+
 }

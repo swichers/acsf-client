@@ -4,8 +4,6 @@
 namespace swichers\Acsf\Client\Discovery;
 
 
-use swichers\Acsf\Discovery\Manager;
-
 class ActionManager extends Manager implements ActionManagerInterface {
 
 }

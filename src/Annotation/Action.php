@@ -24,4 +24,5 @@ class Action {
   public function getName() {
     return $this->name;
   }
+
 }

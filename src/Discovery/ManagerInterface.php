@@ -1,12 +1,10 @@
 <?php declare(strict_types = 1);
 
 
-namespace swichers\Acsf\Discovery;
+namespace swichers\Acsf\Client\Discovery;
 
 
 interface ManagerInterface {
-
-  public function __construct(DiscovererInterface $discovery);
 
   public function getAvailable();
 

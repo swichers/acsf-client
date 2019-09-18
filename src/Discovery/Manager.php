@@ -1,13 +1,13 @@
 <?php declare(strict_types = 1);
 
-namespace swichers\Acsf\Discovery;
+namespace swichers\Acsf\Client\Discovery;
 
 use Exception;
 
 class Manager implements ManagerInterface {
 
   /**
-   * @var \swichers\Acsf\Discovery\Discoverer
+   * @var \swichers\Acsf\Client\Discovery\Discoverer
    */
   protected $discovery;
 
@@ -35,7 +35,7 @@ class Manager implements ManagerInterface {
       return $workers[$name];
     }
 
-    throw new Exception('Implementation not found.');
+    return FALSE;
   }
 
   public function getAvailable() {

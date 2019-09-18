@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace swichers\Acsf\Discovery;
+namespace swichers\Acsf\Client\Discovery;
 
 use Doctrine\Common\Annotations\Reader;
 use ReflectionClass;
@@ -51,13 +51,31 @@ class Discoverer implements DiscovererInterface {
   protected $items = [];
 
   /**
-   * {@inheritdoc}
+   * Discoverer constructor.
+   *
+   * @param string $namespace
+   *   The namespace to search for classes within.
+   * @param string $directory
+   *   The directory to scan for class files.
+   * @param string $rootDir
+   *   The directory to base all paths from.
+   * @param string $annotationClass
+   *   The fully-namespaced annotation class to scan for.
+   * @param \Doctrine\Common\Annotations\Reader $annotationReader
+   *   A Doctrine annotation parser.
    */
-  public function __construct(string $namespace, string $directory, string $rootDir, string $annotationClass, Reader $annotationReader) {
+  public function __construct(
+    string $namespace,
+    string $directory,
+    string $rootDir,
+    string $annotationClass,
+    Reader $annotationReader
+  ) {
     $this->namespace = $namespace;
     $this->annotationReader = $annotationReader;
     $this->directory = $directory;
     $this->rootDir = $rootDir;
+    $this->rootDir = __DIR__ . '/../..';
     $this->annotationClass = $annotationClass;
   }
 
@@ -85,7 +103,10 @@ class Discoverer implements DiscovererInterface {
     /** @var \Symfony\Component\Finder\SplFileInfo $file */
     foreach ($finder as $file) {
       $class = $this->namespace . '\\' . $file->getBasename('.php');
-      $annotation = $this->annotationReader->getClassAnnotation(new ReflectionClass($class), $this->annotationClass);
+      $annotation = $this->annotationReader->getClassAnnotation(
+        new ReflectionClass($class),
+        $this->annotationClass
+      );
       if (!$annotation) {
         continue;
       }

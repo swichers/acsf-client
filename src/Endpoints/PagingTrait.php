@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types = 1);
 
 
-namespace swichers\Acsf\Client\Client\Action;
+namespace swichers\Acsf\Client\Endpoints;
 
 
 trait PagingTrait {

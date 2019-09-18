@@ -19,4 +19,5 @@ class Response implements ResponseInterface {
   public function toArray(bool $throw = TRUE) {
     return $this->originalResponse->toArray($throw);
   }
+
 }
