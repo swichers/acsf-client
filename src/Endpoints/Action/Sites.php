@@ -7,6 +7,9 @@ use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 use swichers\Acsf\Client\Endpoints\PagingTrait;
 
 /**
+ * Sites are the product of the Site Factory. This resource is responsible for
+ * managing those sites.
+ *
  * @Action(name = "Sites")
  */
 class Sites extends ActionBase {
@@ -76,41 +79,6 @@ class Sites extends ActionBase {
     return $this->client->apiGet('sites', $options)->toArray();
   }
 
-
-  /**
-   * Get detailed information about a site.
-   *
-   * @version v1
-   * @title Site details
-   * @http_method GET
-   * @resource /api/v1/sites/{site_id}
-   * @group Sites
-   * @example_command
-   *   curl '{base_url}/api/v1/sites/123' \
-   *     -v -u {user_name}:{api_key}
-   * @example_response
-   *   {
-   *     "id": 123,
-   *     "created": 1397483647,
-   *     "owner": "John Drupal",
-   *     "site": "site1",
-   *     "stack_id": 1,
-   *     "domains": [
-   *       "domain1.site-factory.com",
-   *       "domain2.site-factory.com"
-   *     ],
-   *     "groups": [
-   *       91
-   *     ],
-   *     "part_of_collection": true,
-   *     "is_primary": true,
-   *     "collection_id": 241,
-   *     "collection_domains": [
-   *       "domain241.example.com",
-   *       "anotherdomain.com"
-   *     ]
-   *   }
-   */
   public function get(int $siteId) : EntityInterface {
     return $this->client->getEntity('Site', $siteId);
   }
@@ -125,9 +93,10 @@ class Sites extends ActionBase {
    *
    * @params
    *   site_name       | string    | yes | The new site name.
-   *   group_ids       | int|array | no  | Either a single group ID, or an array of group IDs.
-   *   install_profile | string    | no  | The install profile to be used to install the site.
-   *   stack_id        | int       | if multiple stacks exist | The stack id where the site should go.
+   *   group_ids       | int|array | no  | Either a single group ID, or an
+   *   array of group IDs. install_profile | string    | no  | The install
+   *   profile to be used to install the site. stack_id        | int       | if
+   *   multiple stacks exist | The stack id where the site should go.
    *
    * @group Sites
    * @example_command

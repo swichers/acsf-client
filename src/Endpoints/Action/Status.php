@@ -5,6 +5,10 @@ namespace swichers\Acsf\Client\Endpoints\Action;
 use swichers\Acsf\Client\Annotation\Action;
 
 /**
+ * Services such as site creation, site duplication, and domain management may
+ * be disabled for short periods while their activity could be problematic. This
+ * resource is responsible for managing the status of such services.
+ *
  * @Action(name = "Status")
  */
 class Status extends ActionBase {

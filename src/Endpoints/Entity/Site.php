@@ -12,7 +12,41 @@ class Site extends EntityBase {
 
   use PagingTrait;
 
-  public function get() : array {
+  /**
+   * Get detailed information about a site.
+   *
+   * @version v1
+   * @title Site details
+   * @http_method GET
+   * @resource /api/v1/sites/{site_id}
+   * @group Sites
+   * @example_command
+   *   curl '{base_url}/api/v1/sites/123' \
+   *     -v -u {user_name}:{api_key}
+   * @example_response
+   *   {
+   *     "id": 123,
+   *     "created": 1397483647,
+   *     "owner": "John Drupal",
+   *     "site": "site1",
+   *     "stack_id": 1,
+   *     "domains": [
+   *       "domain1.site-factory.com",
+   *       "domain2.site-factory.com"
+   *     ],
+   *     "groups": [
+   *       91
+   *     ],
+   *     "part_of_collection": true,
+   *     "is_primary": true,
+   *     "collection_id": 241,
+   *     "collection_domains": [
+   *       "domain241.example.com",
+   *       "anotherdomain.com"
+   *     ]
+   *   }
+   */
+  public function details() : array {
     return $this->client->apiGet(['sites', $this->id()])->toArray();
   }
 
@@ -53,8 +87,9 @@ class Site extends EntityBase {
    *
    * @params
    *   site_name  | string    | yes | The new site name.
-   *   group_ids  | int|array | no  | Either a single group ID, or an array of group IDs.
-   *   exact_copy | bool      | no  | A boolean indicating whether or not to create an exact copy. | false
+   *   group_ids  | int|array | no  | Either a single group ID, or an array of
+   *   group IDs. exact_copy | bool      | no  | A boolean indicating whether
+   *   or not to create an exact copy. | false
    *
    * @group Sites
    * @example_command
@@ -97,16 +132,21 @@ class Site extends EntityBase {
    * @group Sites
    *
    * @params
-   *   label           | string | no | The human-readable description of this backup.
-   *   callback_url    | string | no | The callback URL, which is invoked upon completion.
-   *   callback_method | string | no | The callback method, "GET", or "POST". Uses "POST" if empty.
-   *   caller_data     | string | no | Data that should be included in the callback, json encoded.
-   *   components      | array  | no | Array of components to be included in the backup. The following component names are accepted: codebase, database, public files, private files, themes. When omitting this parameter it will default to a backup with every component.
+   *   label           | string | no | The human-readable description of this
+   *   backup. callback_url    | string | no | The callback URL, which is
+   *   invoked upon completion. callback_method | string | no | The callback
+   *   method, "GET", or "POST". Uses "POST" if empty. caller_data     | string
+   *   | no | Data that should be included in the callback, json encoded.
+   *   components      | array  | no | Array of components to be included in
+   *   the backup. The following component names are accepted: codebase,
+   *   database, public files, private files, themes. When omitting this
+   *   parameter it will default to a backup with every component.
    *
    * @example_command
    *   curl '{base_url}/api/v1/sites/123/backup' \
    *     -X POST -H 'Content-Type: application/json' \
-   *     -d '{"label": "Weekly", "callback_url": "http://mysite.com", "callback_method": "GET"}' \
+   *     -d '{"label": "Weekly", "callback_url": "http://mysite.com",
+   *   "callback_method": "GET"}' \
    *     -v -u {user_name}:{api_key}
    * @example_response
    *   {
@@ -328,7 +368,8 @@ class Site extends EntityBase {
    *     "domain": "www.domaintoremove.com",
    *     "time": "2016-10-28T09:25:26+00:00",
    *     "removed": true,
-   *     "message": "Your domain name has been successfully removed from &lt;site collection name&gt;."
+   *     "message": "Your domain name has been successfully removed from
+   *   &lt;site collection name&gt;."
    *   }
    */
   public function removeDomain(string $domainName) : array {
@@ -337,4 +378,5 @@ class Site extends EntityBase {
       ['domain_name' => $domainName]
     )->toArray();
   }
+
 }

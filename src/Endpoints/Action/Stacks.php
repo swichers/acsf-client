@@ -29,7 +29,7 @@ class Stacks extends ActionBase {
    *     }
    *   }
    */
-  public function get() : array {
+  public function list() : array {
     static $stacks;
     if (is_null($stacks)) {
       $stacks = $this->client->apiGet('stacks')->toArray();

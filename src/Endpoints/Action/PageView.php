@@ -20,14 +20,19 @@ class PageView extends ActionBase {
    * @group Dynamic requests
    *
    * @params
-   *   stack_id   | int    | yes | The stack id for which to fetch the dynamic request statistics. If there is only one stack, this parameter can be omitted.
-   *   start_from | string | no  | The first date from which to start showing the statistics in the format of YYYY-MM.
-   *   sort_order | string | no  | The sort order direction. Either asc or desc.            | desc
-   *   limit      | int    | no  | The number of months to be listed. Maximum value is 120. | 12
-   *   page       | int    | no  | The page number to show in the list.                     | 1
+   *   stack_id   | int    | yes | The stack id for which to fetch the dynamic
+   *   request statistics. If there is only one stack, this parameter can be
+   *   omitted. start_from | string | no  | The first date from which to start
+   *   showing the statistics in the format of YYYY-MM. sort_order | string |
+   *   no  | The sort order direction. Either asc or desc.            | desc
+   *   limit      | int    | no  | The number of months to be listed. Maximum
+   *   value is 120. | 12 page       | int    | no  | The page number to show
+   *   in the list.                     | 1
    *
    * @example_command
-   *   curl '{base_url}/api/v1/dynamic-requests/monthly?stack_id=1&sort_order=asc&limit=6&page=1' \
+   *   curl
+   *   '{base_url}/api/v1/dynamic-requests/monthly?stack_id=1&sort_order=asc&limit=6&page=1'
+   *   \
    *     -H 'Content-Type: application/json' \
    *     -v -u {user_name}:{api_key}
    * @example_response
@@ -67,15 +72,20 @@ class PageView extends ActionBase {
    * @group Dynamic requests
    *
    * @params
-   *   stack_id    | int    | yes | The stack id for which to fetch the dynamic request statistics. If there is only one stack, this parameter can be omitted.
-   *   date        | string | yes | The month in the format of YYYY-MM.
-   *   domain_name | string | no  | Full domain name or a prefix for filtering the results.
-   *   sort_order  | string | no  | The sort order direction. Either asc or desc.            | asc
-   *   limit       | int    | no  | The number of domains to be listed. (max 100)            | 10
-   *   page        | int    | no  | The page number to show in the list.                     | 1
+   *   stack_id    | int    | yes | The stack id for which to fetch the dynamic
+   *   request statistics. If there is only one stack, this parameter can be
+   *   omitted. date        | string | yes | The month in the format of
+   *   YYYY-MM. domain_name | string | no  | Full domain name or a prefix for
+   *   filtering the results. sort_order  | string | no  | The sort order
+   *   direction. Either asc or desc.            | asc limit       | int    |
+   *   no  | The number of domains to be listed. (max 100)            | 10 page
+   *          | int    | no  | The page number to show in the list.
+   *           | 1
    *
    * @example_command
-   *   curl '{base_url}/api/v1/dynamic-requests/monthly/domains?&stack_id=1&date=2016-11&limit=6&page=1' \
+   *   curl
+   *   '{base_url}/api/v1/dynamic-requests/monthly/domains?&stack_id=1&date=2016-11&limit=6&page=1'
+   *   \
    *     -H 'Content-Type: application/json' \
    *     -v -u {user_name}:{api_key}
    * @example_response

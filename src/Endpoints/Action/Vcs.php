@@ -23,6 +23,7 @@ class Vcs extends ActionBase {
   /**
    * Get a list of VCS refs.
    *
+   * @return array
    * @version v1
    * @title List deployable refs
    * @group VCS
@@ -30,8 +31,9 @@ class Vcs extends ActionBase {
    * @resource /api/v1/vcs
    *
    * @params
-   *   type     | string | yes                      | Either "sites" or "factory". (Note: "factory" is restricted to Acquia employees.)
-   *   stack_id | string | if multiple stacks exist | The stack id.
+   *   type     | string | yes                      | Either "sites" or
+   *   "factory". (Note: "factory" is restricted to Acquia employees.) stack_id
+   *   | string | if multiple stacks exist | The stack id.
    *
    * @example_command
    *   curl '{base_url}/api/v1/vcs?type=sites' \
@@ -48,9 +50,8 @@ class Vcs extends ActionBase {
    *     "current": "tags\/2.85.0.3085"
    *   }
    *
-   * @return array
    */
-  public function list() : array {
+  public function list(array $options = []) : array {
     static $refs;
     if (is_null($refs)) {
       $options = [

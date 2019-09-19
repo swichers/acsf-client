@@ -18,7 +18,8 @@ class Backup extends EntityBase {
    * @resource /api/v1/sites/{site_id}/backups/{backup_id}/url
    *
    * @params
-   *   lifetime | int | no | The number of seconds the temporary URL is good for. | 60
+   *   lifetime | int | no | The number of seconds the temporary URL is good
+   *   for. | 60
    *
    * @group Sites
    * @example_command
@@ -26,7 +27,8 @@ class Backup extends EntityBase {
    *     -v -u {user_name}:{api_key}
    * @example_response
    *   {
-   *     "url": "https:\/\/s3.amazonaws.com\/sitefactorybackups\/site\/backup1_101_1415643727.tar.gz?AWSAccessKeyId=AKIAINAAC2EGOVCRW4WA\u0026Expires=1415713064\u0026Signature=pWucd8b6T%2FqzoNewXH6EuTyIr1g%3D",
+   *     "url":
+   *   "https:\/\/s3.amazonaws.com\/sitefactorybackups\/site\/backup1_101_1415643727.tar.gz?AWSAccessKeyId=AKIAINAAC2EGOVCRW4WA\u0026Expires=1415713064\u0026Signature=pWucd8b6T%2FqzoNewXH6EuTyIr1g%3D",
    *     "lifetime": 300
    *   }
    */
@@ -54,9 +56,10 @@ class Backup extends EntityBase {
    * @resource /api/v1/sites/{site_id}/backups/{backup_id}
    *
    * @params
-   *   callback_url    | string | no | The callback URL, which is invoked upon completion.
-   *   callback_method | string | no | The callback method, "GET", or "POST". Uses "POST" if empty.
-   *   caller_data     | string | no | Data that should be included in the callback, json encoded.
+   *   callback_url    | string | no | The callback URL, which is invoked upon
+   *   completion. callback_method | string | no | The callback method, "GET",
+   *   or "POST". Uses "POST" if empty. caller_data     | string | no | Data
+   *   that should be included in the callback, json encoded.
    *
    * @group Sites
    * @example_command
@@ -96,18 +99,23 @@ class Backup extends EntityBase {
    * @resource /api/v1/sites/{site_id}/restore
    *
    * @params
-   *   target_site_id  | int    | no | ID of the site to restore the backup onto.
-   *   backup_id       | int    | no | ID of the backup to restore defaults to the most recent.
-   *   callback_url    | string | no | The callback URL, which is invoked upon completion.
-   *   callback_method | string | no | The callback method, "GET", or "POST". Uses "POST" if empty.
-   *   caller_data     | string | no | Data that should be included in the callback, json encoded.
-   *   components      | array  | no | Array of components to be restored from the backup. The following component names are accepted: database, public files, private files, themes. When omitting this parameter it will default to the backup's every component.
+   *   target_site_id  | int    | no | ID of the site to restore the backup
+   *   onto. backup_id       | int    | no | ID of the backup to restore
+   *   defaults to the most recent. callback_url    | string | no | The
+   *   callback URL, which is invoked upon completion. callback_method | string
+   *   | no | The callback method, "GET", or "POST". Uses "POST" if empty.
+   *   caller_data     | string | no | Data that should be included in the
+   *   callback, json encoded. components      | array  | no | Array of
+   *   components to be restored from the backup. The following component names
+   *   are accepted: database, public files, private files, themes. When
+   *   omitting this parameter it will default to the backup's every component.
    *
    * @group Sites
    * @example_command
    *   curl '{base_url}/api/v1/sites/123/restore' \
    *     -X POST -H 'Content-Type: application/json' \
-   *     -d '{"target_site_id": 456, "backup_id": 789, "callback_url": "http://mysite.com", "callback_method": "GET"}' \
+   *     -d '{"target_site_id": 456, "backup_id": 789, "callback_url":
+   *   "http://mysite.com", "callback_method": "GET"}' \
    *     -v -u {user_name}:{api_key}
    * @example_response
    *   {

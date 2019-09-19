@@ -11,11 +11,38 @@ use swichers\Acsf\Client\Annotation\Entity;
 class Collection extends EntityBase {
 
   /**
-   * Site collection details
+   * Get detailed information about a site collection.
    *
-   * GET /api/v1/collections/{collection_id}
+   * @version v1
+   * @title Site collection details
+   * @group Site collections
+   * @http_method GET
+   * @resource /api/v1/collections/{collection_id}
+   * @example_command
+   *   curl '{base_url}/api/v1/collections/123' \
+   *     -v -u {user_name}:{api_key}
+   * @example_response
+   *  {
+   *    "id": 261,
+   *    "time": "2016-11-25T13:18:44+00:00",
+   *    "created": 1489075420,
+   *    "owner": "admin",
+   *    "name": "collection1",
+   *    "internal_domain": "collection1.site-factory.com",
+   *    "external_domains": [
+   *      "domain1.site-factory.com"
+   *    ],
+   *    "groups": [
+   *      91
+   *    ],
+   *    "sites": [
+   *      236,
+   *      231
+   *    ],
+   *    "primary_site": 236
+   *  }
    */
-  public function getInfo() : array {
+  public function details() : array {
     return $this->client->apiGet(['collections', $this->id()])->toArray();
   }
 

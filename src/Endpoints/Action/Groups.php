@@ -7,6 +7,10 @@ use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 use swichers\Acsf\Client\Endpoints\PagingTrait;
 
 /**
+ * Site Factories may use a feature called Site Groups in which sites can be
+ * grouped together into meaningful sets. This resource provides methods for
+ * managing such groups.
+ *
  * @Action(name = "Groups")
  */
 class Groups extends Actionbase {
@@ -68,30 +72,6 @@ class Groups extends Actionbase {
 
   /**
    * Get a group by group ID.
-   *
-   * @throws Exception
-   * @example_command
-   *   curl '{base_url}/api/v1/groups/{group_id}' \
-   *     -v -u {user_name}:{api_key}
-   * @example_response
-   *   {
-   *     "created": 1399421609,
-   *     "group_id": 123,
-   *     "group_name": "mygroup",
-   *     "owner": "user_name",
-   *     "owner_id": 456,
-   *     "parent_id": 789,
-   *     "parent_name": "parentgroup",
-   *     "live_site_count": 1,
-   *     "total_site_count": 3,
-   *     "status": 1
-   *   }
-   * @version v1
-   * @title Get a group
-   * @group Groups
-   * @http_method GET
-   * @resource /api/v1/groups/{group_id}
-   *
    */
   public function get(int $groupId) : EntityInterface {
     return $this->client->getEntity('Group', $groupId);
@@ -121,7 +101,7 @@ class Groups extends Actionbase {
    *     "group_name": "mygroup"
    *   }
    */
-  public function create() : array {
+  public function create(string $groupName, array $options = []) : array {
 
   }
 

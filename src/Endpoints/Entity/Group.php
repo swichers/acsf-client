@@ -57,7 +57,39 @@ class Group extends EntityBase {
   public function members(array $options = []) : array {
 
     $options = $this->validatePaging($options);
-    return $this->client->apiGet(['groups', $this->id(), 'members'], $options)->toArray();
+    return $this->client->apiGet(['groups', $this->id(), 'members'], $options)
+      ->toArray();
+  }
+
+  /**
+   * Get a group by group ID.
+   *
+   * @throws Exception
+   * @example_command
+   *   curl '{base_url}/api/v1/groups/{group_id}' \
+   *     -v -u {user_name}:{api_key}
+   * @example_response
+   *   {
+   *     "created": 1399421609,
+   *     "group_id": 123,
+   *     "group_name": "mygroup",
+   *     "owner": "user_name",
+   *     "owner_id": 456,
+   *     "parent_id": 789,
+   *     "parent_name": "parentgroup",
+   *     "live_site_count": 1,
+   *     "total_site_count": 3,
+   *     "status": 1
+   *   }
+   * @version v1
+   * @title Get a group
+   * @group Groups
+   * @http_method GET
+   * @resource /api/v1/groups/{group_id}
+   *
+   */
+  public function details() : array {
+    return $this->client->apiGet(['groups', $this->id()])->toArray();
   }
 
 }
