@@ -25,6 +25,7 @@ abstract class ActionBase implements ActionInterface {
    *   An ACSF client.
    */
   public function __construct(ClientInterface $client) {
+
     $this->client = $client;
   }
 

@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace swichers\Acsf\Client\Discovery;
 
@@ -10,6 +10,6 @@ interface DiscovererInterface {
    * @return array
    *   An array of discovered classes.
    */
-  public function getItems() : array;
+  public function getItems(): array;
 
 }

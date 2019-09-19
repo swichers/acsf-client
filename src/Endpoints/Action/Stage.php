@@ -62,6 +62,7 @@ class Stage extends ActionBase {
    * ```
    */
   public function stage(string $to_env, array $siteIds, array $options = []): array {
+
     $options = $this->limitOptions($options, [
       'skip_gardener',
       'detailed_status',
@@ -82,9 +83,7 @@ class Stage extends ActionBase {
 
     $envs = $this->getEnvironments();
     if (!in_array($to_env, $envs)) {
-      throw new InvalidEnvironmentException(
-        'Provided environment was not listed as being a valid environment.'
-      );
+      throw new InvalidEnvironmentException('Provided environment was not listed as being a valid environment.');
     }
     $options['to_env'] = $to_env;
 
@@ -110,6 +109,7 @@ class Stage extends ActionBase {
    * ```
    */
   public function getEnvironments(): array {
+
     static $environments;
     if (is_null($environments)) {
       $result = $this->client->apiGet('stage', [], 2)->toArray();

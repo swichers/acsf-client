@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 
 namespace swichers\Acsf\Client;
@@ -11,10 +11,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class ServiceLoader {
 
-  public static function build(
-    string $servicePath = __DIR__,
-    string $serviceFile = 'services.yml'
-  ) : ContainerBuilder {
+  public static function build(string $servicePath = __DIR__, string $serviceFile = 'services.yml'): ContainerBuilder {
 
     static $containerBuilder;
     if (is_null($containerBuilder[$servicePath][$serviceFile])) {
@@ -22,10 +19,7 @@ class ServiceLoader {
 
       $containerBuilder[$servicePath][$serviceFile] = new ContainerBuilder();
 
-      $loader = new YamlFileLoader(
-        $containerBuilder[$servicePath][$serviceFile],
-        new FileLocator($servicePath)
-      );
+      $loader = new YamlFileLoader($containerBuilder[$servicePath][$serviceFile], new FileLocator($servicePath));
       $loader->load($serviceFile);
 
     }

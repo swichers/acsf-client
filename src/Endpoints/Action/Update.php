@@ -75,6 +75,7 @@ class Update extends ActionGetEntityBase {
    * ```
    */
   public function updateCode(string $git_ref, array $options = []): array {
+
     $options = $this->limitOptions($options, [
       'scope',
       'start_time',
@@ -102,9 +103,8 @@ class Update extends ActionGetEntityBase {
     ];
     foreach ($type_limits as $type => $limits) {
       if (isset($options[$type])) {
-        $types = is_string($options[$type]) ?
-          explode(',', $options[$type]) :
-          $options[$type];
+        $types = is_string($options[$type]) ? explode(',', $options[$type])
+          : $options[$type];
         $options[$type] = implode(', ', $this->filterArrayToValues($types, $limits));
       }
     }
@@ -138,7 +138,9 @@ class Update extends ActionGetEntityBase {
    *```
    */
   public function list(array $options = []): array {
+
     $options = $this->limitOptions($options, []);
+
     return $this->client->apiGet('update', $options)->toArray();
   }
 
@@ -146,6 +148,7 @@ class Update extends ActionGetEntityBase {
    * {@inheritdoc}
    */
   public function getEntityType(): string {
+
     return 'Update';
   }
 

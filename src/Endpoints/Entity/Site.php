@@ -53,6 +53,7 @@ class Site extends EntityBase {
    * ```
    */
   public function details(): array {
+
     return $this->client->apiGet(['sites', $this->id()])->toArray();
   }
 
@@ -83,6 +84,7 @@ class Site extends EntityBase {
    * ```
    */
   public function delete(): array {
+
     return $this->client->apiDelete(['sites', $this->id()], [])->toArray();
   }
 
@@ -120,6 +122,7 @@ class Site extends EntityBase {
    * ```
    */
   public function duplicate(string $siteName, array $options = []): array {
+
     $options = $this->limitOptions($options, ['group_ids', 'exact_copy']);
     $options['site_name'] = $siteName;
     $options['exact_copy'] = $this->ensureBool($options['exact_copy'] ?? FALSE);
@@ -127,14 +130,11 @@ class Site extends EntityBase {
       $options['group_ids'] = $this->cleanIntArray($options['group_ids']);
     }
 
-    return $this->client->apiPost(
-      [
-        'sites',
-        $this->id(),
-        'duplicate',
-      ],
-      $options
-    )->toArray();
+    return $this->client->apiPost([
+      'sites',
+      $this->id(),
+      'duplicate',
+    ], $options)->toArray();
   }
 
   /**
@@ -177,20 +177,16 @@ class Site extends EntityBase {
    * ```
    */
   public function backup(array $options = []): array {
-    $options = $this->limitOptions($options,
-      array_merge(['label'], $this->backupFields)
-    );
+
+    $options = $this->limitOptions($options, array_merge(['label'], $this->backupFields));
 
     $options = $this->validateBackupOptions($options);
 
-    return $this->client->apiPost(
-      [
-        'sites',
-        $this->id(),
-        'backup',
-      ],
-      $options
-    )->toArray();
+    return $this->client->apiPost([
+      'sites',
+      $this->id(),
+      'backup',
+    ], $options)->toArray();
   }
 
   /**
@@ -260,16 +256,15 @@ class Site extends EntityBase {
    * ```
    */
   public function listBackups(array $options = []): array {
+
     $options = $this->limitOptions($options, ['limit', 'page']);
     $options = $this->constrictPaging($options);
-    return $this->client->apiGet(
-      [
-        'sites',
-        $this->id(),
-        'backups',
-      ],
-      $options
-    )->toArray();
+
+    return $this->client->apiGet([
+      'sites',
+      $this->id(),
+      'backups',
+    ], $options)->toArray();
   }
 
   /**
@@ -297,6 +292,7 @@ class Site extends EntityBase {
    * ```
    */
   public function clearCache(): array {
+
     return $this->client->apiGet(['sites', $this->id(), 'cache-clear'])
       ->toArray();
   }
@@ -332,6 +328,7 @@ class Site extends EntityBase {
    * ```
    */
   public function getDomains(): array {
+
     return $this->client->apiGet(['domains', $this->id()])->toArray();
   }
 
@@ -368,10 +365,12 @@ class Site extends EntityBase {
    * ```
    */
   public function addDomain(string $domainName): array {
-    return $this->client->apiPost(
-      ['domains', $this->id(), 'add'],
-      ['domain_name' => $domainName]
-    )->toArray();
+
+    return $this->client->apiPost([
+      'domains',
+      $this->id(),
+      'add',
+    ], ['domain_name' => $domainName])->toArray();
   }
 
   /**
@@ -406,10 +405,12 @@ class Site extends EntityBase {
    * ```
    */
   public function removeDomain(string $domainName): array {
-    return $this->client->apiPost(
-      ['domains', $this->id(), 'remove'],
-      ['domain_name' => $domainName]
-    )->toArray();
+
+    return $this->client->apiPost([
+      'domains',
+      $this->id(),
+      'remove',
+    ], ['domain_name' => $domainName])->toArray();
   }
 
 }

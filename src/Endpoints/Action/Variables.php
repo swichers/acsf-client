@@ -46,6 +46,7 @@ class Variables extends ActionBase {
    * ```
    */
   public function get(string $name): array {
+
     return $this->client->apiGet('variables', ['name' => $name])->toArray();
   }
 
@@ -78,7 +79,9 @@ class Variables extends ActionBase {
    * ```
    */
   public function list(array $options = []): array {
+
     $options = $this->limitOptions($options, ['search']);
+
     return $this->client->apiGet('variables', $options)->toArray();
   }
 
@@ -110,7 +113,9 @@ class Variables extends ActionBase {
    * ```
    */
   public function set(string $name, $value): array {
+
     $options = ['name' => $name, 'value' => $value];
+
     return $this->client->apiPut('variables', $options)->toArray();
   }
 

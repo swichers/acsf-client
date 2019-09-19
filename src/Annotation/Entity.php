@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 
 namespace swichers\Acsf\Client\Annotation;
@@ -22,6 +22,7 @@ class Entity {
    * @return string
    */
   public function getName() {
+
     return $this->name;
   }
 

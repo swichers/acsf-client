@@ -37,10 +37,12 @@ class Stacks extends ActionBase {
    * ```
    */
   public function list(array $options = []): array {
+
     static $stacks;
     if (is_null($stacks)) {
       $stacks = $this->client->apiGet('stacks')->toArray();
     }
+
     return $stacks;
   }
 

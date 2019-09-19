@@ -36,6 +36,7 @@ class Role extends EntityBase {
    * ```
    */
   public function details() {
+
     return $this->client->apiGet(['roles', $this->id()])->toArray();
   }
 
@@ -66,10 +67,11 @@ class Role extends EntityBase {
    * ```
    */
   public function update(string $newName): array {
-    return $this->client->apiPut(
-      ['roles', $this->id()],
-      ['new_name' => $newName]
-    )->toArray();
+
+    return $this->client->apiPut([
+      'roles',
+      $this->id(),
+    ], ['new_name' => $newName])->toArray();
   }
 
   /**
@@ -93,6 +95,7 @@ class Role extends EntityBase {
    * ```
    */
   public function delete(): array {
+
     return $this->client->apiDelete(['roles', $this->id()], [])->toArray();
   }
 

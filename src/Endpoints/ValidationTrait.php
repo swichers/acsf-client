@@ -38,6 +38,7 @@ trait ValidationTrait {
    *   An options array filtered down to allowed items.
    */
   protected function limitOptions(array $options, array $allowedKeys): array {
+
     return array_intersect_key($options, array_flip($allowedKeys));
   }
 
@@ -53,6 +54,7 @@ trait ValidationTrait {
    *   The options with paging values adjusted.
    */
   protected function constrictPaging(array $options, int $maxLimit = 100): array {
+
     if (isset($options['limit'])) {
       // Valid values are 1 to 100.
       $options['limit'] = max(1, min($options['limit'], $maxLimit));
@@ -79,6 +81,7 @@ trait ValidationTrait {
    *   The sort order to use.
    */
   protected function ensureSortOrder(string $order) {
+
     return strtolower($order) == 'asc' ? 'asc' : 'desc';
   }
 
@@ -92,6 +95,7 @@ trait ValidationTrait {
    *   A clean and typed version of the array.
    */
   protected function cleanIntArray(array $values): array {
+
     $new_list = array_map('trim', $values);
     $new_list = array_map('intval', $new_list);
     $new_list = array_filter($new_list);
@@ -113,6 +117,7 @@ trait ValidationTrait {
    *   TRUE if the string was truthy, FALSE otherwise.
    */
   protected function ensureBool($value): bool {
+
     return filter_var($value, FILTER_VALIDATE_BOOLEAN);
   }
 
@@ -128,6 +133,7 @@ trait ValidationTrait {
    * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
   protected function validateBackupOptions(array $options) {
+
     if (isset($options['callback_url'])) {
       if (!filter_var($options['callback_url'], FILTER_VALIDATE_URL)) {
         throw new InvalidOptionException(sprintf('callback_url was set to an invalid url: %s', $options['callback_url']));
@@ -169,6 +175,7 @@ trait ValidationTrait {
    * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
   protected function requirePatternMatch(string $value, string $regex): bool {
+
     if (!preg_match($regex, $value)) {
       throw new InvalidOptionException(sprintf('The value %s did not match the pattern %s.', $value, $regex));
     }
@@ -190,6 +197,7 @@ trait ValidationTrait {
    *   The filtered array.
    */
   protected function filterArrayToValues(array $original, array $allowedValues, bool $toLowerCase = TRUE) {
+
     $new = array_map('trim', $original);
     $new = array_filter($new);
     if ($toLowerCase) {

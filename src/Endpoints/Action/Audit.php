@@ -71,20 +71,19 @@ class Audit extends ActionBase {
    * ```
    */
   public function list(array $options = []): array {
-    $options = $this->limitOptions(
-      $options,
-      [
-        'limit',
-        'page',
-        'order',
-        'source',
-        'scope',
-        'type',
-        'nid',
-        'uid',
-      ]
-    );
+
+    $options = $this->limitOptions($options, [
+      'limit',
+      'page',
+      'order',
+      'source',
+      'scope',
+      'type',
+      'nid',
+      'uid',
+    ]);
     $options = $this->constrictPaging($options);
+
     return $this->client->apiGet('audit', $options)->toArray();
   }
 

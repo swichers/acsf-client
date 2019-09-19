@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace swichers\Acsf\Client;
 
@@ -36,6 +36,7 @@ class Client implements ClientInterface {
   protected $config;
 
   public function __construct(HttpClientInterface $httpClient, ActionManagerInterface $actionManager, EntityManagerInterface $entityManager, array $config) {
+
     $this->httpClient = $httpClient;
     $this->actionManager = $actionManager;
     $this->entityManager = $entityManager;
@@ -43,32 +44,30 @@ class Client implements ClientInterface {
     $this->testConnection(TRUE);
   }
 
-  public function apiDelete($method, array $data, int $api_version = NULL) : ResponseInterface {
+  public function apiDelete($method, array $data, int $api_version = NULL): ResponseInterface {
+
     return $this->apiRequest('DELETE', $method, ['json' => $data]);
   }
 
-  public function apiGet($method, array $params = [], int $api_version = NULL) : ResponseInterface {
-    return $this->apiRequest(
-      'GET',
-      $method,
-      ['query' => $params],
-      $api_version
-    );
+  public function apiGet($method, array $params = [], int $api_version = NULL): ResponseInterface {
+
+    return $this->apiRequest('GET', $method, ['query' => $params], $api_version);
   }
 
-  public function apiPost($method, array $data, int $api_version = NULL) : ResponseInterface {
+  public function apiPost($method, array $data, int $api_version = NULL): ResponseInterface {
+
     return $this->apiRequest('POST', $method, ['json' => $data]);
   }
 
-  public function apiPut($method, array $data, int $api_version = NULL) : ResponseInterface {
+  public function apiPut($method, array $data, int $api_version = NULL): ResponseInterface {
+
     return $this->apiRequest('PUT', $method, ['json' => $data]);
   }
 
-  public function getAction(string $name) : ActionInterface {
+  public function getAction(string $name): ActionInterface {
+
     if (!$this->actionManager->get($name)) {
-      throw new MissingActionException(
-        sprintf('Action %s was not registered with the client.', $name)
-      );
+      throw new MissingActionException(sprintf('Action %s was not registered with the client.', $name));
     }
 
     $obj = $this->actionManager->create($name, $this);
@@ -76,33 +75,32 @@ class Client implements ClientInterface {
     return $obj;
   }
 
-  public function getApiUrl(int $version = 1) : string {
-    $env_prefix = $this->config['environment'] == 'live' ? '' : $this->config['environment'] . '-';
+  public function getApiUrl(int $version = 1): string {
 
-    return sprintf(
-      'https://www.%s%s.acsitefactory.com/api/v%d/',
-      $env_prefix,
-      $this->config['domain'],
-      max($version, 1)
-    );
+    $env_prefix = $this->config['environment'] == 'live' ? ''
+      : $this->config['environment'] . '-';
+
+    return sprintf('https://www.%s%s.acsitefactory.com/api/v%d/', $env_prefix, $this->config['domain'], max($version, 1));
   }
 
-  public function getConfig() : array {
+  public function getConfig(): array {
+
     return $this->config;
   }
 
-  public function setConfig(array $config) : array {
+  public function setConfig(array $config): array {
+
     $this->validateConfig($config);
     $old_config = $this->config ?? [];
     $this->config = $config;
+
     return $old_config;
   }
 
-  public function getEntity(string $name, int $id) : EntityInterface {
+  public function getEntity(string $name, int $id): EntityInterface {
+
     if (!$this->entityManager->get($name)) {
-      throw new MissingEntityException(
-        sprintf('Entity %s was not registered with the client.', $name)
-      );
+      throw new MissingEntityException(sprintf('Entity %s was not registered with the client.', $name));
     }
 
     $obj = $this->entityManager->create($name, $this, $id);
@@ -110,26 +108,29 @@ class Client implements ClientInterface {
     return $obj;
   }
 
-  public function testConnection($throwException = FALSE) : bool {
+  public function testConnection($throwException = FALSE): bool {
+
     try {
       /** @var \swichers\Acsf\Client\Endpoints\Action\Status $status */
       $status = $this->getAction('Status');
       $status->ping();
+
       return TRUE;
-    } catch (ClientException $x) {
+    }
+    catch (ClientException $x) {
       if ($throwException) {
         if ($x->getCode() === 403) {
-          throw new InvalidCredentialsException(
-            sprintf('Unable to access %s', $this->getApiUrl())
-          );
+          throw new InvalidCredentialsException(sprintf('Unable to access %s', $this->getApiUrl()));
         }
         throw $x;
       }
     }
+
     return FALSE;
   }
 
   protected function validateConfig(array $config) {
+
     $required_config = [
       'domain',
       'environment',
@@ -138,34 +139,32 @@ class Client implements ClientInterface {
     ];
     $diff = array_diff($required_config, array_keys($config));
     if (!empty($diff)) {
-      throw new InvalidConfigurationException(
-        sprintf('Missing %s configuration.', implode(', ', $diff))
-      );
+      throw new InvalidConfigurationException(sprintf('Missing %s configuration.', implode(', ', $diff)));
     }
 
     return TRUE;
   }
 
-  protected function apiRequest($http_method, $api_method, array $options = [], int $api_version = NULL) : ResponseInterface {
+  protected function apiRequest($http_method, $api_method, array $options = [], int $api_version = NULL): ResponseInterface {
+
     if ($http_method !== 'GET') {
       throw new Exception(sprintf('Request method %s is not implemented.', $http_method));
     }
     // Allow swapping version on the fly if necessary.
     $options['base_uri'] = $this->getApiUrl($api_version ?: 1);
-    $options['auth_basic'] = $this->config['username'] . ':' . $this->config['api_key'];
-    return new Response(
-      $this->httpClient->request(
-        $http_method,
-        $this->getMethodUrl($api_method),
-        $options
-      )
-    );
+    $options['auth_basic'] = $this->config['username'] .
+      ':' .
+      $this->config['api_key'];
+
+    return new Response($this->httpClient->request($http_method, $this->getMethodUrl($api_method), $options));
   }
 
-  protected function getMethodUrl($method) : string {
+  protected function getMethodUrl($method): string {
+
     if (is_array($method)) {
       $method = implode('/', $method);
     }
+
     return $method;
   }
 

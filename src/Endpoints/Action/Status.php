@@ -40,6 +40,7 @@ class Status extends ActionBase {
    * ```
    */
   public function ping(): array {
+
     return $this->client->apiGet('ping')->toArray();
   }
 
@@ -66,6 +67,7 @@ class Status extends ActionBase {
    * ```
    */
   public function get(): array {
+
     return $this->client->apiGet('status')->toArray();
   }
 
@@ -101,6 +103,7 @@ class Status extends ActionBase {
    * ```
    */
   public function set(array $options = []): array {
+
     $options = $this->limitOptions($options, [
       'all',
       'site_creation',
@@ -108,6 +111,7 @@ class Status extends ActionBase {
       'domain_management',
       'bulk_operations',
     ]);
+
     return $this->client->apiPut('status', $options)->toArray();
   }
 
@@ -132,6 +136,7 @@ class Status extends ActionBase {
    * ```
    */
   public function getSiteFactoryInfo(): array {
+
     return $this->client->apiGet('sf-info')->toArray();
   }
 

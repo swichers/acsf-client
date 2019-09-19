@@ -75,6 +75,7 @@ class Sites extends ActionGetEntityBase {
    * ```
    */
   public function list(array $options = []): array {
+
     $options = $this->limitOptions($options, [
       'limit',
       'page',
@@ -96,6 +97,7 @@ class Sites extends ActionGetEntityBase {
    * {@inheritdoc}
    */
   public function getEntityType(): string {
+
     return 'Site';
   }
 
@@ -137,6 +139,7 @@ class Sites extends ActionGetEntityBase {
    * ```
    */
   public function create(string $siteName, array $options = []): array {
+
     $options = $this->limitOptions($options, [
       'group_ids',
       'install_profile',

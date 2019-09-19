@@ -71,9 +71,11 @@ class SslCertificates extends ActionBase {
    * ```
    */
   public function list(array $options = []): array {
+
     $options = $this->limitOptions($options, ['page', 'limit', 'stack_id']);
     $options = $this->constrictPaging($options);
     $options['stack_id'] = max(1, $options['stack_id'] ?? 1);
+
     return $this->client->apiGet('ssl/certificates', $options)->toArray();
   }
 
@@ -131,6 +133,7 @@ class SslCertificates extends ActionBase {
    * ```
    */
   public function create(string $label, string $certificate, string $privateKey, array $options = []): array {
+
     $options = $this->limitOptions($options, ['stack_id', 'ca_certificates']);
     $options['label'] = $label;
     $options['certificate'] = $certificate;

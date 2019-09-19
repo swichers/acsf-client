@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace swichers\Acsf\Tests;
 
@@ -20,6 +20,7 @@ class ResponseTest extends TestCase {
    * @covers ::toArray
    */
   public function testToArray() {
+
     $client = new MockHttpClient(new MockResponse('{}'));
     $original = $client->request('GET', 'http://example.com');
     $resp = new Response($original);
@@ -37,6 +38,7 @@ class ResponseTest extends TestCase {
    * @covers ::__construct
    */
   public function testGetOriginalResponse() {
+
     $original = new MockResponse();
     $resp = new Response($original);
 

@@ -53,8 +53,10 @@ class Roles extends ActionGetEntityBase {
    * ```
    */
   public function list(array $options = []): array {
+
     $options = $this->limitOptions($options, ['limit', 'page', 'order']);
     $options = $this->constrictPaging($options);
+
     return $this->client->apiGet('roles', $options)->toArray();
   }
 
@@ -86,6 +88,7 @@ class Roles extends ActionGetEntityBase {
    * ```
    */
   public function create(string $name): array {
+
     return $this->client->apiPost('roles', ['name' => $name])->toArray();
   }
 
@@ -93,6 +96,7 @@ class Roles extends ActionGetEntityBase {
    * {@inheritdoc}
    */
   public function getEntityType(): string {
+
     return 'Role';
   }
 

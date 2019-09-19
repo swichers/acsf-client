@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace swichers\Acsf\Client\Discovery;
 
@@ -13,16 +13,19 @@ class Manager implements ManagerInterface {
 
 
   public function __construct(DiscovererInterface $discovery) {
+
     $this->discovery = $discovery;
   }
 
   public function create($name, ...$constructor_args) {
+
     $workers = $this->discovery->getItems();
     if (array_key_exists($name, $workers)) {
       $class = $workers[$name]['class'];
       if (!class_exists($class)) {
         throw new Exception('Implementation class does not exist.');
       }
+
       return new $class(...$constructor_args);
     }
 
@@ -30,6 +33,7 @@ class Manager implements ManagerInterface {
   }
 
   public function get($name) {
+
     $workers = $this->discovery->getItems();
     if (isset($workers[$name])) {
       return $workers[$name];
@@ -39,6 +43,7 @@ class Manager implements ManagerInterface {
   }
 
   public function getAvailable() {
+
     return $this->discovery->getItems();
   }
 

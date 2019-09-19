@@ -38,6 +38,7 @@ class Task extends EntityBase {
    * ```
    */
   public function delete(): array {
+
     return $this->client->apiDelete(['tasks', $this->id()], [])->toArray();
   }
 
@@ -63,6 +64,7 @@ class Task extends EntityBase {
    * ```
    */
   public function stop(): array {
+
     return $this->client->apiPut(['tasks', $this->id()], [])->toArray();
   }
 
@@ -94,15 +96,17 @@ class Task extends EntityBase {
    *   ]
    */
   public function logs(array $options = []): array {
+
     $options = $this->limitOptions($options, ['level', 'descendants']);
 
     if (isset($options['level'])) {
-      $this->requirePatternMatch($options['level'], '/(emergency|alert|critical|error|warning|notice|info|debug)/' );
+      $this->requirePatternMatch($options['level'], '/(emergency|alert|critical|error|warning|notice|info|debug)/');
     }
 
     if (isset($options['descendants'])) {
       $options['descendants'] = $this->ensureBool($options['descendants']);
     }
+
     return $this->client->apiGet(['tasks', $this->id(), 'logs'])->toArray();
   }
 
@@ -144,6 +148,7 @@ class Task extends EntityBase {
    * ```
    */
   public function status(): array {
+
     return $this->client->apiGet(['wip', 'task', $this->id(), 'status'])
       ->toArray();
   }
@@ -181,6 +186,7 @@ class Task extends EntityBase {
    * ```
    */
   public function pause(bool $paused = TRUE, array $options = []): array {
+
     $options = $this->limitOptions($options, ['level']);
     $options['paused'] = $paused;
     if (isset($options['level'])) {
@@ -204,7 +210,9 @@ class Task extends EntityBase {
    * @see Task::pause()
    */
   public function resume(array $options = []): array {
+
     $options = $this->limitOptions($options, ['level']);
+
     return $this->pause(FALSE, $options);
   }
 

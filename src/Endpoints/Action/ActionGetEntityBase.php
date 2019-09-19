@@ -25,6 +25,7 @@ abstract class ActionGetEntityBase extends ActionBase {
    * @throws \swichers\Acsf\Client\Exceptions\MissingEntityException
    */
   public function get(int $entityId): EntityInterface {
+
     return $this->client->getEntity($this->getEntityType(), $entityId);
   }
 

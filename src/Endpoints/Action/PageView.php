@@ -74,53 +74,19 @@ class PageView extends ActionBase {
    * ```
    */
   public function getMonthlyDataByDomain(string $date, array $options = []): array {
-    $options = $this->limitOptions(
-      $options,
-      ['stack_id', 'domain_name', 'sort_order', 'limit', 'page']
-    );
+
+    $options = $this->limitOptions($options, [
+      'stack_id',
+      'domain_name',
+      'sort_order',
+      'limit',
+      'page',
+    ]);
     $options['date'] = $date;
     $options['stack_id'] = max(1, $options['stack_id'] ?? 1);
 
     return $this->genericDataRequest('date', TRUE, $options);
 
-  }
-
-  /**
-   * Single function to request both reports.
-   *
-   * @param string $dateKey
-   *   The key of the date value.
-   * @param bool $byDomain
-   *   TRUE if the report should be by domain.
-   * @param array $options
-   *   Additional request options.
-   *
-   * @return array
-   *   The request result.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
-   */
-  protected function genericDataRequest(string $dateKey, bool $byDomain = FALSE, array $options = []): array {
-    if (isset($options[$dateKey])) {
-      $options[$dateKey] = $this->requirePatternMatch(
-        $options[$dateKey],
-        '/^[0-9]{4}-[0-9]{2}$/'
-      );
-    }
-
-    // This is the only endpoint that uses sort_order instead of order.
-    $options['order'] = $options['sort_order'];
-    $options = $this->constrictPaging($options, 100);
-    $options['sort_order'] = $options['order'];
-    unset($options['order']);
-
-
-    $method = ['dynamic-requests', 'monthly'];
-    if ($byDomain) {
-      $method[] = 'domains';
-    }
-
-    return $this->client->apiGet($method, $options)->toArray();
   }
 
   /**
@@ -177,13 +143,53 @@ class PageView extends ActionBase {
    * ```
    */
   public function getMonthlyData(array $options = []): array {
-    $options = $this->limitOptions(
-      $options,
-      ['stack_id', 'start_from', 'sort_order', 'limit', 'page']
-    );
+
+    $options = $this->limitOptions($options, [
+      'stack_id',
+      'start_from',
+      'sort_order',
+      'limit',
+      'page',
+    ]);
     $options['stack_id'] = max(1, $options['stack_id'] ?? 1);
 
     return $this->genericDataRequest('start_from', FALSE, $options);
+  }
+
+  /**
+   * Single function to request both reports.
+   *
+   * @param string $dateKey
+   *   The key of the date value.
+   * @param bool $byDomain
+   *   TRUE if the report should be by domain.
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   The request result.
+   *
+   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   */
+  protected function genericDataRequest(string $dateKey, bool $byDomain = FALSE, array $options = []): array {
+
+    if (isset($options[$dateKey])) {
+      $options[$dateKey] = $this->requirePatternMatch($options[$dateKey], '/^[0-9]{4}-[0-9]{2}$/');
+    }
+
+    // This is the only endpoint that uses sort_order instead of order.
+    $options['order'] = $options['sort_order'];
+    $options = $this->constrictPaging($options, 100);
+    $options['sort_order'] = $options['order'];
+    unset($options['order']);
+
+
+    $method = ['dynamic-requests', 'monthly'];
+    if ($byDomain) {
+      $method[] = 'domains';
+    }
+
+    return $this->client->apiGet($method, $options)->toArray();
   }
 
 }

@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace swichers\Acsf\Tests;
 
@@ -39,29 +39,16 @@ class ClientTest extends TestCase {
    */
   protected $mockEntityManager;
 
-  protected function getClient(array $config = []) {
-    $default_config = [
-      'username' => 'Nulla Etiam nisi',
-      'api_key' => 'Donec justo, venenatis tellus',
-      'domain' => 'dapibus',
-      'environment' => 'ligula',
-    ];
-    return new Client(
-      $this->mockHttp,
-      $this->mockActionManager,
-      $this->mockEntityManager,
-      $config + $default_config
-    );
-  }
-
   /**
    * @covers ::__construct
    */
   public function testConstructClient() {
+
     $this->assertInstanceOf(Client::class, $this->getClient());
   }
 
   public function setUp() {
+
     parent::setUp();
 
     $this->mockHttp = new MockHttpClient();
@@ -75,17 +62,21 @@ class ClientTest extends TestCase {
       ->setMethods(['get', 'create'])
       ->disableOriginalConstructor()
       ->getMock();
-    $this->mockActionManager->method('get')->willReturnMap(
-      [['Status', ['foo' => 'bar']]]
-    );
-    $this->mockActionManager->method('create')->willReturnCallback(
-      function ($name, ...$other) use ($mockAction) {
+    $this->mockActionManager->method('get')->willReturnMap([
+      [
+        'Status',
+        ['foo' => 'bar'],
+      ],
+    ]);
+    $this->mockActionManager->method('create')
+      ->willReturnCallback(function ($name, ...$other) use ($mockAction) {
+
         if ('Status' == $name) {
           return $mockAction;
         }
+
         return NULL;
-      }
-    );
+      });
 
     $mockEntity = $this->getMockBuilder(EntityBase::class)
       ->setMethods([])
@@ -96,17 +87,21 @@ class ClientTest extends TestCase {
       ->setMethods(['get', 'create'])
       ->disableOriginalConstructor()
       ->getMock();
-    $this->mockEntityManager->method('get')->willReturnMap(
-      [['Backup', ['foo' => 'bar']]]
-    );
-    $this->mockEntityManager->method('create')->willReturnCallback(
-      function ($name, $id, ...$other) use ($mockEntity) {
+    $this->mockEntityManager->method('get')->willReturnMap([
+      [
+        'Backup',
+        ['foo' => 'bar'],
+      ],
+    ]);
+    $this->mockEntityManager->method('create')
+      ->willReturnCallback(function ($name, $id, ...$other) use ($mockEntity) {
+
         if ('Backup' == $name && $id == 123) {
           return $mockEntity;
         }
+
         return NULL;
-      }
-    );
+      });
   }
 
   /**
@@ -115,6 +110,7 @@ class ClientTest extends TestCase {
    * @covers ::validateConfig
    */
   public function testSetConfig() {
+
     $client = $this->getClient();
 
     $default_config = $client->getConfig();
@@ -127,122 +123,79 @@ class ClientTest extends TestCase {
     $client->setConfig([]);
 
     $this->expectException(InvalidConfigurationException::class);
-    $client->setConfig(
-      [
-        'username' => NULL,
-        'api_key' => NULL,
-        'domain' => NULL,
-        'environment' => NULL,
-      ]
-    );
+    $client->setConfig([
+      'username' => NULL,
+      'api_key' => NULL,
+      'domain' => NULL,
+      'environment' => NULL,
+    ]);
 
     $this->expectException(InvalidConfigurationException::class);
-    $client->setConfig(
-      [
-        'username' => NULL,
-        'api_key' => NULL,
-        'domain' => NULL,
-      ]
-    );
+    $client->setConfig([
+      'username' => NULL,
+      'api_key' => NULL,
+      'domain' => NULL,
+    ]);
     $this->expectException(InvalidConfigurationException::class);
-    $client->setConfig(
-      [
-        'username' => NULL,
-        'api_key' => NULL,
-        'environment' => NULL,
-      ]
-    );
+    $client->setConfig([
+      'username' => NULL,
+      'api_key' => NULL,
+      'environment' => NULL,
+    ]);
     $this->expectException(InvalidConfigurationException::class);
-    $client->setConfig(
-      [
-        'username' => NULL,
-        'domain' => NULL,
-        'environment' => NULL,
-      ]
-    );
+    $client->setConfig([
+      'username' => NULL,
+      'domain' => NULL,
+      'environment' => NULL,
+    ]);
     $this->expectException(InvalidConfigurationException::class);
-    $client->setConfig(
-      [
-        'api_key' => NULL,
-        'domain' => NULL,
-        'environment' => NULL,
-      ]
-    );
+    $client->setConfig([
+      'api_key' => NULL,
+      'domain' => NULL,
+      'environment' => NULL,
+    ]);
   }
 
   /**
    * @covers ::getApiUrl
    */
   public function testGetApiUrl() {
+
     $client = $this->getClient(['environment' => 'dev', 'domain' => 'example']);
 
-    $this->assertEquals(
-      'https://www.dev-example.acsitefactory.com/api/v1/',
-      $client->getApiUrl()
-    );
-    $this->assertEquals(
-      'https://www.dev-example.acsitefactory.com/api/v1/',
-      $client->getApiUrl(-1)
-    );
-    $this->assertEquals(
-      'https://www.dev-example.acsitefactory.com/api/v2/',
-      $client->getApiUrl(2)
-    );
+    $this->assertEquals('https://www.dev-example.acsitefactory.com/api/v1/', $client->getApiUrl());
+    $this->assertEquals('https://www.dev-example.acsitefactory.com/api/v1/', $client->getApiUrl(-1));
+    $this->assertEquals('https://www.dev-example.acsitefactory.com/api/v2/', $client->getApiUrl(2));
 
     $config = ['environment' => 'abc123'] + $client->getConfig();
     $client->setConfig($config);
-    $this->assertEquals(
-      'https://www.abc123-example.acsitefactory.com/api/v1/',
-      $client->getApiUrl()
-    );
-    $this->assertEquals(
-      'https://www.abc123-example.acsitefactory.com/api/v1/',
-      $client->getApiUrl(-1)
-    );
-    $this->assertEquals(
-      'https://www.abc123-example.acsitefactory.com/api/v2/',
-      $client->getApiUrl(2)
-    );
+    $this->assertEquals('https://www.abc123-example.acsitefactory.com/api/v1/', $client->getApiUrl());
+    $this->assertEquals('https://www.abc123-example.acsitefactory.com/api/v1/', $client->getApiUrl(-1));
+    $this->assertEquals('https://www.abc123-example.acsitefactory.com/api/v2/', $client->getApiUrl(2));
 
     $config = ['environment' => 'live'] + $client->getConfig();
     $client->setConfig($config);
-    $this->assertEquals(
-      'https://www.example.acsitefactory.com/api/v1/',
-      $client->getApiUrl()
-    );
-    $this->assertEquals(
-      'https://www.example.acsitefactory.com/api/v1/',
-      $client->getApiUrl(-1)
-    );
-    $this->assertEquals(
-      'https://www.example.acsitefactory.com/api/v2/',
-      $client->getApiUrl(2)
-    );
+    $this->assertEquals('https://www.example.acsitefactory.com/api/v1/', $client->getApiUrl());
+    $this->assertEquals('https://www.example.acsitefactory.com/api/v1/', $client->getApiUrl(-1));
+    $this->assertEquals('https://www.example.acsitefactory.com/api/v2/', $client->getApiUrl(2));
 
     $config = ['environment' => 'new-config'] + $client->getConfig();
     $client->setConfig($config);
-    $this->assertEquals(
-      'https://www.new-config-example.acsitefactory.com/api/v1/',
-      $client->getApiUrl()
-    );
+    $this->assertEquals('https://www.new-config-example.acsitefactory.com/api/v1/', $client->getApiUrl());
   }
 
   /**
    * @covers ::testConnection
    */
   public function testTestConnection() {
+
     $config = [
       'username' => 'abc',
       'api_key' => '123',
       'domain' => 'unit-test',
       'environment' => 'dev',
     ];
-    $client = new Client(
-      $this->mockHttp,
-      $this->mockActionManager,
-      $this->mockEntityManager,
-      $config
-    );
+    $client = new Client($this->mockHttp, $this->mockActionManager, $this->mockEntityManager, $config);
 
     $this->assertTrue($client->testConnection(FALSE));
     $this->assertFalse($client->testConnection(FALSE));
@@ -260,20 +213,17 @@ class ClientTest extends TestCase {
    * @covers ::getMethodUrl
    */
   public function testApiGet() {
+
     $client = $this->getClient();
     $resp = $client->apiGet('Unit/Test');
     $this->assertInstanceOf(ResponseInterface::class, $resp);
-    $this->assertEquals(
-      'https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test',
-      $resp->getOriginalResponse()->getInfo('url')
-    );
+    $this->assertEquals('https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test', $resp->getOriginalResponse()
+      ->getInfo('url'));
 
     $resp = $client->apiGet(['Unit', 'Test']);
     $this->assertInstanceOf(ResponseInterface::class, $resp);
-    $this->assertEquals(
-      'https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test',
-      $resp->getOriginalResponse()->getInfo('url')
-    );
+    $this->assertEquals('https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test', $resp->getOriginalResponse()
+      ->getInfo('url'));
   }
 
   /**
@@ -282,10 +232,9 @@ class ClientTest extends TestCase {
    * @covers ::getMethodUrl
    */
   public function testApiPost() {
-    $this->assertInstanceOf(
-      ResponseInterface::class,
-      $this->getClient()->apiPost('Unit/Test', [])
-    );
+
+    $this->assertInstanceOf(ResponseInterface::class, $this->getClient()
+      ->apiPost('Unit/Test', []));
   }
 
   /**
@@ -294,10 +243,9 @@ class ClientTest extends TestCase {
    * @covers ::getMethodUrl
    */
   public function testApiDelete() {
-    $this->assertInstanceOf(
-      ResponseInterface::class,
-      $this->getClient()->apiDelete('Unit/Test', [])
-    );
+
+    $this->assertInstanceOf(ResponseInterface::class, $this->getClient()
+      ->apiDelete('Unit/Test', []));
   }
 
   /**
@@ -306,22 +254,19 @@ class ClientTest extends TestCase {
    * @covers ::getMethodUrl
    */
   public function testApiPut() {
-    $this->assertInstanceOf(
-      ResponseInterface::class,
-      $this->getClient()->apiPut('Unit/Test', [])
-    );
+
+    $this->assertInstanceOf(ResponseInterface::class, $this->getClient()
+      ->apiPut('Unit/Test', []));
   }
 
   /**
    * @covers ::getAction
    */
   public function testGetAction() {
+
     $client = $this->getClient();
 
-    $this->assertInstanceOf(
-      ActionInterface::class,
-      $client->getAction('Status')
-    );
+    $this->assertInstanceOf(ActionInterface::class, $client->getAction('Status'));
     $this->expectException(MissingActionException::class);
     $client->getAction('ThisActionDoesNotExist');
   }
@@ -330,20 +275,28 @@ class ClientTest extends TestCase {
    * @covers ::getEntity
    */
   public function testGetEntity() {
+
     $client = $this->getClient();
 
-    $this->assertInstanceOf(
-      EntityInterface::class,
-      $client->getEntity('Backup', 123)
-    );
+    $this->assertInstanceOf(EntityInterface::class, $client->getEntity('Backup', 123));
     $this->expectException(MissingEntityException::class);
     $client->getEntity('ThisEntityDoesNotExist', 123);
 
     $this->expectException(MissingEntityException::class);
-    $this->assertInstanceOf(
-      EntityInterface::class,
-      $client->getEntity('Backup', 456)
-    );
+    $this->assertInstanceOf(EntityInterface::class, $client->getEntity('Backup', 456));
+  }
+
+  protected function getClient(array $config = []) {
+
+    $default_config = [
+      'username' => 'Nulla Etiam nisi',
+      'api_key' => 'Donec justo, venenatis tellus',
+      'domain' => 'dapibus',
+      'environment' => 'ligula',
+    ];
+
+    return new Client($this->mockHttp, $this->mockActionManager, $this->mockEntityManager, $config +
+      $default_config);
   }
 
 }

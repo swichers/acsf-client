@@ -55,6 +55,7 @@ class Collections extends ActionGetEntityBase {
    * ```
    */
   public function list(array $options = []): array {
+
     $options = [
       $options['limit'] ?? 10,
       $options['page'] ?? 1,
@@ -108,6 +109,7 @@ class Collections extends ActionGetEntityBase {
    *
    */
   public function create(string $name, array $siteIds, array $groupIds, array $options = []): array {
+
     $data = [
       'name' => $name,
       'site_ids' => $this->cleanIntArray($siteIds),
@@ -122,6 +124,7 @@ class Collections extends ActionGetEntityBase {
    * {@inheritdoc}
    */
   public function getEntityType(): string {
+
     return 'Collection';
   }
 

@@ -61,8 +61,10 @@ class Group extends EntityBase {
    * ```
    */
   public function members(array $options = []): array {
+
     $options = $this->limitOptions($options, ['limit', 'page']);
     $options = $this->constrictPaging($options);
+
     return $this->client->apiGet(['groups', $this->id(), 'members'], $options)
       ->toArray();
   }
@@ -96,6 +98,7 @@ class Group extends EntityBase {
    * ```
    */
   public function details(): array {
+
     return $this->client->apiGet(['groups', $this->id()])->toArray();
   }
 

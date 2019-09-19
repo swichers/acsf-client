@@ -45,6 +45,7 @@ abstract class EntityBase implements EntityInterface {
    *   The parent of this entity (if any).
    */
   public function __construct(ClientInterface $client, int $id, EntityInterface $parent = NULL) {
+
     $this->client = $client;
     $this->parent = $parent;
     $this->entityId = $id;
@@ -54,6 +55,7 @@ abstract class EntityBase implements EntityInterface {
    * {@inheritdoc}
    */
   public function getParent() {
+
     return $this->parent ?: NULL;
   }
 
@@ -61,6 +63,7 @@ abstract class EntityBase implements EntityInterface {
    * {@inheritdoc}
    */
   public function id(): int {
+
     return $this->entityId;
   }
 

@@ -46,8 +46,10 @@ class Tasks extends ActionGetEntityBase {
    * ```
    */
   public function pause(bool $paused, array $options = []): array {
+
     $options = $this->limitOptions($options, ['reason']);
     $options['paused'] = $paused;
+
     return $this->client->apiPost('pause', $options)->toArray();
   }
 
@@ -83,6 +85,7 @@ class Tasks extends ActionGetEntityBase {
    * ```
    */
   public function list(array $options = []): array {
+
     $options = $this->limitOptions($options, [
       'limit',
       'page',
@@ -99,6 +102,7 @@ class Tasks extends ActionGetEntityBase {
     }
 
     $options = $this->constrictPaging($options);
+
     return $this->client->apiGet('tasks', $options)->toArray();
   }
 
@@ -128,7 +132,9 @@ class Tasks extends ActionGetEntityBase {
    * ```
    */
   public function getClassInfo(string $type): array {
+
     $this->requirePatternMatch($type, '/(softpaused|softpause-for-update)/');
+
     return $this->client->apiGet(['classes', $type])->toArray();
   }
 
@@ -136,6 +142,7 @@ class Tasks extends ActionGetEntityBase {
    * {@inheritdoc}
    */
   public function getEntityType(): string {
+
     return 'Task';
   }
 

@@ -48,6 +48,7 @@ class Collection extends EntityBase {
    * ```
    */
   public function details(): array {
+
     return $this->client->apiGet(['collections', $this->id()])->toArray();
   }
 
@@ -74,6 +75,7 @@ class Collection extends EntityBase {
    * ```
    */
   public function delete(): array {
+
     return $this->client->apiDelete(['collections', $this->id()], [])
       ->toArray();
   }
@@ -123,9 +125,11 @@ class Collection extends EntityBase {
    * ```
    */
   public function addSite(array $siteIds): array {
+
     $data = [
       'site_ids' => $this->cleanIntArray($siteIds),
     ];
+
     return $this->client->apiPost(['collections', $this->id(), 'add'], $data)
       ->toArray();
   }
@@ -165,9 +169,11 @@ class Collection extends EntityBase {
    * ```
    */
   public function removeSite(array $siteIds): array {
+
     $data = [
       'site_ids' => $this->cleanIntArray($siteIds),
     ];
+
     return $this->client->apiPost(['collections', $this->id(), 'remove'], $data)
       ->toArray();
   }
@@ -204,13 +210,16 @@ class Collection extends EntityBase {
    * ```
    */
   public function setPrimarySite(int $siteId): array {
+
     $data = [
       'site_id' => $siteId,
     ];
-    return $this->client->apiPost(
-      ['collections', $this->id(), 'set-primary'],
-      $data
-    )->toArray();
+
+    return $this->client->apiPost([
+      'collections',
+      $this->id(),
+      'set-primary',
+    ], $data)->toArray();
   }
 
 }

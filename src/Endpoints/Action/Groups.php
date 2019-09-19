@@ -73,6 +73,7 @@ class Groups extends ActionGetEntityBase {
    * ```
    */
   public function list(array $options = []): array {
+
     $options = $this->limitOptions($options, ['limit', 'page']);
     $options = $this->constrictPaging($options);
 
@@ -108,6 +109,7 @@ class Groups extends ActionGetEntityBase {
    * ```
    */
   public function create(string $groupName, array $options = []): array {
+
     $options = [
       'group_name' => $groupName,
       'parent_id' => $options['parent_id'] ?? NULL,
@@ -119,6 +121,7 @@ class Groups extends ActionGetEntityBase {
    * {@inheritdoc}
    */
   public function getEntityType(): string {
+
     return 'Group';
   }
 }

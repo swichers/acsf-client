@@ -22,6 +22,7 @@ class Update extends EntityBase {
    * @see Update::pause()
    */
   public function resume(): array {
+
     return $this->pause(FALSE);
   }
 
@@ -50,10 +51,12 @@ class Update extends EntityBase {
    * ```
    */
   public function pause(bool $pause = TRUE): array {
-    return $this->client->apiPost(
-      ['update', $this->id(), 'pause'],
-      ['pause' => $pause]
-    )->toArray();
+
+    return $this->client->apiPost([
+      'update',
+      $this->id(),
+      'pause',
+    ], ['pause' => $pause])->toArray();
   }
 
   /**
@@ -100,6 +103,7 @@ class Update extends EntityBase {
    * ```
    */
   public function progress(): array {
+
     return $this->client->apiGet(['update', $this->id(), 'status'])->toArray();
   }
 

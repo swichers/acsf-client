@@ -62,6 +62,7 @@ class Vcs extends ActionBase {
    *```
    */
   public function list(array $options = []): array {
+
     $options = $this->limitOptions($options, ['stack_id']);
     $options['type'] = 'sites';
     $options['stack_id'] = max(1, $options['stack_id'] ?? 1);

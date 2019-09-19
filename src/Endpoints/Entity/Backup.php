@@ -44,21 +44,19 @@ class Backup extends EntityBase {
    * ```
    */
   public function getUrl(array $options = []): array {
+
     $options = $this->limitOptions($options, ['lifetime']);
     if (isset($options['lifetime'])) {
       $options['lifetime'] = max(1, $options['lifetime']);
     }
 
-    return $this->client->apiGet(
-      [
-        'sites',
-        $this->getParent()->id(),
-        'backups',
-        $this->id(),
-        'url',
-      ],
-      $options
-    )->toArray();
+    return $this->client->apiGet([
+      'sites',
+      $this->getParent()->id(),
+      'backups',
+      $this->id(),
+      'url',
+    ], $options)->toArray();
   }
 
   /**
@@ -87,6 +85,7 @@ class Backup extends EntityBase {
    * ```
    */
   public function delete(array $options = []): array {
+
     $options = $this->limitOptions($options, [
       'callback_url',
       'callback_method',
@@ -100,15 +99,12 @@ class Backup extends EntityBase {
       $options['caller_data'] = json_encode($options['caller_data']);
     }
 
-    return $this->client->apiDelete(
-      [
-        'sites',
-        $this->getParent()->id(),
-        'backups',
-        $this->id(),
-      ],
-      $options
-    )->toArray();
+    return $this->client->apiDelete([
+      'sites',
+      $this->getParent()->id(),
+      'backups',
+      $this->id(),
+    ], $options)->toArray();
   }
 
   /**
@@ -154,6 +150,7 @@ class Backup extends EntityBase {
    * ```
    */
   public function restore(array $options = []): array {
+
     $options = $this->limitOptions($options, $this->backupFields);
 
     $options['target_site_id'] = $this->getParent()->id();

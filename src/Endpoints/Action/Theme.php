@@ -61,7 +61,9 @@ class Theme extends ActionBase {
    * ```
    */
   public function process(array $options = []): array {
+
     $options = $this->limitOptions($options, ['sitegroup_id']);
+
     return $this->client->apiPost('theme/process', $options)->toArray();
   }
 
@@ -114,6 +116,7 @@ class Theme extends ActionBase {
    * ```
    */
   public function sendNotification(string $scope, string $event, array $options = []): array {
+
     $options = $this->limitOptions($options, [
       'nid',
       'theme',
@@ -167,7 +170,9 @@ class Theme extends ActionBase {
    * ```
    */
   public function deploy(array $options = []): array {
+
     $options = $this->limitOptions($options, ['sitegroup', 'webnode']);
+
     return $this->client->apiPost('theme/deploy', $options)->toArray();
   }
 
