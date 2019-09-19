@@ -1,16 +1,22 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
 use swichers\Acsf\Client\Annotation\Entity;
 
 /**
+ * Class Role
+ *
+ * @package swichers\Acsf\Client\Endpoints\Entity
  * @Entity(name = "Role")
  */
 class Role extends EntityBase {
 
   /**
    * Retrieve a role by role ID.
+   *
+   * @return array
+   *   Information about this role.
    *
    * @version v1
    * @title Retrieve a role
@@ -21,14 +27,13 @@ class Role extends EntityBase {
    * @params
    *   role_id | int | yes | The role ID of the user role.
    *
-   * @example_command
-   *   curl '{base_url}/api/v1/roles/{role_id}' \
-   *     -v -u {user_name}:{api_key}
    * @example_response
+   * ```json
    *   {
    *     "rid": 32,
    *     "name": "platform admin"
    *   }
+   * ```
    */
   public function details() {
     return $this->client->apiGet(['roles', $this->id()])->toArray();
@@ -36,6 +41,12 @@ class Role extends EntityBase {
 
   /**
    * Update (rename) a role.
+   *
+   * @param string $newName
+   *   The new name for the user role.
+   *
+   * @return array
+   *   Role rename status.
    *
    * @version v1
    * @title Update (rename) a role
@@ -46,18 +57,15 @@ class Role extends EntityBase {
    * @params
    *   new_name | string | yes | The new name for the user role.
    *
-   * @example_command
-   *   curl '{base_url}/api/v1/roles/32/update' \
-   *     -X PUT -H 'Content-Type: application/json' \
-   *     -d '{"new_name": "site builder"}' \
-   *     -v -u {user_name}:{api_key}
    * @example_response
+   * ```json
    *   {
    *     "role_id": 32,
    *     "updated": true
    *   }
+   * ```
    */
-  public function update(string $newName) : array {
+  public function update(string $newName): array {
     return $this->client->apiPut(
       ['roles', $this->id()],
       ['new_name' => $newName]
@@ -67,22 +75,24 @@ class Role extends EntityBase {
   /**
    * Delete a role.
    *
+   * @return array
+   *   Role delete status.
+   *
    * @version v1
    * @title Delete a role
    * @group Role
    * @http_method DELETE
    * @resource /api/v1/roles/{role_id}
-   * @example_command
-   *   curl '{base_url}/api/v1/roles/76' \
-   *     -X DELETE \
-   *     -v -u {user_name}:{api_key}
+   *
    * @example_response
+   * ```json
    *   {
    *     "role_id": 76,
    *     "deleted": true
    *   }
+   * ```
    */
-  public function delete() : array {
+  public function delete(): array {
     return $this->client->apiDelete(['roles', $this->id()], [])->toArray();
   }
 

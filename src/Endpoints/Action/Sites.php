@@ -1,31 +1,49 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
 use swichers\Acsf\Client\Annotation\Action;
-use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
-use swichers\Acsf\Client\Endpoints\PagingTrait;
+use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
+ * ACSF Endpoint Wrapper: Sites.
+ *
  * Sites are the product of the Site Factory. This resource is responsible for
  * managing those sites.
  *
- * @Action(name = "Sites")
+ * @package swichers\Acsf\Client\Endpoints\Action
+ * @Action(
+ *   name = "Sites"
+ *   entity_type = "Site"
+ * )
  */
-class Sites extends ActionBase {
+class Sites extends ActionGetEntityBase {
 
-  use PagingTrait;
+  use ValidationTrait;
 
   /**
    * Gets a list of sites.
    *
-   * @throws Exception
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   A list of sites.
    *
    * @group Sites
-   * @example_command
-   *   curl '{base_url}/api/v1/sites?limit=20&page=2' \
-   *     -v -u {user_name}:{api_key}
+   * @version v1
+   * @title List sites
+   * @http_method GET
+   * @resource /api/v1/sites
+   *
+   * @params
+   *   limit           | int  | no | A positive integer (max 100). | 10
+   *   page            | int  | no | A positive integer.           | 1
+   *   canary          | bool | no | No value necessary.           | false
+   *   show_incomplete | bool | no | No value necessary.           | false
+   *
    * @example_response
+   * ```json
    *   {
    *     "count": 111,
    *     "sites": {
@@ -54,37 +72,43 @@ class Sites extends ActionBase {
    *       }
    *     }
    *   }
-   * @version v1
-   * @title List sites
-   * @http_method GET
-   * @resource /api/v1/sites
-   *
-   * @params
-   *   limit           | int  | no | A positive integer (max 100). | 10
-   *   page            | int  | no | A positive integer.           | 1
-   *   canary          | bool | no | No value necessary.           | false
-   *   show_incomplete | bool | no | No value necessary.           | false
-   *
+   * ```
    */
-  public function list(array $options = []) : array {
-    $options = [
-      'limit' => $options['limit'] ?? 10,
-      'page' => $options['page'] ?? 1,
-      'canary' => $options['canary'] ?? FALSE,
-      'show_incomplete' => $options['show_incomplete'] ?? FALSE,
-    ];
-
-    $options = $this->validatePaging($options);
+  public function list(array $options = []): array {
+    $options = $this->limitOptions($options, [
+      'limit',
+      'page',
+      'canary',
+      'show_incomplete',
+    ]);
+    $options = $this->constrictPaging($options);
+    if (isset($options['canary'])) {
+      $options['canary'] = $this->ensureBool($options['canary']);
+    }
+    if (isset($options['show_incomplete'])) {
+      $options['show_incomplete'] = $this->ensureBool($options['show_incomplete']);
+    }
 
     return $this->client->apiGet('sites', $options)->toArray();
   }
 
-  public function get(int $siteId) : EntityInterface {
-    return $this->client->getEntity('Site', $siteId);
+  /**
+   * {@inheritdoc}
+   */
+  public function getEntityType(): string {
+    return 'Site';
   }
 
   /**
    * Create a new site.
+   *
+   * @param string $siteName
+   *   The name of the new site.
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   The new site information.
    *
    * @version v1
    * @title Create a site
@@ -94,17 +118,15 @@ class Sites extends ActionBase {
    * @params
    *   site_name       | string    | yes | The new site name.
    *   group_ids       | int|array | no  | Either a single group ID, or an
-   *   array of group IDs. install_profile | string    | no  | The install
-   *   profile to be used to install the site. stack_id        | int       | if
-   *   multiple stacks exist | The stack id where the site should go.
+   *                                       array of group IDs.
+   * install_profile   | string    | no  | The install profile to be used to
+   *                                       install the site.
+   * stack_id          | int       | ? | The stack id where the site should go.
    *
    * @group Sites
-   * @example_command
-   *   curl '{base_url}/api/v1/sites' \
-   *     -X POST -H 'Content-Type: application/json' \
-   *     -d '{"site_name": "mysite"}' \
-   *     -v -u {user_name}:{api_key}
+   *
    * @example_response
+   * ```json
    *   {
    *     "id": 191,
    *     "site": "site1",
@@ -112,16 +134,20 @@ class Sites extends ActionBase {
    *       "mysite.site-factory.com"
    *     ]
    *   }
+   * ```
    */
-  public function create(string $siteName, array $options = []) : array {
-    unset($options['site_name']);
+  public function create(string $siteName, array $options = []): array {
+    $options = $this->limitOptions($options, [
+      'group_ids',
+      'install_profile',
+      'stack_id',
+    ]);
+    $options['site_name'] = $siteName;
+    $options['stack_id'] = max(1, $options['stack_id'] ?? 1);
 
-    $options = [
-      'site_name' => $options['site_name'] ?? $siteName,
-      'group_ids' => $options['group_ids'] ?? [],
-      'install_profile' => $options['install_profile'] ?? NULL,
-      'stack_id' => $options['stack_id'] ?? 1,
-    ];
+    if (isset($options['group_ids'])) {
+      $options['group_ids'] = $this->cleanIntArray($options['group_ids']);
+    }
 
     return $this->client->apiPost('sites', $options)->toArray();
   }

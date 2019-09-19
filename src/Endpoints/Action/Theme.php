@@ -1,11 +1,14 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
 use swichers\Acsf\Client\Annotation\Action;
+use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
+ * ACSF Endpoint Wrapper: Theme.
+ *
  * Site Factory sites' themes need to be shared across multiple servers. The
  * process is controlled by the Factory using git repositories, one-per-tangle.
  * When a theme event (create/modify/delete) occurs on a site or the Factory a
@@ -19,12 +22,21 @@ use swichers\Acsf\Client\Annotation\Action;
  * Theme event notifications are the method by which such signals are received
  * and subsequently processed by the Factory.
  *
+ * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(name = "Theme")
  */
 class Theme extends ActionBase {
 
+  use ValidationTrait;
+
   /**
    * Processes the stored theme change notifications.
+   *
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   Service response.
    *
    * @version v1
    * @title Process theme modifications
@@ -36,12 +48,8 @@ class Theme extends ActionBase {
    *   sitegroup_id | string | no | The ID of a specific sitegroup to process
    *   e.g. "tangle001".
    *
-   * @example_command
-   *   curl '{base_url}/api/v1/theme/process' \
-   *     -H 'Content-Type: application/json' \
-   *     -X POST -d '{"sitegroup_id": "tangle001"}' \
-   *     -v -u {user_name}:{api_key}
    * @example_response
+   * ```json
    *   {
    *     "message": "The request to process theme notification has been
    *   accepted.",
@@ -50,13 +58,27 @@ class Theme extends ActionBase {
    *     ],
    *     "time": "2014-05-02T16:21:25+00:00"
    *   }
+   * ```
    */
-  public function process() : array {
-
+  public function process(array $options = []): array {
+    $options = $this->limitOptions($options, ['sitegroup_id']);
+    return $this->client->apiPost('theme/process', $options)->toArray();
   }
 
   /**
    * Receives a theme event notification.
+   *
+   * @param string $scope
+   *   The scope. Either "theme", "site", "group", or "global".
+   * @param string $event
+   *   The type of theme event. Either "create", "modify", or "delete".
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   Notification confirmation.
+   *
+   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @version v1
    * @title Send a theme notification
@@ -65,22 +87,21 @@ class Theme extends ActionBase {
    * @resource /api/v1/theme/notification
    *
    * @params
-   *   scope     | string | yes | The scope. Either "theme", "site", "group",
-   *   or "global". event     | string | yes | The type of theme event. Either
-   *   "create", "modify", or "delete". nid       | int    | no  | The node ID
-   *   of the related entity (site or group). Not relevant for the "global"
-   *   scope. theme     | string | no  | The system name of the theme. Only
-   *   relevant for "theme" scope notifications. timestamp | int    | no  | A
-   *   Unix timestamp of when the event occurred. uid       | int    | no  |
-   *   The user id owning the notification and who should get notified if an
-   *   error occurs during processing.
+   * scope     | string | yes | The scope. Either "theme", "site", "group",
+   *                            or "global".
+   * event     | string | yes | The type of theme event. Either
+   *                            "create", "modify", or "delete".
+   * nid       | int    | no  | The node ID of the related entity (site or
+   *                            group). Not relevant for the "global" scope.
+   * theme     | string | no  | The system name of the theme. Only relevant for
+   *                            "theme" scope notifications.
+   * timestamp | int    | no  | A Unix timestamp of when the event occurred.
+   * uid       | int    | no  | The user id owning the notification and who
+   *                            should get notified if an error occurs during
+   *                            processing.
    *
-   * @example_command
-   *   curl '{base_url}/api/v1/theme/notification' \
-   *     -v -u {user_name}:{api_key} -X POST \
-   *     -H 'Content-Type: application/json' \
-   *     -d '{"scope": "site", "event": "modify", "nid": 123}'
    * @example_response
+   * ```json
    *   {
    *     "message": "The site.modify notification has been received.",
    *     "time": "2014-02-16T20:04:12-06:00",
@@ -90,13 +111,39 @@ class Theme extends ActionBase {
    *       "nid": 123
    *     }
    *   }
+   * ```
    */
-  public function sendNotification(string $scope, string $event) : array {
+  public function sendNotification(string $scope, string $event, array $options = []): array {
+    $options = $this->limitOptions($options, [
+      'nid',
+      'theme',
+      'timestamp',
+      'uid',
+    ]);
+    $options['scope'] = $scope;
+    $options['event'] = $event;
+    $this->requirePatternMatch($options['scope'], '/(theme|site|group|global)/');
+    $this->requirePatternMatch($options['event'], '/(create|modify|delete)/');
 
+    if ($options['scope'] === 'global') {
+      unset($options['theme']);
+    }
+
+    if ($options['scope'] !== 'theme') {
+      unset($options['']);
+    }
+
+    return $this->client->apiPost('theme/notification', $options)->toArray();
   }
 
   /**
    * Distributes themes to a webnode.
+   *
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   Service response.
    *
    * @version v1
    * @title Distribute themes
@@ -105,17 +152,11 @@ class Theme extends ActionBase {
    * @resource /site-api/v1/theme/deploy
    *
    * @params
-   *   sitegroup | string | no | The sitegroup to which themes should be
-   *   deployed. webnode   | string | no | The webnode to which themes should
-   *   be deployed.
+   * sitegroup | string | no | The sitegroup to which themes should be deployed.
+   * webnode   | string | no | The webnode to which themes should be deployed.
    *
-   * @example_command
-   *   curl '{base_url}/site-api/v1/theme/deploy' \
-   *     -H 'Content-Type: application/json' \
-   *     -X POST -d '{"sitegroup": "tangle001", "webnode":
-   *   "managed-47.gardens.hosting.acquia.com"}' \
-   *     -v -u {user_name}:{api_key}
    * @example_response
+   * ```json
    *   {
    *     "message": "The request to deploy themes has been accepted.",
    *     "sitegroup": "tangle001",
@@ -123,9 +164,11 @@ class Theme extends ActionBase {
    *     "task_id": "47",
    *     "time": "2014-05-02T16:21:25+00:00"
    *   }
+   * ```
    */
-  public function deploy() : array {
-
+  public function deploy(array $options = []): array {
+    $options = $this->limitOptions($options, ['sitegroup', 'webnode']);
+    return $this->client->apiPost('theme/deploy', $options)->toArray();
   }
 
 }

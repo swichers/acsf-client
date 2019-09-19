@@ -1,12 +1,15 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
 
 use swichers\Acsf\Client\Annotation\Action;
+use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
+ * ACSF Endpoint Wrapper: VCS.
+ *
  * Provides an API resource for viewing VCS information.
  *
  * The Site Factory platform deploys code to the hosting environment from git
@@ -20,10 +23,19 @@ use swichers\Acsf\Client\Annotation\Action;
  */
 class Vcs extends ActionBase {
 
+  use ValidationTrait;
+
   /**
    * Get a list of VCS refs.
    *
+   * @param array $options
+   *   Additional request options.
+   *
    * @return array
+   *   A list of VCS refs.
+   *
+   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   *
    * @version v1
    * @title List deployable refs
    * @group VCS
@@ -31,14 +43,12 @@ class Vcs extends ActionBase {
    * @resource /api/v1/vcs
    *
    * @params
-   *   type     | string | yes                      | Either "sites" or
-   *   "factory". (Note: "factory" is restricted to Acquia employees.) stack_id
-   *   | string | if multiple stacks exist | The stack id.
+   * type     | string | yes  | Either "sites" or "factory". (Note: "factory"
+   *                              is restricted to Acquia employees.)
+   * stack_id | string | ? | The stack id.
    *
-   * @example_command
-   *   curl '{base_url}/api/v1/vcs?type=sites' \
-   *     -v -u {user_name}:{api_key}
    * @example_response
+   * ```json
    *   {
    *     "available": [
    *       "dev-branch",
@@ -49,18 +59,22 @@ class Vcs extends ActionBase {
    *     ],
    *     "current": "tags\/2.85.0.3085"
    *   }
-   *
+   *```
    */
-  public function list(array $options = []) : array {
+  public function list(array $options = []): array {
+    $options = $this->limitOptions($options, ['stack_id']);
+    $options['type'] = 'sites';
+    $options['stack_id'] = max(1, $options['stack_id'] ?? 1);
+
+    $this->requirePatternMatch($options['type'], '/(sites|factory)/');
+
     static $refs;
-    if (is_null($refs)) {
-      $options = [
-        'type' => 'sites',
-      ];
-      $refs = $this->client->apiGet('vcs', $options)->toArray();
+    $ref = &$refs[$options['stack_id']][$options['type']];
+    if (is_null($ref)) {
+      $ref = $this->client->apiGet('vcs', $options)->toArray();
     }
 
-    return $refs;
+    return $ref;
   }
 
 }

@@ -1,26 +1,41 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
 use swichers\Acsf\Client\Annotation\Entity;
-use swichers\Acsf\Client\Endpoints\PagingTrait;
+use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
+ * Class Group
+ *
+ * @package swichers\Acsf\Client\Endpoints\Entity
  * @Entity(name = "Group")
  */
 class Group extends EntityBase {
 
-  use PagingTrait;
+  use ValidationTrait;
 
   /**
    * Get the members of a group.
    *
-   * @throws Exception
+   * @param array $options
+   *   Additional request options.
    *
-   * @example_command
-   *   curl '{base_url}/api/v1/groups/{group_id}/members?limit=20' \
-   *     -v -u {user_name}:{api_key}
+   * @return array
+   *   Users that are in the group.
+   *
+   * @version v1
+   * @title List group members
+   * @group Groups
+   * @http_method GET
+   * @resource /api/v1/groups/{group_id}/members
+   *
+   * @params
+   *   limit     | int    | no | A positive integer (max 100). | 10
+   *   page      | int    | no | A positive integer.           | 1
+   *
    * @example_response
+   * ```json
    *   {
    *     "time": "2016-11-25T13:18:44+00:00",
    *     "group_id": 123,
@@ -43,20 +58,11 @@ class Group extends EntityBase {
    *       }
    *     ]
    *   }
-   * @version v1
-   * @title List group members
-   * @group Groups
-   * @http_method GET
-   * @resource /api/v1/groups/{group_id}/members
-   *
-   * @params
-   *   limit     | int    | no | A positive integer (max 100). | 10
-   *   page      | int    | no | A positive integer.           | 1
-   *
+   * ```
    */
-  public function members(array $options = []) : array {
-
-    $options = $this->validatePaging($options);
+  public function members(array $options = []): array {
+    $options = $this->limitOptions($options, ['limit', 'page']);
+    $options = $this->constrictPaging($options);
     return $this->client->apiGet(['groups', $this->id(), 'members'], $options)
       ->toArray();
   }
@@ -64,11 +70,17 @@ class Group extends EntityBase {
   /**
    * Get a group by group ID.
    *
-   * @throws Exception
-   * @example_command
-   *   curl '{base_url}/api/v1/groups/{group_id}' \
-   *     -v -u {user_name}:{api_key}
+   * @return array
+   *   Details about this group.
+   *
+   * @version v1
+   * @title Get a group
+   * @group Groups
+   * @http_method GET
+   * @resource /api/v1/groups/{group_id}
+   *
    * @example_response
+   * ```json
    *   {
    *     "created": 1399421609,
    *     "group_id": 123,
@@ -81,14 +93,9 @@ class Group extends EntityBase {
    *     "total_site_count": 3,
    *     "status": 1
    *   }
-   * @version v1
-   * @title Get a group
-   * @group Groups
-   * @http_method GET
-   * @resource /api/v1/groups/{group_id}
-   *
+   * ```
    */
-  public function details() : array {
+  public function details(): array {
     return $this->client->apiGet(['groups', $this->id()])->toArray();
   }
 

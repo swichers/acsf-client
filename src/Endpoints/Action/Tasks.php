@@ -1,18 +1,33 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
 use swichers\Acsf\Client\Annotation\Action;
-use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
+use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
- * @Action(name = "Tasks")
+ * ACSF Endpoint Wrapper: Tasks.
+ *
+ * @package swichers\Acsf\Client\Endpoints\Action
+ * @Action(
+ *   name = "Tasks"
+ *   entity_type = "Task"
+ * )
  */
-class Tasks extends ActionBase {
+class Tasks extends ActionGetEntityBase {
 
+  use ValidationTrait;
 
   /**
    * Pause or resume task processing.
+   *
+   * @param bool $paused
+   *   Pauses/resumes the WIP task processing.
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   Response message.
    *
    * @version v1
    * @title Pause/resume task processing
@@ -22,22 +37,30 @@ class Tasks extends ActionBase {
    * @body
    * paused | boolean | yes | Pauses/resumes the WIP task processing.
    * reason | string  | no  | Brief explanation for pausing workers.
-   * @example_command
-   *   curl '{base_url}/api/v1/pause' \
-   *     -v -u {user_name}:{api_key} -X POST \
-   *     -H 'Content-Type: application/json' \
-   *     -d '{"paused": true, "reason": "Reason for pausing workers"}'
+   *
    * @example_response
+   * ```json
    *   {
    *     "message": "Task processing has been paused."
    *   }
+   * ```
    */
-  public function pause() : array {
-    return $this->client->apiPost('pause', [])->toArray();
+  public function pause(bool $paused, array $options = []): array {
+    $options = $this->limitOptions($options, ['reason']);
+    $options['paused'] = $paused;
+    return $this->client->apiPost('pause', $options)->toArray();
   }
 
   /**
    * Returns data about WIP tasks.
+   *
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   Data about WIP tasks.
+   *
+   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @version v1
    * @title (Internal use only) Get Task information.
@@ -49,46 +72,71 @@ class Tasks extends ActionBase {
    *   limit  | int    | no | A positive integer (max 100).    | 10
    *   page   | int    | no | A positive integer.              | 1
    *   status | string | no | processing, error or not-started
-   *   status | class  | no | A WIP class name to filter on.
+   *   class  | string | no | A WIP class name to filter on.
    *   group  | string | no | A WIP group name to filter on.
    *
-   * @example_command
-   *   curl '{base_url}/api/v1/tasks' \
-   *     -v -u {user_name}:{api_key} \
-   *     -H 'Content-Type: application/json'
    * @example_response
+   * ```json
    *   [
    *     ...
    *   ]
+   * ```
    */
-  public function list(array $options = []) : array {
-    return $this->client->apiGet('tasks')->toArray();
+  public function list(array $options = []): array {
+    $options = $this->limitOptions($options, [
+      'limit',
+      'page',
+      'status',
+      'group',
+      'class',
+    ]);
+
+    if (isset($options['status'])) {
+      $this->requirePatternMatch($options['status'], '/(processing|error|not-started)/');
+    }
+    if (isset($options['class'])) {
+      $this->requirePatternMatch($options['class'], '/(softpaused|softpause-for-update)/');
+    }
+
+    $options = $this->constrictPaging($options);
+    return $this->client->apiGet('tasks', $options)->toArray();
   }
 
   /**
-   * Return data about WIP classes
+   * Return data about WIP classes.
+   *
+   * @param string $type
+   *   A WIP class name: softpaused or softpause-for-update.
+   *
+   * @return array
+   *   Data about WIP classes
+   *
+   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @version v1
    * @title (Internal use only) Get Task class information.
    * @group Tasks
    * @http_method GET
    * @resource /api/v1/classes/{type}
-   * @example_command
-   *   curl '{base_url}/api/v1/classes/softpaused' \
-   *     -v -u {user_name}:{api_key} \
-   *     -H 'Content-Type: application/json'
+   *
    * @example_response
+   * ```json
    *   [
    *     "Acquia\SfSite\SiteInstall",
    *     "Acquia\SfSite\SiteDuplicate"
    *   ]
+   * ```
    */
-  public function getClassInfo(string $type) : array {
+  public function getClassInfo(string $type): array {
+    $this->requirePatternMatch($type, '/(softpaused|softpause-for-update)/');
     return $this->client->apiGet(['classes', $type])->toArray();
   }
 
-  public function get(int $taskId) : EntityInterface {
-    return $this->client->getEntity('Task', $taskId);
+  /**
+   * {@inheritdoc}
+   */
+  public function getEntityType(): string {
+    return 'Task';
   }
 
 }

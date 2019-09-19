@@ -1,28 +1,48 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
 use swichers\Acsf\Client\Annotation\Action;
-use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
-use swichers\Acsf\Client\Endpoints\PagingTrait;
+use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
+ * ACSF Endpoint Wrapper: Groups.
+ *
  * Site Factories may use a feature called Site Groups in which sites can be
  * grouped together into meaningful sets. This resource provides methods for
  * managing such groups.
  *
- * @Action(name = "Groups")
+ * @package swichers\Acsf\Client\Endpoints\Action
+ * @Action(
+ *   name = "Groups"
+ *   entity_type = "Group"
+ * )
  */
-class Groups extends Actionbase {
+class Groups extends ActionGetEntityBase {
 
-  use PagingTrait;
+  use ValidationTrait;
 
   /**
    * Get a list of groups.
    *
-   * @throws Exception
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   A list of groups.
+   *
+   * @version v1
+   * @title List groups
+   * @group Groups
+   * @http_method GET
+   * @resource /api/v1/groups
+   *
+   * @params
+   *   limit | int | no | A positive integer not higher than 100. | 10
+   *   page  | int | no | A positive integer.                     | 1
    *
    * @example_response
+   * ```json
    *   {
    *     "count": 123,
    *     "groups": [
@@ -50,35 +70,24 @@ class Groups extends Actionbase {
    *       }
    *     ]
    *   }
-   * @version v1
-   * @title List groups
-   * @group Groups
-   * @http_method GET
-   * @resource /api/v1/groups
-   *
-   * @params
-   *   limit | int | no | A positive integer not higher than 100. | 10
-   *   page  | int | no | A positive integer.                     | 1
-   *
-   * @example_command
-   *   curl '{base_url}/api/v1/groups?page=2&limit=20' \
-   *     -v -u {user_name}:{api_key}
-   *
+   * ```
    */
-  public function list(array $options = []) : array {
-    $options = $this->validatePaging($options);
+  public function list(array $options = []): array {
+    $options = $this->limitOptions($options, ['limit', 'page']);
+    $options = $this->constrictPaging($options);
+
     return $this->client->apiGet('groups', $options)->toArray();
   }
 
   /**
-   * Get a group by group ID.
-   */
-  public function get(int $groupId) : EntityInterface {
-    return $this->client->getEntity('Group', $groupId);
-  }
-
-  /**
    * Create a site group.
+   *
+   * @param string $groupName
+   *   The name of the site group to create.
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
    *
    * @version v1
    * @title Create a group
@@ -90,19 +99,26 @@ class Groups extends Actionbase {
    *   group_name | string | yes | The name of the site group to create.
    *   parent_id  | int    | no  | The parent group ID, if applicable.
    *
-   * @example_command
-   *   curl '{base_url}/api/v1/groups' \
-   *     -X POST -H 'Content-Type: application/json' \
-   *     -d '{"group_name": "mygroup"}' \
-   *     -v -u {user_name}:{api_key}
    * @example_response
+   * ```json
    *   {
    *     "group_id": 123,
    *     "group_name": "mygroup"
    *   }
+   * ```
    */
-  public function create(string $groupName, array $options = []) : array {
-
+  public function create(string $groupName, array $options = []): array {
+    $options = [
+      'group_name' => $groupName,
+      'parent_id' => $options['parent_id'] ?? NULL,
+    ];
+    $this->client->apiPost('groups', $options)->toArray();
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getEntityType(): string {
+    return 'Group';
+  }
 }

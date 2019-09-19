@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
@@ -6,12 +6,33 @@ namespace swichers\Acsf\Client\Endpoints\Entity;
 use swichers\Acsf\Client\Annotation\Entity;
 
 /**
+ * Class Update
+ *
+ * @package swichers\Acsf\Client\Endpoints\Entity
  * @Entity(name = "Update")
  */
 class Update extends EntityBase {
 
   /**
+   * Resume update processing.
+   *
+   * @return array
+   *   Update pause status.
+   *
+   * @see Update::pause()
+   */
+  public function resume(): array {
+    return $this->pause(FALSE);
+  }
+
+  /**
    * Pause a running update process.
+   *
+   * @param bool $pause
+   *   TRUE to pause the update. FALSE to resume.
+   *
+   * @return array
+   *   Update status information.
    *
    * @version v1
    * @title Pause an update
@@ -20,40 +41,35 @@ class Update extends EntityBase {
    * @resource /api/v1/update/pause
    * @body
    *   pause      | boolean | yes  | leave the task in paused or unpaused state.
-   * @example_command
-   *   curl '{base_url}/api/v1/update/123/pause' \
-   *     -v -u {user_name}:{api_key} -X POST \
-   *     -H 'Content-Type: application/json' \
-   *     -d '{"pause": true"}'
+   *
    * @example_response
+   * ```json
    *   {
    *     "message": "Site update processing has been paused."
    *   }
+   * ```
    */
-  public function pause(bool $pause = TRUE) : array {
+  public function pause(bool $pause = TRUE): array {
     return $this->client->apiPost(
       ['update', $this->id(), 'pause'],
-      ['pause' => !!$pause]
+      ['pause' => $pause]
     )->toArray();
-  }
-
-  public function resume() : array {
-    return $this->pause(FALSE);
   }
 
   /**
    * Gets the status of a running update process.
+   *
+   * @return array
+   *   The status of a running update process.
    *
    * @version v1
    * @title Get update progress
    * @group Tasks
    * @http_method GET
    * @resource /api/v1/update/{update_id}/status
-   * @example_command
-   *   curl '{base_url}/api/v1/update/123/status' \
-   *     -v -u {user_name}:{api_key} \
-   *     -H 'Content-Type: application/json'
+   *
    * @example_response
+   * ```json
    *   {
    *     "statuses":{
    *       "not-started":0,
@@ -81,8 +97,9 @@ class Update extends EntityBase {
    *       }
    *     ]
    *   }
+   * ```
    */
-  public function progress() : array {
+  public function progress(): array {
     return $this->client->apiGet(['update', $this->id(), 'status'])->toArray();
   }
 

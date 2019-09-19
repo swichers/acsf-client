@@ -1,21 +1,33 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
 use swichers\Acsf\Client\Annotation\Action;
+use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
+ * ACSF Endpoint Wrapper: Update.
+ *
  * This resource is a CRUD interface to Drupal configuration variables
  * (variable_get/set/del). It can be used to remotely modify the configuration
  * of the Factory.
  *
+ * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(name = "Variables")
  */
 class Variables extends ActionBase {
 
+  use ValidationTrait;
+
   /**
    * Get a variable by name.
+   *
+   * @param string $name
+   *   The variable to retrieve.
+   *
+   * @return array
+   *   The variable information.
    *
    * @version v1
    * @title Get a variable
@@ -26,20 +38,25 @@ class Variables extends ActionBase {
    * @params
    *   name | string | no
    *
-   * @example_command
-   *   curl '{base_url}/api/v1/variables?name=site_name' \
-   *     -v -u {user_name}:{api_key}
    * @example_response
+   * ```json
    *   {
    *     "name": "value"
    *   }
+   * ```
    */
-  public function get(string $name) : array {
+  public function get(string $name): array {
     return $this->client->apiGet('variables', ['name' => $name])->toArray();
   }
 
   /**
    * Get lists of variables.
+   *
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   A list of variables.
    *
    * @version v1
    * @title List variables
@@ -50,26 +67,31 @@ class Variables extends ActionBase {
    * @params
    *   search | string | no
    *
-   * @example_command
-   *   curl '{base_url}/api/v1/variables?search=node' \
-   *     -v -u {user_name}:{api_key}
    * @example_response
+   * ```json
    *   {
    *     "name": "value",
    *     "name": "value",
    *     "name": "value",
    *     ...
    *   }
+   * ```
    */
-  public function list(array $options = []) : array {
-    return $this->client->apiGet(
-      'variables',
-      ['search' => $options['search'] ?? NULL]
-    )->toArray();
+  public function list(array $options = []): array {
+    $options = $this->limitOptions($options, ['search']);
+    return $this->client->apiGet('variables', $options)->toArray();
   }
 
   /**
    * Set a configuration variable by name.
+   *
+   * @param string $name
+   *   The variable to set.
+   * @param mixed $value
+   *   The value to set.
+   *
+   * @return array
+   *   The data that was set.
    *
    * @version v1
    * @title Set a variable
@@ -79,21 +101,17 @@ class Variables extends ActionBase {
    * @body
    *   name  | string | yes
    *   value | mixed  | no
-   * @example_command
-   *   curl '{base_url}/api/v1/variables' \
-   *     -H 'Content-Type: application/json' \
-   *     -X PUT -d '{"name": "site_name", "value": "My Site"}' \
-   *     -v -u {user_name}:{api_key}
+   *
    * @example_response
+   * ```json
    *   {
    *     "name": "value"
    *   }
+   * ```
    */
-  public function set(string $name, $value) : array {
-    return $this->client->apiPut(
-      'variables',
-      ['name' => $name, 'value' => $value]
-    )->toArray();
+  public function set(string $name, $value): array {
+    $options = ['name' => $name, 'value' => $value];
+    return $this->client->apiPut('variables', $options)->toArray();
   }
 
 }

@@ -1,20 +1,26 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
 use swichers\Acsf\Client\Annotation\Action;
+use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
+ * ACSF Endpoint Wrapper: Audit.
+ *
  * User actions on the Site Factory may be recorded in a user-visible log of
  * events, providing a way for admin users to audit changes on their Site
  * Factory. Events can optionally involve data, either when data is created,
  * modified, or deleted. This API endpoint is for users to remotely interact
  * with the audit logging system.
  *
+ * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(name = "Audit")
  */
 class Audit extends ActionBase {
+
+  use ValidationTrait;
 
   /**
    * Gets a list of audit events.
@@ -42,10 +48,8 @@ class Audit extends ActionBase {
    *   nid       | int    | no | An associated node ID.            | null
    *   uid       | int    | no | The user who made the change.     | null
    *
-   * @example_command
-   *   curl '{base_url}/api/v1/audit?nid=123' \
-   *     -v -u {user_name}:{api_key} \
    * @example_response
+   * ```json
    *   {
    *     "count": 1,
    *     "changes": [
@@ -64,9 +68,24 @@ class Audit extends ActionBase {
    *       },
    *     ]
    *   }
+   * ```
    */
-  public function list(array $options = []) : array {
-    return $this->client->apiGet('audit')->toArray();
+  public function list(array $options = []): array {
+    $options = $this->limitOptions(
+      $options,
+      [
+        'limit',
+        'page',
+        'order',
+        'source',
+        'scope',
+        'type',
+        'nid',
+        'uid',
+      ]
+    );
+    $options = $this->constrictPaging($options);
+    return $this->client->apiGet('audit', $options)->toArray();
   }
 
 }

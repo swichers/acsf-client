@@ -1,29 +1,50 @@
-<?php
+<?php declare(strict_types=1);
 
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
 
-use swichers\Acsf\Client\Client;
+use swichers\Acsf\Client\ClientInterface;
 
+/**
+ * Class EntityBase.
+ *
+ * @package swichers\Acsf\Client\Endpoints\Entity
+ */
 abstract class EntityBase implements EntityInterface {
 
   /**
-   * @var \swichers\Acsf\Client\Client
+   * An ACSF client.
+   *
+   * @var \swichers\Acsf\Client\ClientInterface
    */
   protected $client;
 
   /**
-   * @var \swichers\Acsf\Client\Endpoints\Entity\EntityInterface
+   * The parent of this entity (if any).
+   *
+   * @var \swichers\Acsf\Client\Endpoints\Entity\EntityInterface|NULL
    */
   protected $parent;
 
   /**
+   * The ID of this entity.
+   *
    * @var int
    */
   protected $entityId;
 
-  public function __construct(Client $client, int $id, EntityInterface $parent = NULL) {
+  /**
+   * EntityBase constructor.
+   *
+   * @param \swichers\Acsf\Client\ClientInterface $client
+   *  An ACSF client.
+   * @param int $id
+   *   The ID of this entity.
+   * @param \swichers\Acsf\Client\Endpoints\Entity\EntityInterface|NULL $parent
+   *   The parent of this entity (if any).
+   */
+  public function __construct(ClientInterface $client, int $id, EntityInterface $parent = NULL) {
     $this->client = $client;
     $this->parent = $parent;
     $this->entityId = $id;
@@ -39,7 +60,7 @@ abstract class EntityBase implements EntityInterface {
   /**
    * {@inheritdoc}
    */
-  public function id() : int {
+  public function id(): int {
     return $this->entityId;
   }
 

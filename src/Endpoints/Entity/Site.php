@@ -1,29 +1,34 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
 use swichers\Acsf\Client\Annotation\Entity;
-use swichers\Acsf\Client\Endpoints\PagingTrait;
+use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
+ * Class Site
+ *
+ * @package swichers\Acsf\Client\Endpoints\Entity
  * @Entity(name = "Site")
  */
 class Site extends EntityBase {
 
-  use PagingTrait;
+  use ValidationTrait;
 
   /**
    * Get detailed information about a site.
+   *
+   * @return array
+   *   Detailed information about this site.
    *
    * @version v1
    * @title Site details
    * @http_method GET
    * @resource /api/v1/sites/{site_id}
    * @group Sites
-   * @example_command
-   *   curl '{base_url}/api/v1/sites/123' \
-   *     -v -u {user_name}:{api_key}
+   *
    * @example_response
+   * ```json
    *   {
    *     "id": 123,
    *     "created": 1397483647,
@@ -45,13 +50,17 @@ class Site extends EntityBase {
    *       "anotherdomain.com"
    *     ]
    *   }
+   * ```
    */
-  public function details() : array {
+  public function details(): array {
     return $this->client->apiGet(['sites', $this->id()])->toArray();
   }
 
   /**
    * Delete a site.
+   *
+   * @return array
+   *   Delete task information.
    *
    * @version v1
    * @title Site delete
@@ -61,10 +70,9 @@ class Site extends EntityBase {
    * @params
    *
    * @group Sites
-   * @example_command
-   *   curl '{base_url}/api/v1/sites/123' \
-   *     -X DELETE -v -u {user_name}:{api_key}
+   *
    * @example_response
+   * ```json
    *   {
    *     "id": 123,
    *     "owner": "johnsmith",
@@ -72,13 +80,22 @@ class Site extends EntityBase {
    *     "time": "1970-01-01T01:02:03+00:00",
    *     "task_id": 16
    *   }
+   * ```
    */
-  public function delete() : array {
+  public function delete(): array {
     return $this->client->apiDelete(['sites', $this->id()], [])->toArray();
   }
 
   /**
    * Duplicate a site.
+   *
+   * @param string $siteName
+   *   The new site name.
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   The new site information.
    *
    * @version v1
    * @title Duplicate a site
@@ -86,31 +103,29 @@ class Site extends EntityBase {
    * @resource /api/v1/sites/{site_id}/duplicate
    *
    * @params
-   *   site_name  | string    | yes | The new site name.
-   *   group_ids  | int|array | no  | Either a single group ID, or an array of
-   *   group IDs. exact_copy | bool      | no  | A boolean indicating whether
-   *   or not to create an exact copy. | false
+   * site_name  | string    | yes | The new site name.
+   * group_ids  | int|array | no  | Either a single group ID, or an
+   *                                array of group IDs.
+   * exact_copy | bool      | no  | A boolean indicating whether or not to
+   *                                create an exact copy. | false
    *
    * @group Sites
-   * @example_command
-   *   curl '{base_url}/api/v1/sites/123/duplicate' \
-   *     -X POST -H 'Content-Type: application/json' \
-   *     -d '{"site_name": "mysite2", "exact_copy": true}' \
-   *     -v -u {user_name}:{api_key}
+   *
    * @example_response
+   * ```json
    *   {
    *     "id": 183,
    *     "site": "mysite2"
    *   }
+   * ```
    */
-  public function duplicate(string $siteName, array $options = []) : array {
-    unset($options['site_name']);
-
-    $options = [
-      'site_name' => $options['site_name'] ?? $siteName,
-      'group_ids' => $options['group_ids'] ?? [],
-      'exact_copy' => $options['exact_copy'] ?? FALSE,
-    ];
+  public function duplicate(string $siteName, array $options = []): array {
+    $options = $this->limitOptions($options, ['group_ids', 'exact_copy']);
+    $options['site_name'] = $siteName;
+    $options['exact_copy'] = $this->ensureBool($options['exact_copy'] ?? FALSE);
+    if (isset($options['group_ids'])) {
+      $options['group_ids'] = $this->cleanIntArray($options['group_ids']);
+    }
 
     return $this->client->apiPost(
       [
@@ -125,6 +140,14 @@ class Site extends EntityBase {
   /**
    * Create a site backup.
    *
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   The backup task information.
+   *
+   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   *
    * @version v1
    * @title Create a site backup
    * @http_method POST
@@ -132,41 +155,33 @@ class Site extends EntityBase {
    * @group Sites
    *
    * @params
-   *   label           | string | no | The human-readable description of this
-   *   backup. callback_url    | string | no | The callback URL, which is
-   *   invoked upon completion. callback_method | string | no | The callback
-   *   method, "GET", or "POST". Uses "POST" if empty. caller_data     | string
-   *   | no | Data that should be included in the callback, json encoded.
-   *   components      | array  | no | Array of components to be included in
-   *   the backup. The following component names are accepted: codebase,
-   *   database, public files, private files, themes. When omitting this
-   *   parameter it will default to a backup with every component.
+   * label        | string | no | The human-readable description of this backup.
+   * callback_url | string | no | The callback URL, which is invoked upon
+   *                                 completion.
+   * callback_method | string | no | The callback method, "GET", or "POST".
+   *                                 Uses "POST" if empty.
+   * caller_data | string | no | Data that should be included in the
+   *                                 callback, json encoded.
+   * components  | array  | no | Array of components to be restored from the
+   *                                 backup. The following component names are
+   *                                 accepted: database, public files,
+   *                                 private files, themes. When omitting this
+   *                                 parameter it will default to the backup's
+   *                                 every component.
    *
-   * @example_command
-   *   curl '{base_url}/api/v1/sites/123/backup' \
-   *     -X POST -H 'Content-Type: application/json' \
-   *     -d '{"label": "Weekly", "callback_url": "http://mysite.com",
-   *   "callback_method": "GET"}' \
-   *     -v -u {user_name}:{api_key}
    * @example_response
+   * ```json
    *   {
    *     "task_id": 183
    *   }
+   * ```
    */
-  public function backup(array $options = []) : array {
-    $options = [
-        'label' => NULL,
-        'callback_url' => NULL,
-        'callback_method' => NULL,
-        'caller_data' => NULL,
-        'components' => [
-          'codebase',
-          'database',
-          'public files',
-          'private files',
-          'themes',
-        ],
-      ] + $options;
+  public function backup(array $options = []): array {
+    $options = $this->limitOptions($options,
+      array_merge(['label'], $this->backupFields)
+    );
+
+    $options = $this->validateBackupOptions($options);
 
     return $this->client->apiPost(
       [
@@ -183,6 +198,12 @@ class Site extends EntityBase {
    *
    * Note that the results are sorted from newest backup to oldest.
    *
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   A list of backups sorted from newest to oldest.
+   *
    * @version v1
    * @title List site backups
    * @http_method GET
@@ -193,10 +214,9 @@ class Site extends EntityBase {
    *   page      | int    | no | A positive integer.           | 1
    *
    * @group Sites
-   * @example_command
-   *   curl '{base_url}/api/v1/sites/123/backups?limit=20&page=2' \
-   *     -v -u {user_name}:{api_key}
+   *
    * @example_response
+   * ```json
    *   {
    *     "backups": [
    *       {
@@ -237,9 +257,11 @@ class Site extends EntityBase {
    *       }
    *     ]
    *   }
+   * ```
    */
-  public function listBackups(array $options = []) : array {
-    $options = $this->validatePaging($options);
+  public function listBackups(array $options = []): array {
+    $options = $this->limitOptions($options, ['limit', 'page']);
+    $options = $this->constrictPaging($options);
     return $this->client->apiGet(
       [
         'sites',
@@ -253,16 +275,17 @@ class Site extends EntityBase {
   /**
    * Clear Drupal and Varnish caches for a site.
    *
+   * @return array
+   *   Task information.
+   *
    * @version v1
    * @title Clear a site's caches
    * @http_method POST
    * @resource /api/v1/sites/{site_id}/cache-clear
    * @group Sites
-   * @example_command
-   *   curl '{base_url}/api/v1/sites/123/cache-clear' \
-   *     -X POST -H 'Content-Type: application/json' \
-   *     -v -u {user_name}:{api_key}
+   *
    * @example_response
+   * ```json
    *   {
    *     "id" : 123,
    *     "time" : "2017-05-04T09:25:26+00:00",
@@ -271,8 +294,9 @@ class Site extends EntityBase {
    *       'varnish_cache_clear' : 1234
    *     }
    *   }
+   * ```
    */
-  public function clearVarnishCache() : array {
+  public function clearCache(): array {
     return $this->client->apiGet(['sites', $this->id(), 'cache-clear'])
       ->toArray();
   }
@@ -280,15 +304,17 @@ class Site extends EntityBase {
   /**
    * Get domains by node ID.
    *
+   * @return array
+   *   A list of domains.
+   *
    * @version v1
    * @title Get domains
    * @group Domains
    * @http_method GET
    * @resource /api/v1/domains/{node_id}
-   * @example_command
-   *   curl '{base_url}/api/v1/domains/{node_id}' \
-   *     -v -u {user_name}:{api_key}
+   *
    * @example_response
+   * ```json
    *   {
    *     "node_id": 121,
    *     "node_type": "site collection",
@@ -303,13 +329,20 @@ class Site extends EntityBase {
    *       ]
    *     }
    *   }
+   * ```
    */
-  public function getDomains() : array {
+  public function getDomains(): array {
     return $this->client->apiGet(['domains', $this->id()])->toArray();
   }
 
   /**
    * Adds a domain.
+   *
+   * @param string $domainName
+   *   The domain name to add.
+   *
+   * @return array
+   *   The task information.
    *
    * @version v1
    * @title Add domain
@@ -320,12 +353,8 @@ class Site extends EntityBase {
    * @params
    *   domain_name | string | yes | The domain name to add.
    *
-   * @example_command
-   *   curl '{base_url}/api/v1/domains/{node_id}/add' \
-   *     -X POST -H 'Content-Type: application/json' \
-   *     -d '{"domain_name": "www.domaintoadd.com" }' \
-   *     -v -u {user_name}:{api_key}
    * @example_response
+   * ```json
    *   {
    *     "node_id": 121,
    *     "node_type": "site collection",
@@ -336,8 +365,9 @@ class Site extends EntityBase {
    *       "Your domain name was successfully added to the site collection."
    *     ]
    *   }
+   * ```
    */
-  public function addDomain(string $domainName) : array {
+  public function addDomain(string $domainName): array {
     return $this->client->apiPost(
       ['domains', $this->id(), 'add'],
       ['domain_name' => $domainName]
@@ -346,6 +376,12 @@ class Site extends EntityBase {
 
   /**
    * Removes a domain.
+   *
+   * @param string $domainName
+   *   The domain name to remove.
+   *
+   * @return array
+   *   The task information.
    *
    * @version v1
    * @title Remove domain
@@ -356,12 +392,8 @@ class Site extends EntityBase {
    * @params
    *   domain_name | string | yes | The domain name to remove.
    *
-   * @example_command
-   *   curl '{base_url}/api/v1/domains/{node_id}/remove' \
-   *     -X POST -H 'Content-Type: application/json' \
-   *     -d '{"domain_name": "www.domaintoremove.com" }' \
-   *     -v -u {user_name}:{api_key}
    * @example_response
+   * ```json
    *   {
    *     "node_id": 121,
    *     "node_type": "site collection",
@@ -371,8 +403,9 @@ class Site extends EntityBase {
    *     "message": "Your domain name has been successfully removed from
    *   &lt;site collection name&gt;."
    *   }
+   * ```
    */
-  public function removeDomain(string $domainName) : array {
+  public function removeDomain(string $domainName): array {
     return $this->client->apiPost(
       ['domains', $this->id(), 'remove'],
       ['domain_name' => $domainName]
