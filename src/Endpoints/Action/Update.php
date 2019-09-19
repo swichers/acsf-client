@@ -26,7 +26,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  *
  * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(
- *   name = "Update"
+ *   name = "Update",
  *   entity_type="Update"
  * )
  */

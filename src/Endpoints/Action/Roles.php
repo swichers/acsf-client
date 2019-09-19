@@ -11,7 +11,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  *
  * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(
- *   name = "Roles"
+ *   name = "Roles",
  *   entity_type = "Role"
  * )
  */

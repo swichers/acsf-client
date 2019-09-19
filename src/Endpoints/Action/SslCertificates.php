@@ -9,7 +9,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * ACSF Endpoint Wrapper: Sites.
  *
  * @package swichers\Acsf\Client\Endpoints\Action
- * @Action(name = "SslCertificates)
+ * @Action(name = "SslCertificates")
  */
 class SslCertificates extends ActionBase {
 

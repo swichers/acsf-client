@@ -10,7 +10,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  *
  * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(
- *   name = "Tasks"
+ *   name = "Tasks",
  *   entity_type = "Task"
  * )
  */
