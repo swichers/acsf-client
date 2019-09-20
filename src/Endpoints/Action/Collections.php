@@ -56,11 +56,7 @@ class Collections extends ActionGetEntityBase {
    */
   public function list(array $options = []): array {
 
-    $options = [
-      $options['limit'] ?? 10,
-      $options['page'] ?? 1,
-    ];
-
+    $options = $this->limitOptions($options, ['limit', 'page']);
     $options = $this->constrictPaging($options);
 
     return $this->client->apiGet('collections', $options)->toArray();
@@ -110,14 +106,13 @@ class Collections extends ActionGetEntityBase {
    */
   public function create(string $name, array $siteIds, array $groupIds, array $options = []): array {
 
-    $data = [
-      'name' => $name,
-      'site_ids' => $this->cleanIntArray($siteIds),
-      'group_ids' => $this->cleanIntArray($groupIds),
-      'internal_domain_prefix' => $options['internal_domain_prefix'] ?? NULL,
-    ];
+    $options = $this->limitOptions($options, ['internal_domain_prefix']);
 
-    return $this->client->apiPost('collections', $data)->toArray();
+    $options['name'] = $name;
+    $options['site_ids'] = $this->cleanIntArray($siteIds);
+    $options['group_ids'] = $this->cleanIntArray($groupIds);
+
+    return $this->client->apiPost('collections', $options)->toArray();
   }
 
   /**

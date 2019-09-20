@@ -178,11 +178,15 @@ class PageView extends ActionBase {
     }
 
     // This is the only endpoint that uses sort_order instead of order.
-    $options['order'] = $options['sort_order'];
-    $options = $this->constrictPaging($options, 100);
-    $options['sort_order'] = $options['order'];
-    unset($options['order']);
-
+    if (isset($options['sort_order'])) {
+      $options['order'] = $options['sort_order'];
+      $options = $this->constrictPaging($options);
+      $options['sort_order'] = $options['order'];
+      unset($options['order']);
+    }
+    else {
+      $options = $this->constrictPaging($options);
+    }
 
     $method = ['dynamic-requests', 'monthly'];
     if ($byDomain) {

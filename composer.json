@@ -37,5 +37,10 @@
       "/tests/"
     ]
   },
+  "autoload-dev": {
+    "psr-4": {
+      "swichers\\Acsf\\Client\\Tests\\": "tests/Unit"
+    }
+  },
   "minimum-stability": "stable"
 }

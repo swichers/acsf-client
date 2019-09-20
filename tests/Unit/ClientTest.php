@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace swichers\Acsf\Tests;
+namespace swichers\Acsf\Client\Tests;
 
 use PHPUnit\Framework\TestCase;
 use swichers\Acsf\Client\Client;
@@ -28,14 +28,12 @@ class ClientTest extends TestCase {
   protected $mockHttp;
 
   /**
-   * @var \PHPUnit\Framework\MockObject\MockObject |
-   *   \swichers\Acsf\Client\Discovery\ActionManager
+   * @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Discovery\ActionManagerInterface
    */
   protected $mockActionManager;
 
   /**
-   * @var \PHPUnit\Framework\MockObject\MockObject |
-   *   \swichers\Acsf\Client\Discovery\EntityManager
+   * @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Discovery\EntityManagerInterface
    */
   protected $mockEntityManager;
 
@@ -94,7 +92,7 @@ class ClientTest extends TestCase {
       ],
     ]);
     $this->mockEntityManager->method('create')
-      ->willReturnCallback(function ($name, $id, ...$other) use ($mockEntity) {
+      ->willReturnCallback(function ($name, $client, $id, ...$other) use ($mockEntity) {
 
         if ('Backup' == $name && $id == 123) {
           return $mockEntity;

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace swichers\Acsf\Tests;
+namespace swichers\Acsf\Client\Tests;
 
 use PHPUnit\Framework\TestCase;
 use swichers\Acsf\Client\Response;

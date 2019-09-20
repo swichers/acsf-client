@@ -2,7 +2,7 @@
 
 namespace swichers\Acsf\Client\Discovery;
 
-use Exception;
+use swichers\Acsf\Client\Exceptions\MissingEndpointException;
 
 class Manager implements ManagerInterface {
 
@@ -23,13 +23,13 @@ class Manager implements ManagerInterface {
     if (array_key_exists($name, $workers)) {
       $class = $workers[$name]['class'];
       if (!class_exists($class)) {
-        throw new Exception('Implementation class does not exist.');
+        throw new MissingEndpointException('Implementation class does not exist.');
       }
 
       return new $class(...$constructor_args);
     }
 
-    throw new Exception('Implementation does not exist.');
+    throw new MissingEndpointException('Implementation does not exist.');
   }
 
   public function get($name) {

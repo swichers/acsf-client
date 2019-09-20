@@ -1,6 +1,6 @@
 <?php
 
-namespace swichers\Acsf\Tests\Annotation;
+namespace swichers\Acsf\Client\Tests\Annotation;
 
 use PHPUnit\Framework\TestCase;
 use swichers\Acsf\Client\Annotation\Entity;

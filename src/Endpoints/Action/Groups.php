@@ -110,11 +110,10 @@ class Groups extends ActionGetEntityBase {
    */
   public function create(string $groupName, array $options = []): array {
 
-    $options = [
-      'group_name' => $groupName,
-      'parent_id' => $options['parent_id'] ?? NULL,
-    ];
-    $this->client->apiPost('groups', $options)->toArray();
+    $options = $this->limitOptions($options, ['parent_id']);
+    $options['group_name'] = $groupName;
+
+    return $this->client->apiPost('groups', $options)->toArray();
   }
 
   /**
