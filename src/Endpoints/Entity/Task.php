@@ -100,7 +100,17 @@ class Task extends EntityBase {
     $options = $this->limitOptions($options, ['level', 'descendants']);
 
     if (isset($options['level'])) {
-      $this->requirePatternMatch($options['level'], '/(emergency|alert|critical|error|warning|notice|info|debug)/');
+      $allowed_values = [
+        'emergency',
+        'alert',
+        'critical',
+        'error',
+        'warning',
+        'notice',
+        'info',
+        'debug',
+      ];
+      $this->requireOneOf($options['level'], $allowed_values);
     }
 
     if (isset($options['descendants'])) {
@@ -190,7 +200,7 @@ class Task extends EntityBase {
     $options = $this->limitOptions($options, ['level']);
     $options['paused'] = $paused;
     if (isset($options['level'])) {
-      $this->requirePatternMatch($options['level'], '/(family|task)/');
+      $this->requireOneOf($options['level'], ['family', 'task']);
     }
 
     return $this->client->apiPost(['pause', $this->id()], $options)->toArray();

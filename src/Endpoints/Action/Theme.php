@@ -125,8 +125,8 @@ class Theme extends ActionBase {
     ]);
     $options['scope'] = $scope;
     $options['event'] = $event;
-    $this->requirePatternMatch($options['scope'], '/(theme|site|group|global)/');
-    $this->requirePatternMatch($options['event'], '/(create|modify|delete)/');
+    $this->requireOneOf($options['scope'], ['theme', 'site', 'group', 'global']);
+    $this->requireOneOf($options['event'], ['create', 'modify', 'delete']);
 
     if ($options['scope'] === 'global') {
       unset($options['theme']);

@@ -61,7 +61,7 @@ trait ValidationTrait {
     }
 
     if (isset($options['page'])) {
-      $options['page'] = min(1, $options['page']);
+      $options['page'] = max(1, $options['page']);
     }
 
     if (isset($options['order'])) {
@@ -96,10 +96,12 @@ trait ValidationTrait {
    */
   protected function cleanIntArray(array $values): array {
 
-    $new_list = array_map('trim', $values);
+    $new_list = array_filter($values, 'is_numeric');
+    $new_list = array_map('trim', $new_list);
     $new_list = array_map('intval', $new_list);
     $new_list = array_filter($new_list);
     $new_list = array_unique($new_list);
+    $new_list = array_merge($new_list);
 
     return $new_list;
   }
@@ -141,7 +143,7 @@ trait ValidationTrait {
     }
 
     if (isset($options['callback_method'])) {
-      $this->requirePatternMatch($options['callback_method'], '/(GET|POST)/i');
+      $this->requireOneOf($options['callback_method'], ['GET', 'POST']);
     }
 
     if (isset($options['caller_data']) && is_array($options['caller_data'])) {
@@ -149,6 +151,10 @@ trait ValidationTrait {
     }
 
     if (isset($options['components'])) {
+      if (!is_array($options['components'])) {
+        throw new InvalidOptionException('Provided component(s) were invalid.');
+      }
+
       $allowed_components = [
         'database',
         'public files',
@@ -156,6 +162,9 @@ trait ValidationTrait {
         'themes',
       ];
       $options['components'] = $this->filterArrayToValues($options['components'], $allowed_components);
+      if (empty($options['components'])) {
+        throw new InvalidOptionException('Provided component(s) were invalid.');
+      }
     }
 
     return $options;
@@ -196,7 +205,7 @@ trait ValidationTrait {
    * @return array
    *   The filtered array.
    */
-  protected function filterArrayToValues(array $original, array $allowedValues, bool $toLowerCase = TRUE) {
+  protected function filterArrayToValues(array $original, array $allowedValues, bool $toLowerCase = TRUE): array {
 
     $new = array_map('trim', $original);
     $new = array_filter($new);
@@ -205,9 +214,39 @@ trait ValidationTrait {
       $allowedValues = array_map('strtolower', $allowedValues);
     }
     $new = array_intersect($new, $allowedValues);
+    $new = array_unique($new);
+    $new = array_merge($new);
     asort($new);
 
     return $new;
+  }
+
+  /**
+   * Check if the given value is present in the allowed list.
+   *
+   * @param string $original
+   *   The original value.
+   * @param array $allowedValues
+   *   An array of allowed values.
+   * @param bool $toLowerCase
+   *   TRUE to convert values to lowercase before comparing.
+   *
+   * @return bool
+   *   TRUE if the value was found in the allowed list.
+   *
+   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   */
+  protected function requireOneOf(string $original, array $allowedValues, bool $toLowerCase = TRUE): bool {
+    if ($toLowerCase) {
+      $original = strtolower($original);
+      $allowedValues = array_map('strtolower', $allowedValues);
+    }
+    $found = array_search($original, $allowedValues);
+    if ($found === FALSE) {
+      throw new InvalidOptionException(sprintf('Did not find %s in allowed values.', $original));
+    }
+
+    return TRUE;
   }
 
 }

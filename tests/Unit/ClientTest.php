@@ -20,7 +20,6 @@ use Symfony\Component\HttpClient\MockHttpClient;
 /**
  * Class ClientTest
  *
- * @package swichers\Acsf\Tests
  * @coversDefaultClass \swichers\Acsf\Client\Client
  */
 class ClientTest extends TestCase {
@@ -230,9 +229,10 @@ class ClientTest extends TestCase {
    * @covers ::getMethodUrl
    */
   public function testApiPost() {
-
-    $this->assertInstanceOf(ResponseInterface::class, $this->getClient()
-      ->apiPost('Unit/Test', []));
+    $resp = $this->getClient()->apiPost('Unit/Test', []);
+    $this->assertInstanceOf(ResponseInterface::class, $resp);
+    $this->assertEquals('https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test', $resp->getOriginalResponse()
+      ->getInfo('url'));
   }
 
   /**
@@ -242,8 +242,10 @@ class ClientTest extends TestCase {
    */
   public function testApiDelete() {
 
-    $this->assertInstanceOf(ResponseInterface::class, $this->getClient()
-      ->apiDelete('Unit/Test', []));
+    $resp = $this->getClient()->apiDelete('Unit/Test', []);
+    $this->assertInstanceOf(ResponseInterface::class, $resp);
+    $this->assertEquals('https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test', $resp->getOriginalResponse()
+      ->getInfo('url'));
   }
 
   /**
@@ -253,8 +255,10 @@ class ClientTest extends TestCase {
    */
   public function testApiPut() {
 
-    $this->assertInstanceOf(ResponseInterface::class, $this->getClient()
-      ->apiPut('Unit/Test', []));
+    $resp = $this->getClient()->apiPut('Unit/Test', []);
+    $this->assertInstanceOf(ResponseInterface::class, $resp);
+    $this->assertEquals('https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test', $resp->getOriginalResponse()
+      ->getInfo('url'));
   }
 
   /**

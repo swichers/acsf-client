@@ -90,11 +90,11 @@ class Update extends ActionGetEntityBase {
 
     if (isset($options['scope'])) {
       $options['scope'] = strtolower($options['scope']);
-      $this->requirePatternMatch($options['scope'], '/(sites|factory|both)/');
+      $this->requireOneOf($options['scope'], ['sites', 'factory', 'both']);
     }
 
     if (isset($options['db_update_arguments'])) {
-      $this->requirePatternMatch($options['db_update_arguments'], '/[a-zA-Z0-9 ]+/');
+      $this->requirePatternMatch($options['db_update_arguments'], '/^[a-zA-Z0-9 ]+$/');
     }
 
     $type_limits = [

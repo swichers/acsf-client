@@ -92,7 +92,7 @@ class Backup extends EntityBase {
       'caller_data',
     ]);
     if (isset($options['callback_method'])) {
-      $this->requirePatternMatch($options['callback_method'], '/(GET|POST)/i');
+      $this->requireOneOf($options['callback_method'], ['GET', 'POST']);
     }
 
     if (isset($options['caller_data']) && is_array($options['caller_data'])) {

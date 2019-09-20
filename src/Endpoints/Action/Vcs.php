@@ -67,7 +67,7 @@ class Vcs extends ActionBase {
     $options['type'] = 'sites';
     $options['stack_id'] = max(1, $options['stack_id'] ?? 1);
 
-    $this->requirePatternMatch($options['type'], '/(sites|factory)/');
+    $this->requireOneOf($options['type'], ['sites', 'factory']);
 
     static $refs;
     $ref = &$refs[$options['stack_id']][$options['type']];

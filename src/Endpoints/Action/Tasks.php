@@ -95,10 +95,10 @@ class Tasks extends ActionGetEntityBase {
     ]);
 
     if (isset($options['status'])) {
-      $this->requirePatternMatch($options['status'], '/(processing|error|not-started)/');
+      $this->requireOneOf($options['status'], ['processing', 'error', 'not-started']);
     }
     if (isset($options['class'])) {
-      $this->requirePatternMatch($options['class'], '/(softpaused|softpause-for-update)/');
+      $this->requireOneOf($options['class'], ['softpaused', 'softpause-for-update']);
     }
 
     $options = $this->constrictPaging($options);
@@ -133,7 +133,7 @@ class Tasks extends ActionGetEntityBase {
    */
   public function getClassInfo(string $type): array {
 
-    $this->requirePatternMatch($type, '/(softpaused|softpause-for-update)/');
+    $this->requireOneOf($type, ['softpaused', 'softpause-for-update']);
 
     return $this->client->apiGet(['classes', $type])->toArray();
   }
