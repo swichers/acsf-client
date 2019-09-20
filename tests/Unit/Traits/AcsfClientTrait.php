@@ -22,24 +22,32 @@ trait AcsfClientTrait {
 
     /** @var \PHPUnit\Framework\MockObject\MockObject $mockClient */
     $mockClient = $this->getMockBuilder(Client::class)
+      ->setMethods(['apiRequest'])
       ->disableOriginalConstructor()
       ->getMock();
 
-    $callback = function ($method, array $options = []) {
+    $callback = function ($http_method, $api_method, array $options = []) {
 
-      $method = is_array($method) ? implode('/', $method) : $method;
+      $api_method = is_array($api_method) ? implode('/', $api_method) : $api_method;
 
-      $data = json_encode(['internal_method' => $method] + $options);
+      $data = json_encode(['internal_method' => $api_method] + $options);
+      if ($api_method == 'stage' && $http_method == 'GET') {
+        $data = json_encode([
+          'environments' => [
+            'dev' => 'dev',
+            'test' => 'test',
+            'live' => 'live',
+          ]
+        ]);
+      }
+
       $mockResp = new MockResponse($data);
       $mockHttp = new MockHttpClient($mockResp);
 
       return new Response($mockHttp->request('GET', 'http://example.com'));
     };
 
-    $mockClient->method('apiGet')->willReturnCallback($callback);
-    $mockClient->method('apiDelete')->willReturnCallback($callback);
-    $mockClient->method('apiPost')->willReturnCallback($callback);
-    $mockClient->method('apiPut')->willReturnCallback($callback);
+    $mockClient->method('apiRequest')->willReturnCallback($callback);
 
     return $mockClient;
   }

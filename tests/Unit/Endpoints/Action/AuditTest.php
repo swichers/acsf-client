@@ -18,15 +18,8 @@ class AuditTest extends ActionTestBase {
    */
   public function testList() {
 
-    $audit = new Audit($this->getMockAcsfClient());
-    $this->assertSharedListValidation('audit', $audit, 'list');
-  }
-
-  protected function setUp() {
-
-    parent::setUp();
-
-    $this->mockClient = $this->getMockAcsfClient();
+    $action = new Audit($this->getMockAcsfClient());
+    $this->assertSharedListValidation('audit', $action, 'list');
   }
 
 }

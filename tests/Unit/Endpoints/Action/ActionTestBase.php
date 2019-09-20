@@ -21,13 +21,13 @@ abstract class ActionTestBase extends TestCase {
   protected function assertSharedListValidation($path, $object, $method) {
 
     // No options means no options
-    $this->assertEquals(['internal_method' => $path], $object->{$method}());
+    $this->assertEquals(['internal_method' => $path, 'query' => []], $object->{$method}());
 
     $result = $object->{$method}(['random_test' => TRUE, 'limit' => -1]);
     // We're pruning keys.
-    $this->assertArrayNotHasKey('random_test', $result);
+    $this->assertArrayNotHasKey('random_test', $result['query']);
 
     // We're enforcing paging.
-    $this->assertEquals(1, $result['limit']);
+    $this->assertEquals(1, $result['query']['limit']);
   }
 }

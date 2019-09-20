@@ -64,7 +64,7 @@ class Stage extends ActionBase {
   public function stage(string $to_env, array $siteIds, array $options = []): array {
 
     $options = $this->limitOptions($options, [
-      'skip_gardener',
+      'synchronize_all_users',
       'detailed_status',
       'wipe_target_environment',
     ]);

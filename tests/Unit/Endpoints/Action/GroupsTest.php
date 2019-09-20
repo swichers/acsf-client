@@ -19,8 +19,8 @@ class GroupsTest extends ActionTestBase {
    */
   public function testGetEntityType() {
 
-    $groups = new Groups($this->mockClient);
-    $this->assertEquals('Group', $groups->getEntityType());
+    $action = new Groups($this->mockClient);
+    $this->assertEquals('Group', $action->getEntityType());
   }
 
   /**
@@ -28,12 +28,12 @@ class GroupsTest extends ActionTestBase {
    */
   public function testCreate() {
 
-    $groups = new Groups($this->getMockAcsfClient());
-    $result = $groups->create('Unit/Test', ['parent_id' => 123, 'random_stuff' => TRUE]);
-    $this->assertEquals('Unit/Test', $result['group_name']);
+    $action = new Groups($this->getMockAcsfClient());
+    $result = $action->create('Unit/Test', ['parent_id' => 123, 'random_stuff' => TRUE]);
+    $this->assertEquals('Unit/Test', $result['json']['group_name']);
     $this->assertEquals('groups', $result['internal_method']);
-    $this->assertEquals(123, $result['parent_id']);
-    $this->assertArrayNotHasKey('random_stuff', $result);
+    $this->assertEquals(123, $result['json']['parent_id']);
+    $this->assertArrayNotHasKey('random_stuff', $result['json']);
   }
 
   /**
@@ -41,8 +41,8 @@ class GroupsTest extends ActionTestBase {
    */
   public function testList() {
 
-    $groups = new Groups($this->getMockAcsfClient());
-    $this->assertSharedListValidation('groups', $groups, 'list');
+    $action = new Groups($this->getMockAcsfClient());
+    $this->assertSharedListValidation('groups', $action, 'list');
   }
 
 

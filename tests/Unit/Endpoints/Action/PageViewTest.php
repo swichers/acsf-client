@@ -20,29 +20,38 @@ class PageViewTest extends ActionTestBase {
    */
   public function testGetMonthlyDataByDomain() {
 
-    $pv = new PageView($this->mockClient);
-    $result = $pv->getMonthlyDataByDomain('1234-12', [
+    $action = new PageView($this->mockClient);
+    $result = $action->getMonthlyDataByDomain('1234-12', [
       'random_stuff' => TRUE,
       'limit' => -1,
       'stack_id' => -1,
       'sort_order' => 'asc',
     ]);
-    $this->assertArrayNotHasKey('random_stuff', $result);
-    $this->assertEquals(1, $result['limit']);
-    $this->assertEquals(1, $result['stack_id']);
+    $this->assertArrayNotHasKey('random_stuff', $result['query']);
+    $this->assertEquals(1, $result['query']['limit']);
+    $this->assertEquals(1, $result['query']['stack_id']);
     $this->assertEquals('dynamic-requests/monthly/domains', $result['internal_method']);
 
-    $result = $pv->getMonthlyDataByDomain('1234-12', [
+    $result = $action->getMonthlyDataByDomain('1234-12', [
       'limit' => 2,
       'stack_id' => 2,
     ]);
-    $this->assertEquals(2, $result['limit']);
-    $this->assertEquals(2, $result['stack_id']);
+    $this->assertEquals(2, $result['query']['limit']);
+    $this->assertEquals(2, $result['query']['stack_id']);
 
+    $result = $action->getMonthlyDataByDomain('1234-56', ['sort_order' => 'abc123']);
+    $this->assertEquals('desc', $result['query']['sort_order']);
+  }
+
+  /**
+   * @covers ::getMonthlyDataByDomain
+   * @covers ::genericDataRequest
+   */
+  public function testGetMonthlyDataByDomainFailMonth() {
+
+    $action = new PageView($this->mockClient);
     $this->expectException(InvalidOptionException::class);
-    $pv->getMonthlyDataByDomain('YYYY-MM');
-    $this->expectException(InvalidOptionException::class);
-    $pv->getMonthlyDataByDomain('1234-56', ['sort_order' => 'abc123']);
+    $action->getMonthlyDataByDomain('YYYY-MM');
   }
 
   /**
@@ -51,30 +60,39 @@ class PageViewTest extends ActionTestBase {
    */
   public function testGetMonthlyData() {
 
-    $pv = new PageView($this->mockClient);
-    $result = $pv->getMonthlyData([
+    $action = new PageView($this->mockClient);
+    $result = $action->getMonthlyData([
       'start_from' => '1234-56',
       'random_stuff' => TRUE,
       'limit' => -1,
       'stack_id' => -1,
       'sort_order' => 'asc',
     ]);
-    $this->assertArrayNotHasKey('random_stuff', $result);
-    $this->assertEquals(1, $result['limit']);
-    $this->assertEquals(1, $result['stack_id']);
+    $this->assertArrayNotHasKey('random_stuff', $result['query']);
+    $this->assertEquals(1, $result['query']['limit']);
+    $this->assertEquals(1, $result['query']['stack_id']);
     $this->assertEquals('dynamic-requests/monthly', $result['internal_method']);
 
-    $result = $pv->getMonthlyData([
+    $result = $action->getMonthlyData([
       'limit' => 2,
       'stack_id' => 2,
     ]);
-    $this->assertEquals(2, $result['limit']);
-    $this->assertEquals(2, $result['stack_id']);
+    $this->assertEquals(2, $result['query']['limit']);
+    $this->assertEquals(2, $result['query']['stack_id']);
 
+    $result = $action->getMonthlyData(['sort_order' => 'abc123']);
+    $this->assertEquals('desc', $result['query']['sort_order']);
+  }
+
+  /**
+   * @covers ::getMonthlyData
+   * @covers ::genericDataRequest
+   */
+  public function testGetMonthlyDataFailMonth() {
+
+    $action = new PageView($this->mockClient);
     $this->expectException(InvalidOptionException::class);
-    $pv->getMonthlyData(['start_from' => 'abc123']);
-    $this->expectException(InvalidOptionException::class);
-    $pv->getMonthlyData(['sort_order' => 'abc123']);
+    $action->getMonthlyData(['start_from' => 'abc123']);
   }
 
 }
