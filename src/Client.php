@@ -13,8 +13,6 @@ use swichers\Acsf\Client\Exceptions\MissingActionException;
 use swichers\Acsf\Client\Exceptions\MissingEntityException;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use function array_diff;
-use function array_keys;
 
 class Client implements ClientInterface {
 
@@ -70,9 +68,7 @@ class Client implements ClientInterface {
       throw new MissingActionException(sprintf('Action %s was not registered with the client.', $name));
     }
 
-    $obj = $this->actionManager->create($name, $this);
-
-    return $obj;
+    return $this->actionManager->create($name, $this);
   }
 
   public function getApiUrl(int $version = 1): string {
@@ -103,9 +99,7 @@ class Client implements ClientInterface {
       throw new MissingEntityException(sprintf('Entity %s was not registered with the client.', $name));
     }
 
-    $obj = $this->entityManager->create($name, $this, $id);
-
-    return $obj;
+    return $this->entityManager->create($name, $this, $id);
   }
 
   public function testConnection($throwException = FALSE): bool {
@@ -131,15 +125,11 @@ class Client implements ClientInterface {
 
   protected function validateConfig(array $config) {
 
-    $required_config = [
-      'domain',
-      'environment',
-      'username',
-      'api_key',
-    ];
-    $diff = array_diff($required_config, array_keys($config));
-    if (!empty($diff)) {
-      throw new InvalidConfigurationException(sprintf('Missing %s configuration.', implode(', ', $diff)));
+    $required = ['domain', 'environment', 'username', 'api_key'];
+    foreach ($required as $key) {
+      if (empty($config[$key])) {
+        throw new InvalidConfigurationException(sprintf('Missing %s configuration.', $key));
+      }
     }
 
     return TRUE;

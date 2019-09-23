@@ -112,6 +112,15 @@ class Status extends ActionBase {
       'bulk_operations',
     ]);
 
+    // We want to convert on, off, yes, no, etc into a true bool, but don't want
+    // to impact strtotime values in the process. We can make a best guess by
+    // relying on strtotime to fail.
+    foreach($options as $key => $value) {
+      if (!is_numeric($value) && FALSE === strtotime($value)) {
+        $options[$key] = $this->ensureBool($value);
+      }
+    }
+
     return $this->client->apiPut('status', $options)->toArray();
   }
 

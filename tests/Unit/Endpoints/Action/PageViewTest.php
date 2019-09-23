@@ -46,11 +46,12 @@ class PageViewTest extends ActionTestBase {
   /**
    * @covers ::getMonthlyDataByDomain
    * @covers ::genericDataRequest
+   *
+   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
   public function testGetMonthlyDataByDomainFailMonth() {
 
     $action = new PageView($this->mockClient);
-    $this->expectException(InvalidOptionException::class);
     $action->getMonthlyDataByDomain('YYYY-MM');
   }
 
@@ -87,11 +88,12 @@ class PageViewTest extends ActionTestBase {
   /**
    * @covers ::getMonthlyData
    * @covers ::genericDataRequest
+   *
+   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
   public function testGetMonthlyDataFailMonth() {
 
     $action = new PageView($this->mockClient);
-    $this->expectException(InvalidOptionException::class);
     $action->getMonthlyData(['start_from' => 'abc123']);
   }
 

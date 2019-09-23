@@ -129,11 +129,11 @@ class Theme extends ActionBase {
     $this->requireOneOf($options['event'], ['create', 'modify', 'delete']);
 
     if ($options['scope'] === 'global') {
-      unset($options['theme']);
+      unset($options['nid']);
     }
 
     if ($options['scope'] !== 'theme') {
-      unset($options['']);
+      unset($options['theme']);
     }
 
     return $this->client->apiPost('theme/notification', $options)->toArray();

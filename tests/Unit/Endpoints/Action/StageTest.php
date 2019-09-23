@@ -47,8 +47,16 @@ class StageTest extends ActionTestBase {
     $this->assertArrayNotHasKey('random_str', $result['json']);
     $this->assertEquals('dev', $result['json']['to_env']);
     $this->assertEquals([123, 456], $result['json']['sites']);
+  }
 
-    $this->expectException(InvalidEnvironmentException::class);
-    $action->stage('abc123', [], $options);
+  /**
+   * @covers ::stage
+
+   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidEnvironmentException
+   */
+  public function testStageEnvFail() {
+
+    $action = new Stage($this->getMockAcsfClient());
+    $action->stage('abc123', []);
   }
 }

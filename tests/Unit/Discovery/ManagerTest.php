@@ -46,8 +46,16 @@ class ManagerTest extends TestCase {
       ->getMock();
 
     $this->assertInstanceOf(Sites::class, $manager->create('Sites', $mockClient, 123));
+  }
 
-    $this->expectException(MissingEndpointException::class);
+  /**
+   * @covers ::create
+   *
+   * @expectedException \swichers\Acsf\Client\Exceptions\MissingEndpointException
+   */
+  public function testCreateFailType() {
+
+    $manager = new Manager($this->actionDiscoverer);
     $manager->create('Abc' . time());
   }
 

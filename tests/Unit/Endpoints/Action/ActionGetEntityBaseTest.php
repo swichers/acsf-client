@@ -32,11 +32,12 @@ class ActionGetEntityBaseTest extends TestCase {
 
   /**
    * @covers ::get
+   *
+   * @expectedException \swichers\Acsf\Client\Exceptions\MissingEntityException
    */
   public function testGetFail() {
 
-    $this->expectException(MissingEntityException::class);
-    $this->assertInstanceOf(EntityInterface::class, $this->mockBase->get(789));
+    $this->mockBase->get(789);
   }
 
   protected function setUp() {

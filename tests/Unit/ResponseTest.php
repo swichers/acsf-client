@@ -25,11 +25,18 @@ class ResponseTest extends TestCase {
     $original = $client->request('GET', 'http://example.com');
     $resp = new Response($original);
     $this->assertEquals([], $resp->toArray(TRUE));
+  }
+
+  /**
+   * @covers ::toArray
+   *
+   * @expectedException \Symfony\Component\HttpClient\Exception\TransportException
+   */
+  public function testToArrayFailTransport() {
 
     $client = new MockHttpClient();
     $original = $client->request('GET', 'http://example.com');
     $resp = new Response($original);
-    $this->expectException(TransportException::class);
     $resp->toArray(TRUE);
   }
 
