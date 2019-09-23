@@ -2,8 +2,8 @@
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Entity;
 
-use swichers\Acsf\Client\Endpoints\Entity\Update;
 use PHPUnit\Framework\TestCase;
+use swichers\Acsf\Client\Endpoints\Entity\Update;
 use swichers\Acsf\Client\Tests\Traits\AcsfClientTrait;
 
 /**

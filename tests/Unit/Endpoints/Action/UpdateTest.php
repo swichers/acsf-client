@@ -3,8 +3,6 @@
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Update;
-use PHPUnit\Framework\TestCase;
-use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 
 /**
  * Class UpdateTest

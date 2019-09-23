@@ -3,7 +3,6 @@
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Stage;
-use swichers\Acsf\Client\Exceptions\InvalidEnvironmentException;
 
 /**
  * Class StageTest
@@ -51,7 +50,6 @@ class StageTest extends ActionTestBase {
 
   /**
    * @covers ::stage
-
    * @expectedException \swichers\Acsf\Client\Exceptions\InvalidEnvironmentException
    */
   public function testStageEnvFail() {

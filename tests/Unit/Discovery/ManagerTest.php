@@ -10,7 +10,6 @@ use swichers\Acsf\Client\Client;
 use swichers\Acsf\Client\Discovery\Discoverer;
 use swichers\Acsf\Client\Discovery\Manager;
 use swichers\Acsf\Client\Endpoints\Action\Sites;
-use swichers\Acsf\Client\Exceptions\MissingEndpointException;
 
 /**
  * Class ManagerTest

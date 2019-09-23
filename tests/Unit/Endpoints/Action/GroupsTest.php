@@ -29,7 +29,10 @@ class GroupsTest extends ActionTestBase {
   public function testCreate() {
 
     $action = new Groups($this->getMockAcsfClient());
-    $result = $action->create('Unit/Test', ['parent_id' => 123, 'random_stuff' => TRUE]);
+    $result = $action->create('Unit/Test', [
+      'parent_id' => 123,
+      'random_stuff' => TRUE,
+    ]);
     $this->assertEquals('Unit/Test', $result['json']['group_name']);
     $this->assertEquals('groups', $result['internal_method']);
     $this->assertEquals(123, $result['json']['parent_id']);
@@ -44,7 +47,6 @@ class GroupsTest extends ActionTestBase {
     $action = new Groups($this->getMockAcsfClient());
     $this->assertSharedListValidation('groups', $action, 'list');
   }
-
 
 
 }

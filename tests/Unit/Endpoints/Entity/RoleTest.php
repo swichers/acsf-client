@@ -2,8 +2,8 @@
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Entity;
 
-use swichers\Acsf\Client\Endpoints\Entity\Role;
 use PHPUnit\Framework\TestCase;
+use swichers\Acsf\Client\Endpoints\Entity\Role;
 use swichers\Acsf\Client\Tests\Traits\AcsfClientTrait;
 
 /**

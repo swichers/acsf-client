@@ -3,7 +3,6 @@
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\SslCertificates;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class SslCertificatesTest

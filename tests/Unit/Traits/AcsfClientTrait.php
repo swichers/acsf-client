@@ -28,7 +28,8 @@ trait AcsfClientTrait {
 
     $callback = function ($http_method, $api_method, array $options = []) {
 
-      $api_method = is_array($api_method) ? implode('/', $api_method) : $api_method;
+      $api_method = is_array($api_method) ? implode('/', $api_method)
+        : $api_method;
 
       $data = json_encode(['internal_method' => $api_method] + $options);
       if ($api_method == 'stage' && $http_method == 'GET') {
@@ -37,7 +38,7 @@ trait AcsfClientTrait {
             'dev' => 'dev',
             'test' => 'test',
             'live' => 'live',
-          ]
+          ],
         ]);
       }
 

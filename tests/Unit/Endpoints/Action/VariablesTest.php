@@ -3,7 +3,6 @@
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Variables;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class VariablesTest

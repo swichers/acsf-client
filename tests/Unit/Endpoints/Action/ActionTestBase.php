@@ -21,7 +21,10 @@ abstract class ActionTestBase extends TestCase {
   protected function assertSharedListValidation($path, $object, $method) {
 
     // No options means no options
-    $this->assertEquals(['internal_method' => $path, 'query' => []], $object->{$method}());
+    $this->assertEquals([
+      'internal_method' => $path,
+      'query' => [],
+    ], $object->{$method}());
 
     $result = $object->{$method}(['random_test' => TRUE, 'limit' => -1]);
     // We're pruning keys.

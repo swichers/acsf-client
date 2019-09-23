@@ -3,8 +3,6 @@
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Tasks;
-use PHPUnit\Framework\TestCase;
-use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 
 /**
  * Class TasksTest
@@ -56,6 +54,7 @@ class TasksTest extends ActionTestBase {
     $action = new Tasks($this->getMockAcsfClient());
     $action->list(['status' => 'abc123']);
   }
+
   /**
    * @covers ::list
    * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException

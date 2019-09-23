@@ -4,7 +4,6 @@ namespace swichers\Acsf\Client\Tests;
 
 use PHPUnit\Framework\TestCase;
 use swichers\Acsf\Client\Response;
-use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 

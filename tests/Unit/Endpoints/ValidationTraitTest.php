@@ -3,8 +3,9 @@
 namespace swichers\Acsf\Client\Tests\Endpoints;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionObject;
+use stdClass;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
-use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 
 /**
  * Class ValidationTraitTest
@@ -86,7 +87,7 @@ class ValidationTraitTest extends TestCase {
       5678,
       5678,
       5678,
-      new \stdClass(),
+      new stdClass(),
       '',
       NULL,
     ];
@@ -270,7 +271,7 @@ class ValidationTraitTest extends TestCase {
 
   protected function getInvokableMethod($object, $methodName) {
 
-    $ref = new \ReflectionObject($object);
+    $ref = new ReflectionObject($object);
     $method = $ref->getMethod($methodName);
     $method->setAccessible(TRUE);
 
