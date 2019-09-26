@@ -5,6 +5,7 @@ namespace swichers\Acsf\Client\Endpoints\Entity;
 
 use swichers\Acsf\Client\Annotation\Entity;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
+use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 
 /**
  * Class Collection
@@ -130,6 +131,10 @@ class Collection extends EntityBase {
       'site_ids' => $this->cleanIntArray($siteIds),
     ];
 
+    if (empty($data['site_ids'])) {
+      throw new InvalidOptionException('No site_ids provided.');
+    }
+
     return $this->client->apiPost(['collections', $this->id(), 'add'], $data)
       ->toArray();
   }
@@ -173,6 +178,10 @@ class Collection extends EntityBase {
     $data = [
       'site_ids' => $this->cleanIntArray($siteIds),
     ];
+
+    if (empty($data['site_ids'])) {
+      throw new InvalidOptionException('No site_ids provided.');
+    }
 
     return $this->client->apiPost(['collections', $this->id(), 'remove'], $data)
       ->toArray();

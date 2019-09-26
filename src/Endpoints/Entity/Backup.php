@@ -91,13 +91,8 @@ class Backup extends EntityBase {
       'callback_method',
       'caller_data',
     ]);
-    if (isset($options['callback_method'])) {
-      $this->requireOneOf($options['callback_method'], ['GET', 'POST']);
-    }
 
-    if (isset($options['caller_data']) && is_array($options['caller_data'])) {
-      $options['caller_data'] = json_encode($options['caller_data']);
-    }
+    $options = $this->validateBackupOptions($options);
 
     return $this->client->apiDelete([
       'sites',

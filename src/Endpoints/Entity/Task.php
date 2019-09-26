@@ -117,7 +117,7 @@ class Task extends EntityBase {
       $options['descendants'] = $this->ensureBool($options['descendants']);
     }
 
-    return $this->client->apiGet(['tasks', $this->id(), 'logs'])->toArray();
+    return $this->client->apiGet(['tasks', $this->id(), 'logs'], $options)->toArray();
   }
 
   /**
