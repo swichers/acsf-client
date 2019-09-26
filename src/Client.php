@@ -137,9 +137,6 @@ class Client implements ClientInterface {
 
   protected function apiRequest($http_method, $api_method, array $options = [], int $api_version = NULL): ResponseInterface {
 
-    if ($http_method !== 'GET') {
-      throw new Exception(sprintf('Request method %s is not implemented.', $http_method));
-    }
     // Allow swapping version on the fly if necessary.
     $options['base_uri'] = $this->getApiUrl($api_version ?: 1);
     $options['auth_basic'] = $this->config['username'] .
