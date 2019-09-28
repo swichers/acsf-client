@@ -173,7 +173,7 @@ class SiteTest extends TestCase {
     $action = new Site($this->getMockAcsfClient(), 1234);
     $result = $action->clearCache();
     $this->assertEquals('sites/1234/cache-clear', $result['internal_method']);
-    $this->assertEmpty($result['query']);
+    $this->assertEmpty($result['json']);
   }
 
   /**

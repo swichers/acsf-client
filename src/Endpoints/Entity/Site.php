@@ -293,7 +293,7 @@ class Site extends EntityBase {
    */
   public function clearCache(): array {
 
-    return $this->client->apiGet(['sites', $this->id(), 'cache-clear'])
+    return $this->client->apiPost(['sites', $this->id(), 'cache-clear'], [])
       ->toArray();
   }
 
