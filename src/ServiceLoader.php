@@ -11,9 +11,16 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class ServiceLoader {
 
-  public static function build(string $servicePath = __DIR__, string $serviceFile = 'services.yml'): ContainerBuilder {
+  public static function build(string $servicePath = NULL, string $serviceFile = 'services.yml'): ContainerBuilder {
 
     static $containerBuilder;
+
+    if (empty($servicePath)) {
+      $servicePath = __DIR__ . '/../';
+    }
+
+    $servicePath = realpath($servicePath);
+
     if (is_null($containerBuilder[$servicePath][$serviceFile])) {
       AnnotationRegistry::registerLoader('class_exists');
 
