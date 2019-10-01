@@ -8,18 +8,22 @@ use stdClass;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
- * Class ValidationTraitTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints
+ * Tests to verify our input validation routines do what we expect.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\ValidationTrait
+ *
+ * @group AcsfClient
  */
-class ValidationTraitTest extends TestCase {
+class ValidationTraitTest extends TestCase
+{
 
   /**
+   * Validate our option limiting filters out keys.
+   *
    * @covers ::limitOptions
    */
-  public function testLimitOptions() {
+  public function testLimitOptions()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'limitOptions');
@@ -33,9 +37,12 @@ class ValidationTraitTest extends TestCase {
   }
 
   /**
+   * Validate we massage paging values to something sane.
+   *
    * @covers ::constrictPaging
    */
-  public function testConstrictPaging() {
+  public function testConstrictPaging()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'constrictPaging');
@@ -52,16 +59,31 @@ class ValidationTraitTest extends TestCase {
     $this->assertEquals(1, $result['page']);
     $this->assertEquals('desc', $result['order']);
     $this->assertEquals('random', $result['random']);
-    $this->assertEquals('asc', $method->invoke($object, ['order' => 'AsC'])['order']);
-    $this->assertEquals('desc', $method->invoke($object, ['order' => 'ANYTHING'])['order']);
-    $this->assertEquals(100, $method->invoke($object, ['limit' => 2000])['limit']);
-    $this->assertEquals(10, $method->invoke($object, ['limit' => 2000], 10)['limit']);
+    $this->assertEquals(
+      'asc',
+      $method->invoke($object, ['order' => 'AsC'])['order']
+    );
+    $this->assertEquals(
+      'desc',
+      $method->invoke($object, ['order' => 'ANYTHING'])['order']
+    );
+    $this->assertEquals(
+      100,
+      $method->invoke($object, ['limit' => 2000])['limit']
+    );
+    $this->assertEquals(
+      10,
+      $method->invoke($object, ['limit' => 2000], 10)['limit']
+    );
   }
 
   /**
+   * Validate that our sort order checks handle ASC and DESC.
+   *
    * @covers ::ensureSortOrder
    */
-  public function testEnsureSortOrder() {
+  public function testEnsureSortOrder()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'ensureSortOrder');
@@ -74,9 +96,12 @@ class ValidationTraitTest extends TestCase {
   }
 
   /**
+   * Validate we can filter an array down to just IDs.
+   *
    * @covers ::cleanIntArray
    */
-  public function testCleanIntArray() {
+  public function testCleanIntArray()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'cleanIntArray');
@@ -89,16 +114,19 @@ class ValidationTraitTest extends TestCase {
       5678,
       new stdClass(),
       '',
-      NULL,
+      null,
     ];
 
     $this->assertEquals([1234, 5678], $method->invoke($object, $data));
   }
 
   /**
+   * Validate our human readable bool conversion works.
+   *
    * @covers ::ensureBool
    */
-  public function testEnsureBool() {
+  public function testEnsureBool()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'ensureBool');
@@ -107,7 +135,7 @@ class ValidationTraitTest extends TestCase {
     $this->assertTrue($method->invoke($object, 'on'));
     $this->assertTrue($method->invoke($object, '1'));
     $this->assertTrue($method->invoke($object, 1));
-    $this->assertTrue($method->invoke($object, TRUE));
+    $this->assertTrue($method->invoke($object, true));
 
     $this->assertFalse($method->invoke($object, 'false'));
     $this->assertFalse($method->invoke($object, 'no'));
@@ -116,14 +144,16 @@ class ValidationTraitTest extends TestCase {
     $this->assertFalse($method->invoke($object, 'anything else'));
     $this->assertFalse($method->invoke($object, -1));
     $this->assertFalse($method->invoke($object, 0));
-    $this->assertFalse($method->invoke($object, FALSE));
-
+    $this->assertFalse($method->invoke($object, false));
   }
 
   /**
+   * Validate our backup checker does what we expect.
+   *
    * @covers ::validateBackupOptions
    */
-  public function testValidateBackupOptions() {
+  public function testValidateBackupOptions()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'validateBackupOptions');
@@ -138,17 +168,23 @@ class ValidationTraitTest extends TestCase {
     $expected = $options;
     $expected['caller_data'] = json_encode($expected['caller_data']);
     $this->assertEquals($expected, $method->invoke($object, $options));
-    $this->assertEquals(['caller_data' => 'test'], $method->invoke($object, ['caller_data' => 'test']));
-
-
+    $this->assertEquals(
+      ['caller_data' => 'test'],
+      $method->invoke($object, ['caller_data' => 'test'])
+    );
   }
 
   /**
+   * Validate the backup checker throws an exception with a bad callback url.
+   *
    * @covers ::validateBackupOptions
+   *
+   * @depends testValidateBackupOptions
    *
    * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  public function testValidateBackupOptionsBadUrl() {
+  public function testValidateBackupOptionsBadUrl()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'validateBackupOptions');
@@ -156,11 +192,16 @@ class ValidationTraitTest extends TestCase {
   }
 
   /**
+   * Validate that we throw an exception when the callback method is invalid.
+   *
    * @covers ::validateBackupOptions
+   *
+   * @depends testValidateBackupOptions
    *
    * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  public function testValidateBackupOptionsBadMethod() {
+  public function testValidateBackupOptionsBadMethod()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'validateBackupOptions');
@@ -168,11 +209,16 @@ class ValidationTraitTest extends TestCase {
   }
 
   /**
+   * Validate we throw an exception when components are not an array.
+   *
    * @covers ::validateBackupOptions
+   *
+   * @depends testValidateBackupOptions
    *
    * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  public function testValidateBackupOptionsNotArrayComponents() {
+  public function testValidateBackupOptionsNotArrayComponents()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'validateBackupOptions');
@@ -180,11 +226,16 @@ class ValidationTraitTest extends TestCase {
   }
 
   /**
+   * Validate we throw an exception when components have invalid values.
+   *
    * @covers ::validateBackupOptions
+   *
+   * @depends testValidateBackupOptions
    *
    * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  public function testValidateBackupOptionsNotAllowedComponents() {
+  public function testValidateBackupOptionsNotAllowedComponents()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'validateBackupOptions');
@@ -192,9 +243,12 @@ class ValidationTraitTest extends TestCase {
   }
 
   /**
+   * Validate that we detect a requireOneOf match.
+   *
    * @covers ::requireOneOf
    */
-  public function testRequireOneOf() {
+  public function testRequireOneOf()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'requireOneOf');
@@ -203,21 +257,29 @@ class ValidationTraitTest extends TestCase {
   }
 
   /**
+   * Validate that we get an exception when not doing case sensitive matches.
+   *
    * @covers ::requireOneOf
+   *
+   * @depends testRequireOneOf
    *
    * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  public function testRequireOneOfFailCase() {
+  public function testRequireOneOfFailCase()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'requireOneOf');
-    $method->invoke($object, 'no match', ['No MaTcH'], FALSE);
+    $method->invoke($object, 'no match', ['No MaTcH'], false);
   }
 
   /**
+   * Validate we can match by regex pattern.
+   *
    * @covers ::requirePatternMatch
    */
-  public function testRequirePatternMatch() {
+  public function testRequirePatternMatch()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'requirePatternMatch');
@@ -225,11 +287,16 @@ class ValidationTraitTest extends TestCase {
   }
 
   /**
+   * Validate we get an exception with no matter is matched.
+   *
    * @covers ::requirePatternMatch
+   *
+   * @depends testRequirePatternMatch
    *
    * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  public function testRequirePatternMatchFailRegex() {
+  public function testRequirePatternMatchFailRegex()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'requirePatternMatch');
@@ -237,9 +304,12 @@ class ValidationTraitTest extends TestCase {
   }
 
   /**
+   * Validate we can filter an array to a set of values.
+   *
    * @covers ::filterArrayToValues
    */
-  public function testFilterArrayToValues() {
+  public function testFilterArrayToValues()
+  {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'filterArrayToValues');
@@ -251,17 +321,34 @@ class ValidationTraitTest extends TestCase {
       'ALSO allowed',
     ];
 
-    $this->assertEquals(['allowed'], $method->invoke($object, $data, ['allowed']));
-    $this->assertEquals(['allowed'], $method->invoke($object, $data, ['allowed'], TRUE));
-    $this->assertEquals([
-      'allowed',
-      'also allowed',
-    ], $method->invoke($object, $data, ['allowed', 'also allowed'], TRUE));
+    $this->assertEquals(
+      ['allowed'],
+      $method->invoke($object, $data, ['allowed'])
+    );
+    $this->assertEquals(
+      ['allowed'],
+      $method->invoke($object, $data, ['allowed'], true)
+    );
+    $this->assertEquals(
+      [
+        'allowed',
+        'also allowed',
+      ],
+      $method->invoke($object, $data, ['allowed', 'also allowed'], true)
+    );
   }
 
-  protected function getWrappedTrait() {
+  /**
+   * Get an anonymous class that wraps the ValidationTrait.
+   *
+   * @return object
+   *   A class using the ValidationTrait.
+   */
+  protected function getWrappedTrait()
+  {
 
-    $wrapper = new class() {
+    $wrapper = new class()
+    {
 
       use ValidationTrait;
     };
@@ -269,13 +356,29 @@ class ValidationTraitTest extends TestCase {
     return $wrapper;
   }
 
-  protected function getInvokableMethod($object, $methodName) {
+  /**
+   * Get a publicly accessible method.
+   *
+   * Necessary because all validation trait methods are protected, and thus
+   * cannot be unit tested directly.
+   *
+   * @param object $object
+   *   The object using the ValidationTrait.
+   * @param string $methodName
+   *   The method to make accessible for invocation.
+   *
+   * @return \ReflectionMethod
+   *   A wrapper around the method to allow it to be executed.
+   *
+   * @throws \ReflectionException
+   */
+  protected function getInvokableMethod($object, $methodName)
+  {
 
     $ref = new ReflectionObject($object);
     $method = $ref->getMethod($methodName);
-    $method->setAccessible(TRUE);
+    $method->setAccessible(true);
 
     return $method;
   }
-
 }
