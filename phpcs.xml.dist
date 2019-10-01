@@ -15,6 +15,15 @@
   <config name="ignore_warnings_on_exit" value="0"/>
   <config name="ignore_errors_on_exit" value="0"/>
 
-  <rule ref="Symfony"/>
+  <rule ref="Symfony">
+    <exclude name="Symfony.Commenting.License.Warning"/>
+  </rule>
+
+  <rule ref="Generic.WhiteSpace.ScopeIndent">
+    <properties>
+      <property name="indent" value="2"/>
+      <property name="tabIndent" value="false"/>
+    </properties>
+  </rule>
 
 </ruleset>
