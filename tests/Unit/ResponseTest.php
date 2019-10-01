@@ -10,45 +10,55 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 /**
  * Class ResponseTest
  *
- * @package swichers\Acsf\Client
  * @coversDefaultClass \swichers\Acsf\Client\Response
+ *
+ * @group AcsfClient
  */
-class ResponseTest extends TestCase {
+class ResponseTest extends TestCase
+{
 
   /**
+   * Validate our response can return an array.
+   *
    * @covers ::toArray
    */
-  public function testToArray() {
+  public function testToArray()
+  {
 
     $client = new MockHttpClient(new MockResponse('{}'));
     $original = $client->request('GET', 'http://example.com');
     $resp = new Response($original);
-    $this->assertEquals([], $resp->toArray(TRUE));
+    $this->assertEquals([], $resp->toArray(true));
   }
 
   /**
+   * Validate we can throw an exception when asking for an array.
+   *
    * @covers ::toArray
    *
    * @expectedException \Symfony\Component\HttpClient\Exception\TransportException
    */
-  public function testToArrayFailTransport() {
+  public function testToArrayFailTransport()
+  {
 
     $client = new MockHttpClient();
     $original = $client->request('GET', 'http://example.com');
     $resp = new Response($original);
-    $resp->toArray(TRUE);
+    $resp->toArray(true);
   }
 
   /**
+   * Validate we can get the original Symfony response.
+   *
    * @covers ::getOriginalResponse
    * @covers ::__construct
    */
-  public function testGetOriginalResponse() {
+  public function testGetOriginalResponse()
+  {
 
     $original = new MockResponse();
     $resp = new Response($original);
 
     $this->assertEquals($original, $resp->getOriginalResponse());
   }
-
 }
