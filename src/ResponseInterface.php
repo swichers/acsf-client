@@ -4,12 +4,16 @@ namespace swichers\Acsf\Client;
 
 use Symfony\Contracts\HttpClient\ResponseInterface as HttpClientResponseInterface;
 
+/**
+ * Interface ResponseInterface.
+ */
 interface ResponseInterface {
 
   /**
    * Return the original HttpClient Response.
    *
    * @return \Symfony\Contracts\HttpClient\ResponseInterface
+   *   The original HttpClient response.
    */
   public function getOriginalResponse(): HttpClientResponseInterface;
 
@@ -21,12 +25,6 @@ interface ResponseInterface {
    *
    * @return array
    *   The response data formatted as an array.
-   *
-   * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-   * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
-   * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-   * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-   * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
    */
   public function toArray(bool $throw = TRUE): array;
 

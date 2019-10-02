@@ -2,14 +2,13 @@
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
-use swichers\Acsf\Client\Annotation\Entity;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 
 /**
  * Class Collection.
  *
- * @Entity(name = "Collection")
+ * @\swichers\Acsf\Client\Annotation\Entity(name = "Collection")
  */
 class Collection extends AbstractEntity {
 

@@ -2,13 +2,12 @@
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
  * ACSF Endpoint Wrapper: Tasks.
  *
- * @Action(
+ * @\swichers\Acsf\Client\Annotation\Action(
  *   name = "Tasks",
  *   entityType = "Task"
  * )
@@ -60,8 +59,6 @@ class Tasks extends AbstractEntityAction {
    *
    * @return array
    *   Data about WIP tasks.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @version v1
    * @title (Internal use only) Get Task information.
@@ -122,8 +119,6 @@ class Tasks extends AbstractEntityAction {
    *
    * @return array
    *   Data about WIP classes
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @version v1
    * @title (Internal use only) Get Task class information.

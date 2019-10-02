@@ -2,13 +2,12 @@
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
-use swichers\Acsf\Client\Annotation\Entity;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
  * Class Group.
  *
- * @Entity(name = "Group")
+ * @\swichers\Acsf\Client\Annotation\Entity(name = "Group")
  */
 class Group extends AbstractEntity {
 

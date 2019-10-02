@@ -2,7 +2,6 @@
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 use swichers\Acsf\Client\Exceptions\InvalidEnvironmentException;
 
@@ -12,7 +11,7 @@ use swichers\Acsf\Client\Exceptions\InvalidEnvironmentException;
  * Staging involves copying the Site Factory and a set of sites to a staging
  * environment.
  *
- * @Action(name = "Stage")
+ * @\swichers\Acsf\Client\Annotation\Action(name = "Stage")
  */
 class Stage extends AbstractAction {
 
@@ -30,8 +29,6 @@ class Stage extends AbstractAction {
    *
    * @return array
    *   Information about the staging request.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidEnvironmentException
    *
    * @version v2
    * @title Start staging process
@@ -58,11 +55,7 @@ class Stage extends AbstractAction {
    *   }
    * ```
    */
-  public function stage(
-    string $to_env,
-    array $siteIds,
-    array $options = []
-  ): array {
+  public function backport(string $to_env, array $siteIds, array $options = []): array {
 
     $options = $this->limitOptions(
       $options,

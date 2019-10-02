@@ -9,13 +9,13 @@ use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 use swichers\Acsf\Client\Exceptions\MissingEntityException;
 
 /**
- * Tests for ActionGetEntityBase.
+ * Tests for AbstractEntityAction.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\AbstractEntityAction
  *
  * @group AcsfClient
  */
-class ActionGetEntityBaseTest extends TestCase {
+class AbstractEntityActionTest extends TestCase {
 
   /**
    * A mock ACSF Client.
@@ -63,9 +63,10 @@ class ActionGetEntityBaseTest extends TestCase {
     parent::setUp();
 
     $mockEntity = $this->getMockBuilder(EntityInterface::class)->getMock();
-    $mockClient = $this->getMockBuilder(Client::class)
-      ->disableOriginalConstructor()
-      ->getMock();
+    $mockClient =
+      $this->getMockBuilder(Client::class)
+        ->disableOriginalConstructor()
+        ->getMock();
     $mockClient->method('getEntity')->willReturnMap(
       [
         ['Site', 123, $mockEntity],
@@ -87,10 +88,10 @@ class ActionGetEntityBaseTest extends TestCase {
     $this->mockClient = $mockClient;
 
     /** @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Endpoints\Action\AbstractEntityAction $mock */
-    $this->mockBase = $this->getMockBuilder(AbstractEntityAction::class)
-      ->setConstructorArgs([$this->mockClient])
-      ->setMethods(['getEntityType'])
-      ->getMockForAbstractClass();
+    $this->mockBase =
+      $this->getMockBuilder(AbstractEntityAction::class)->setConstructorArgs(
+          [$this->mockClient]
+        )->setMethods(['getEntityType'])->getMockForAbstractClass();
 
     $this->mockBase->method('getEntityType')->willReturn('Site', 'Task');
   }

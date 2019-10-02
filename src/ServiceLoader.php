@@ -15,20 +15,15 @@ class ServiceLoader {
   /**
    * Get a container with ACSF client services.
    *
-   * @param string|NULL $servicePath
+   * @param string|null $servicePath
    *   The path to scan for the services file.
    * @param string $serviceFile
    *   The name of the services file.
    *
    * @return \Symfony\Component\DependencyInjection\ContainerBuilder
    *   A container with the discovered services.
-   *
-   * @throws \Exception
    */
-  public static function build(
-    string $servicePath = NULL,
-    string $serviceFile = 'services.yml'
-  ): ContainerBuilder {
+  public static function build(string $servicePath = NULL, string $serviceFile = 'services.yml'): ContainerBuilder {
 
     static $containerBuilder;
 

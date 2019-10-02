@@ -444,10 +444,11 @@ class ClientTest extends TestCase {
     )->disableOriginalConstructor()->getMockForAbstractClass();
 
     /** @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Discovery\ActionManagerInterface $mockActionManager */
-    $mockActionManager = $this->getMockBuilder(ActionManager::class)
-      ->setMethods(['get', 'create'])
-      ->disableOriginalConstructor()
-      ->getMock();
+    $mockActionManager =
+      $this->getMockBuilder(ActionManager::class)
+        ->setMethods(['get', 'create'])
+        ->disableOriginalConstructor()
+        ->getMock();
     $mockActionManager->method('get')->willReturnMap(
       [
         [
@@ -468,16 +469,18 @@ class ClientTest extends TestCase {
     );
 
     /** @var \swichers\Acsf\Client\Endpoints\Entity\EntityInterface|\PHPUnit\Framework\MockObject\MockObject $mockEntity */
-    $mockEntity = $this->getMockBuilder(AbstractEntity::class)
-      ->setMethods([])
-      ->disableOriginalConstructor()
-      ->getMockForAbstractClass();
+    $mockEntity =
+      $this->getMockBuilder(AbstractEntity::class)
+        ->setMethods([])
+        ->disableOriginalConstructor()
+        ->getMockForAbstractClass();
 
     /** @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Discovery\EntityManagerInterface $mockEntityManager */
-    $mockEntityManager = $this->getMockBuilder(EntityManager::class)
-      ->setMethods(['get', 'create'])
-      ->disableOriginalConstructor()
-      ->getMock();
+    $mockEntityManager =
+      $this->getMockBuilder(EntityManager::class)
+        ->setMethods(['get', 'create'])
+        ->disableOriginalConstructor()
+        ->getMock();
     $mockEntityManager->method('get')->willReturnMap(
       [
         [

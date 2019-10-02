@@ -6,8 +6,6 @@ use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 
 /**
  * An Entity creator aware version of ActionBase.
- *
-
  */
 abstract class AbstractEntityAction extends AbstractAction {
 
@@ -19,8 +17,6 @@ abstract class AbstractEntityAction extends AbstractAction {
    *
    * @return \swichers\Acsf\Client\Endpoints\Entity\EntityInterface
    *   An instance of the object.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\MissingEntityException
    */
   public function get(int $entityId): EntityInterface {
 
@@ -33,6 +29,6 @@ abstract class AbstractEntityAction extends AbstractAction {
    * @return string
    *   The name of the Entity type.
    */
-  abstract function getEntityType(): string;
+  abstract public function getEntityType(): string;
 
 }

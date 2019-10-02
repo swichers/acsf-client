@@ -60,10 +60,6 @@ class Client implements ClientInterface {
    * @param array $config
    *   An array of client configuration. Expects an array of username, api_key,
    *   domain, and environment.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidConfigurationException
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidCredentialsException
-   * @throws \swichers\Acsf\Client\Exceptions\MissingActionException
    */
   public function __construct(HttpClientInterface $httpClient, ActionManagerInterface $actionManager, EntityManagerInterface $entityManager, array $config) {
 
@@ -76,8 +72,6 @@ class Client implements ClientInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
    */
   public function apiDelete($method, array $data, int $api_version = NULL): ResponseInterface {
 
@@ -86,8 +80,6 @@ class Client implements ClientInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
    */
   public function apiGet($method, array $params = [], int $api_version = NULL): ResponseInterface {
 
@@ -101,8 +93,6 @@ class Client implements ClientInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
    */
   public function apiPost($method, array $data, int $api_version = NULL): ResponseInterface {
 
@@ -111,8 +101,6 @@ class Client implements ClientInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
    */
   public function apiPut($method, array $data, int $api_version = NULL): ResponseInterface {
 
@@ -121,8 +109,6 @@ class Client implements ClientInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\MissingActionException
    */
   public function getAction(string $type): ActionInterface {
 
@@ -162,8 +148,6 @@ class Client implements ClientInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidConfigurationException
    */
   public function setConfig(array $config): array {
 
@@ -176,8 +160,6 @@ class Client implements ClientInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\MissingEntityException
    */
   public function getEntity(string $type, int $id): EntityInterface {
 
@@ -192,9 +174,6 @@ class Client implements ClientInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidCredentialsException
-   * @throws \swichers\Acsf\Client\Exceptions\MissingActionException
    */
   public function testConnection($throwException = FALSE): bool {
 
@@ -227,8 +206,6 @@ class Client implements ClientInterface {
    *
    * @return bool
    *   Returns TRUE if the config was valid. Throws an exception otherwise.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidConfigurationException
    */
   protected function validateConfig(array $config) {
 
@@ -258,8 +235,6 @@ class Client implements ClientInterface {
    *
    * @return \swichers\Acsf\Client\ResponseInterface
    *   The response from the API.
-   *
-   * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
    */
   protected function apiRequest(string $http_method, $api_method, array $options = [], int $api_version = NULL): ResponseInterface {
 

@@ -2,12 +2,10 @@
 
 namespace swichers\Acsf\Client\Annotation;
 
-use Doctrine\Common\Annotations\Annotation;
-
 /**
  * Annotation definition for API endpoint Entities.
  *
- * @Annotation
+ * @Annotation(\Doctrine\Common\Annotations\Annotation)
  * @Target("CLASS")
  */
 class Entity {

@@ -6,8 +6,6 @@ use swichers\Acsf\Client\ClientInterface;
 
 /**
  * Class ActionBase.
- *
-
  */
 abstract class AbstractAction implements ActionInterface {
 

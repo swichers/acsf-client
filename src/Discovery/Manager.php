@@ -30,9 +30,6 @@ class Manager implements ManagerInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \ReflectionException
-   * @throws \swichers\Acsf\Client\Exceptions\MissingEndpointException
    */
   public function create(string $name, ...$constructor_args): EndpointInterface {
 

@@ -2,13 +2,12 @@
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
  * ACSF Endpoint Wrapper: Roles.
  *
- * @Action(
+ * @\swichers\Acsf\Client\Annotation\Action(
  *   name = "Roles",
  *   entityType = "Role"
  * )

@@ -2,12 +2,10 @@
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
-use swichers\Acsf\Client\Annotation\Entity;
-
 /**
  * Class Role.
  *
- * @Entity(name = "Role")
+ * @\swichers\Acsf\Client\Annotation\Entity(name = "Role")
  */
 class Role extends AbstractEntity {
 

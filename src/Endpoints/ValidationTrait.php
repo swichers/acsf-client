@@ -49,10 +49,7 @@ trait ValidationTrait {
    * @return array
    *   The options with paging values adjusted.
    */
-  protected function constrictPaging(
-    array $options,
-    int $maxLimit = 100
-  ): array {
+  protected function constrictPaging(array $options, int $maxLimit = 100): array {
 
     if (isset($options['limit'])) {
       // Valid values are 1 to 100.
@@ -130,8 +127,6 @@ trait ValidationTrait {
    *
    * @return array
    *   Modified request options.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
   protected function validateBackupOptions(array $options) {
 
@@ -189,8 +184,6 @@ trait ValidationTrait {
    *
    * @return true
    *   Returns TRUE when a pattern matches, and throws an exception otherwise.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
   protected function requirePatternMatch(string $value, string $regex): bool {
 
@@ -216,11 +209,7 @@ trait ValidationTrait {
    * @return array
    *   The filtered array.
    */
-  protected function filterArrayToValues(
-    array $original,
-    array $allowedValues,
-    bool $toLowerCase = TRUE
-  ): array {
+  protected function filterArrayToValues(array $original, array $allowedValues, bool $toLowerCase = TRUE): array {
 
     $new = array_map('trim', $original);
     $new = array_filter($new);
@@ -248,14 +237,8 @@ trait ValidationTrait {
    *
    * @return bool
    *   TRUE if the value was found in the allowed list.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  protected function requireOneOf(
-    string $original,
-    array $allowedValues,
-    bool $toLowerCase = TRUE
-  ): bool {
+  protected function requireOneOf(string $original, array $allowedValues, bool $toLowerCase = TRUE): bool {
 
     if ($toLowerCase) {
       $original = strtolower($original);

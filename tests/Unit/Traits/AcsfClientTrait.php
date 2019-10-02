@@ -40,8 +40,8 @@ trait AcsfClientTrait {
     // along with the URL that was used to call it.
     $callback = function ($http_method, $api_method, array $options = []) {
 
-      $api_method = is_array($api_method) ? implode('/', $api_method)
-        : $api_method;
+      $api_method =
+        is_array($api_method) ? implode('/', $api_method) : $api_method;
 
       $data = json_encode(['internal_method' => $api_method] + $options);
       // We specifically handle getting the environments because this endpoint

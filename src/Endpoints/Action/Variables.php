@@ -2,7 +2,6 @@
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
@@ -12,7 +11,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * (variable_get/set/del). It can be used to remotely modify the configuration
  * of the Factory.
  *
- * @Action(name = "Variables")
+ * @\swichers\Acsf\Client\Annotation\Action(name = "Variables")
  */
 class Variables extends AbstractAction {
 

@@ -2,7 +2,6 @@
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
@@ -11,7 +10,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * Sites are the product of the Site Factory. This resource is responsible for
  * managing those sites.
  *
- * @Action(
+ * @\swichers\Acsf\Client\Annotation\Action(
  *   name = "Sites",
  *   entityType = "Site"
  * )

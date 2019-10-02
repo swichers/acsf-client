@@ -8,8 +8,6 @@ use swichers\Acsf\Client\Endpoints\EndpointInterface;
  * Interface ActionInterface.
  *
  * Primarily used for type hinting and restriction.
- *
-
  */
 interface ActionInterface extends EndpointInterface {
 

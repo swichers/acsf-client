@@ -2,7 +2,6 @@
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
@@ -14,7 +13,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * modified, or deleted. This API endpoint is for users to remotely interact
  * with the audit logging system.
  *
- * @Action(name = "Audit")
+ * @\swichers\Acsf\Client\Annotation\Action(name = "Audit")
  */
 class Audit extends AbstractAction {
 

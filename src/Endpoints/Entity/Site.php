@@ -2,13 +2,12 @@
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
-use swichers\Acsf\Client\Annotation\Entity;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
  * Class Site.
  *
- * @Entity(name = "Site")
+ * @\swichers\Acsf\Client\Annotation\Entity(name = "Site")
  */
 class Site extends AbstractEntity {
 
@@ -147,8 +146,6 @@ class Site extends AbstractEntity {
    *
    * @return array
    *   The backup task information.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @version v1
    * @title Create a site backup

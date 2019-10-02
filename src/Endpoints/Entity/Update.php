@@ -2,12 +2,10 @@
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
-use swichers\Acsf\Client\Annotation\Entity;
-
 /**
  * Class Update.
  *
- * @Entity(name = "Update")
+ * @\swichers\Acsf\Client\Annotation\Entity(name = "Update")
  */
 class Update extends AbstractEntity {
 

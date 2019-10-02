@@ -14,7 +14,7 @@ use swichers\Acsf\Client\Tests\Traits\AcsfClientTrait;
  *
  * @group AcsfClient
  */
-class EntityBaseTest extends TestCase {
+class AbstractEntityTest extends TestCase {
 
   use AcsfClientTrait;
 
@@ -26,9 +26,10 @@ class EntityBaseTest extends TestCase {
    */
   public function testId() {
 
-    $entity = new class($this->getMockAcsfClient(), 123) extends AbstractEntity {
+    $entity =
+      new class($this->getMockAcsfClient(), 123) extends AbstractEntity {
 
-    };
+      };
     $this->assertEquals(123, $entity->id());
   }
 
@@ -40,14 +41,16 @@ class EntityBaseTest extends TestCase {
    */
   public function testGetParent() {
 
-    $parent = new class($this->getMockAcsfClient(), 123) extends AbstractEntity {
+    $parent =
+      new class($this->getMockAcsfClient(), 123) extends AbstractEntity {
 
-    };
+      };
 
-    $entity = new class($this->getMockAcsfClient(
-    ), 456, $parent) extends AbstractEntity {
+    $entity =
+      new class($this->getMockAcsfClient(
+      ), 456, $parent) extends AbstractEntity {
 
-    };
+      };
 
     $this->assertEmpty($parent->getParent());
     $this->assertEquals($parent, $entity->getParent());

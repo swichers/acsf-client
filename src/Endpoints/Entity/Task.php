@@ -2,13 +2,12 @@
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
-use swichers\Acsf\Client\Annotation\Entity;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
  * Class Task.
  *
- * @Entity(name = "Task")
+ * @\swichers\Acsf\Client\Annotation\Entity(name = "Task")
  */
 class Task extends AbstractEntity {
 
@@ -74,8 +73,6 @@ class Task extends AbstractEntity {
    *
    * @return array
    *   Task log entries.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @version v1
    * @title (Internal use only) Get Task log information.
@@ -173,8 +170,6 @@ class Task extends AbstractEntity {
    * @return array
    *   Task pause status.
    *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
-   *
    * @version v1
    * @title Pause/resume task processing for a specific task
    * @group Tasks
@@ -213,8 +208,6 @@ class Task extends AbstractEntity {
    *
    * @return array
    *   Task pause status.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @see Task::pause()
    */

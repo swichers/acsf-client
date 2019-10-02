@@ -36,9 +36,9 @@ class StageTest extends AbstractActionTestBase {
   /**
    * Validates we can backport environments.
    *
-   * @covers ::stage
+   * @covers ::backport
    */
-  public function testStage() {
+  public function testBackport() {
 
     $action = new Stage($this->getMockAcsfClient());
     $options = [
@@ -47,7 +47,7 @@ class StageTest extends AbstractActionTestBase {
       'wipe_target_environment' => 'true',
       'random_str' => FALSE,
     ];
-    $result = $action->stage('dev', [123, 456, 'abc123'], $options);
+    $result = $action->backport('dev', [123, 456, 'abc123'], $options);
     $this->assertTrue($result['json']['synchronize_all_users']);
     $this->assertFalse($result['json']['detailed_status']);
     $this->assertTrue($result['json']['wipe_target_environment']);
@@ -59,16 +59,16 @@ class StageTest extends AbstractActionTestBase {
   /**
    * Validate we get an exception when trying to stage an invalid environment.
    *
-   * @covers ::stage
+   * @covers ::backport
    *
-   * @depends testStage
+   * @depends testBackport
    */
-  public function testStageEnvFail() {
+  public function testBackportEnvFail() {
 
     $action = new Stage($this->getMockAcsfClient());
 
     $this->expectException(InvalidEnvironmentException::class);
-    $action->stage('abc123', []);
+    $action->backport('abc123', []);
   }
 
 }

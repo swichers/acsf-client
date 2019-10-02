@@ -2,7 +2,6 @@
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
@@ -21,7 +20,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * Theme event notifications are the method by which such signals are received
  * and subsequently processed by the Factory.
  *
- * @Action(name = "Theme")
+ * @\swichers\Acsf\Client\Annotation\Action(name = "Theme")
  */
 class Theme extends AbstractAction {
 
@@ -78,8 +77,6 @@ class Theme extends AbstractAction {
    * @return array
    *   Notification confirmation.
    *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
-   *
    * @version v1
    * @title Send a theme notification
    * @group Themes
@@ -113,11 +110,7 @@ class Theme extends AbstractAction {
    *   }
    * ```
    */
-  public function sendNotification(
-    string $scope,
-    string $event,
-    array $options = []
-  ): array {
+  public function sendNotification(string $scope, string $event, array $options = []): array {
 
     $options = $this->limitOptions(
       $options,

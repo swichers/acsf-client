@@ -2,7 +2,6 @@
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
@@ -12,7 +11,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * be disabled for short periods while their activity could be problematic. This
  * resource is responsible for managing the status of such services.
  *
- * @Action(name = "Status")
+ * @\swichers\Acsf\Client\Annotation\Action(name = "Status")
  */
 class Status extends AbstractAction {
 

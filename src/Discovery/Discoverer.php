@@ -79,8 +79,6 @@ class Discoverer implements DiscovererInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \ReflectionException
    */
   public function getItems(): array {
 
@@ -93,8 +91,6 @@ class Discoverer implements DiscovererInterface {
 
   /**
    * Discovers items.
-   *
-   * @throws \ReflectionException
    */
   protected function discoverItems(): void {
 

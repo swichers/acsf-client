@@ -2,12 +2,10 @@
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
-
 /**
  * ACSF Endpoint Wrapper: Stacks.
  *
- * @Action(name = "Stacks")
+ * @\swichers\Acsf\Client\Annotation\Action(name = "Stacks")
  */
 class Stacks extends AbstractAction {
 

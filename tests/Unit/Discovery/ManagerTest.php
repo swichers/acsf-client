@@ -50,9 +50,10 @@ class ManagerTest extends TestCase {
 
     $manager = new Manager($this->actionDiscoverer);
 
-    $mockClient = $this->getMockBuilder(Client::class)
-      ->disableOriginalConstructor()
-      ->getMock();
+    $mockClient =
+      $this->getMockBuilder(Client::class)
+        ->disableOriginalConstructor()
+        ->getMock();
 
     $this->assertInstanceOf(
       Sites::class,

@@ -2,13 +2,12 @@
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
  * ACSF Endpoint Wrapper: Dynamic Requests.
  *
- * @Action(name = "PageView")
+ * @\swichers\Acsf\Client\Annotation\Action(name = "PageView")
  */
 class PageView extends AbstractAction {
 
@@ -24,8 +23,6 @@ class PageView extends AbstractAction {
    *
    * @return array
    *   Dynamic request statistics.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @version v1
    * @title List monthly dynamic request statistics by domain.
@@ -71,10 +68,7 @@ class PageView extends AbstractAction {
    *  }
    * ```
    */
-  public function getMonthlyDataByDomain(
-    string $date,
-    array $options = []
-  ): array {
+  public function getMonthlyDataByDomain(string $date, array $options = []): array {
 
     $options = $this->limitOptions(
       $options,
@@ -101,8 +95,6 @@ class PageView extends AbstractAction {
    *
    * @return array
    *   Dynamic request statistics.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @version v1
    * @title List monthly aggregated dynamic request statistics.
@@ -175,14 +167,8 @@ class PageView extends AbstractAction {
    *
    * @return array
    *   The request result.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  protected function genericDataRequest(
-    string $dateKey,
-    bool $byDomain = FALSE,
-    array $options = []
-  ): array {
+  protected function genericDataRequest(string $dateKey, bool $byDomain = FALSE, array $options = []): array {
 
     if (isset($options[$dateKey])) {
       $options[$dateKey] = $this->requirePatternMatch(

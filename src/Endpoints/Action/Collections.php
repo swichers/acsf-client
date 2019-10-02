@@ -2,13 +2,12 @@
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
  * ACSF Endpoint Wrapper: Collections.
  *
- * @Action(name = "Collections")
+ * @\swichers\Acsf\Client\Annotation\Action(name = "Collections")
  */
 class Collections extends AbstractEntityAction {
 
@@ -101,14 +100,8 @@ class Collections extends AbstractEntityAction {
    *     "internal_domain": "mycollecton.site-factory.com"
    *   }
    * ```
-   *
    */
-  public function create(
-    string $name,
-    array $siteIds,
-    array $groupIds,
-    array $options = []
-  ): array {
+  public function create(string $name, array $siteIds, array $groupIds, array $options = []): array {
 
     $options = $this->limitOptions($options, ['internal_domain_prefix']);
 
@@ -128,4 +121,3 @@ class Collections extends AbstractEntityAction {
   }
 
 }
-
