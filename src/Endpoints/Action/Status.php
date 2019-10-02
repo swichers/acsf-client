@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
@@ -12,7 +12,6 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * be disabled for short periods while their activity could be problematic. This
  * resource is responsible for managing the status of such services.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(name = "Status")
  */
 class Status extends ActionBase {
@@ -104,18 +103,21 @@ class Status extends ActionBase {
    */
   public function set(array $options = []): array {
 
-    $options = $this->limitOptions($options, [
-      'all',
-      'site_creation',
-      'site_duplication',
-      'domain_management',
-      'bulk_operations',
-    ]);
+    $options = $this->limitOptions(
+      $options,
+      [
+        'all',
+        'site_creation',
+        'site_duplication',
+        'domain_management',
+        'bulk_operations',
+      ]
+    );
 
     // We want to convert on, off, yes, no, etc into a true bool, but don't want
     // to impact strtotime values in the process. We can make a best guess by
     // relying on strtotime to fail.
-    foreach($options as $key => $value) {
+    foreach ($options as $key => $value) {
       if (!is_numeric($value) && FALSE === strtotime($value)) {
         $options[$key] = $this->ensureBool($value);
       }

@@ -1,15 +1,13 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
-
 
 use swichers\Acsf\Client\ClientInterface;
 
 /**
  * Class EntityBase.
  *
- * @package swichers\Acsf\Client\Endpoints\Entity
+
  */
 abstract class EntityBase implements EntityInterface {
 
@@ -44,7 +42,11 @@ abstract class EntityBase implements EntityInterface {
    * @param \swichers\Acsf\Client\Endpoints\Entity\EntityInterface|NULL $parent
    *   The parent of this entity (if any).
    */
-  public function __construct(ClientInterface $client, int $id, EntityInterface $parent = NULL) {
+  public function __construct(
+    ClientInterface $client,
+    int $id,
+    EntityInterface $parent = NULL
+  ) {
 
     $this->client = $client;
     $this->parent = $parent;

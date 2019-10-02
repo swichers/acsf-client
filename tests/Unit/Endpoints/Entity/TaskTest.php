@@ -1,23 +1,26 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Entity;
 
 use PHPUnit\Framework\TestCase;
 use swichers\Acsf\Client\Endpoints\Entity\Task;
+use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 use swichers\Acsf\Client\Tests\Traits\AcsfClientTrait;
 
 /**
- * Class TaskTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Entity
+ * Tests for the Task entity type.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Entity\Task
+ *
+ * @group AcsfClient
  */
 class TaskTest extends TestCase {
 
   use AcsfClientTrait;
 
   /**
+   * Validate we can get the Task status.
+   *
    * @covers ::status
    */
   public function testStatus() {
@@ -29,6 +32,8 @@ class TaskTest extends TestCase {
   }
 
   /**
+   * Validate we can stop a Task.
+   *
    * @covers ::stop
    */
   public function testStop() {
@@ -40,6 +45,8 @@ class TaskTest extends TestCase {
   }
 
   /**
+   * Validate we can delete a Task.
+   *
    * @covers ::delete
    */
   public function testDelete() {
@@ -51,6 +58,8 @@ class TaskTest extends TestCase {
   }
 
   /**
+   * Validate we can get the logs for a Task.
+   *
    * @covers ::logs
    */
   public function testLogs() {
@@ -67,28 +76,58 @@ class TaskTest extends TestCase {
     $this->assertTrue($result['query']['descendants']);
     $this->assertArrayNotHasKey('random', $result['query']);
 
-    $this->assertEquals('emergency', $action->logs(['level' => 'emergency'])['query']['level']);
-    $this->assertEquals('alert', $action->logs(['level' => 'alert'])['query']['level']);
-    $this->assertEquals('critical', $action->logs(['level' => 'critical'])['query']['level']);
-    $this->assertEquals('error', $action->logs(['level' => 'error'])['query']['level']);
-    $this->assertEquals('warning', $action->logs(['level' => 'warning'])['query']['level']);
-    $this->assertEquals('notice', $action->logs(['level' => 'notice'])['query']['level']);
-    $this->assertEquals('info', $action->logs(['level' => 'info'])['query']['level']);
-    $this->assertEquals('debug', $action->logs(['level' => 'debug'])['query']['level']);
+    $this->assertEquals(
+      'emergency',
+      $action->logs(['level' => 'emergency'])['query']['level']
+    );
+    $this->assertEquals(
+      'alert',
+      $action->logs(['level' => 'alert'])['query']['level']
+    );
+    $this->assertEquals(
+      'critical',
+      $action->logs(['level' => 'critical'])['query']['level']
+    );
+    $this->assertEquals(
+      'error',
+      $action->logs(['level' => 'error'])['query']['level']
+    );
+    $this->assertEquals(
+      'warning',
+      $action->logs(['level' => 'warning'])['query']['level']
+    );
+    $this->assertEquals(
+      'notice',
+      $action->logs(['level' => 'notice'])['query']['level']
+    );
+    $this->assertEquals(
+      'info',
+      $action->logs(['level' => 'info'])['query']['level']
+    );
+    $this->assertEquals(
+      'debug',
+      $action->logs(['level' => 'debug'])['query']['level']
+    );
   }
 
   /**
+   * Validate we get an exception when getting logs of an invalid level.
+   *
    * @covers ::logs
+   *
    * @depends testLogs
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
   public function testLogsFailLevel() {
 
     $action = new Task($this->getMockAcsfClient(), 1234);
+
+    $this->expectException(InvalidOptionException::class);
     $action->logs(['level' => 'abc123']);
   }
 
   /**
+   * Validate we can pause a Task.
+   *
    * @covers ::pause
    */
   public function testPause() {
@@ -109,17 +148,23 @@ class TaskTest extends TestCase {
   }
 
   /**
+   * Validate we get an exception when pausing tasks with an invalid level.
+   *
    * @covers ::pause
+   *
    * @depends testPause
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
   public function testPauseFailLevel() {
 
     $action = new Task($this->getMockAcsfClient(), 1234);
+
+    $this->expectException(InvalidOptionException::class);
     $action->pause(TRUE, ['level' => 'abc123']);
   }
 
   /**
+   * Validate we can resume a Task.
+   *
    * @covers ::resume
    *
    * @depends testPause

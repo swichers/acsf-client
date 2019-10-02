@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
@@ -9,19 +9,31 @@ use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 use swichers\Acsf\Client\Exceptions\MissingEntityException;
 
 /**
- * Class ActionGetEntityBaseTest
- *
- * @package swichers\Acsf\Tests\Client\Endpoints\Action
+ * Tests for ActionGetEntityBase.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\ActionGetEntityBase
+ *
+ * @group AcsfClient
  */
 class ActionGetEntityBaseTest extends TestCase {
 
+  /**
+   * A mock ACSF Client.
+   *
+   * @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\ClientInterface
+   */
   protected $mockClient;
 
+  /**
+   * A mock class implementing ActionGetEntityBase.
+   *
+   * @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Endpoints\Action\ActionGetEntityBase
+   */
   protected $mockBase;
 
   /**
+   * Validate we can get an Entity by ID.
+   *
    * @covers ::get
    */
   public function testGetSuccess() {
@@ -31,15 +43,21 @@ class ActionGetEntityBaseTest extends TestCase {
   }
 
   /**
+   * Validate we get an exception if an Entity does not exit.
+   *
    * @covers ::get
    *
-   * @expectedException \swichers\Acsf\Client\Exceptions\MissingEntityException
+   * @depends testGetSuccess
    */
   public function testGetFail() {
 
+    $this->expectException(MissingEntityException::class);
     $this->mockBase->get(789);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
 
     parent::setUp();
@@ -48,12 +66,14 @@ class ActionGetEntityBaseTest extends TestCase {
     $mockClient = $this->getMockBuilder(Client::class)
       ->disableOriginalConstructor()
       ->getMock();
-    $mockClient->method('getEntity')->willReturnMap([
-      ['Site', 123, $mockEntity],
-      ['Task', 456, $mockEntity],
-    ]);
-    $mockClient->method('getEntity')
-      ->willReturnCallback(function ($entityType, $entityId) use ($mockEntity) {
+    $mockClient->method('getEntity')->willReturnMap(
+      [
+        ['Site', 123, $mockEntity],
+        ['Task', 456, $mockEntity],
+      ]
+    );
+    $mockClient->method('getEntity')->willReturnCallback(
+      function ($entityType, $entityId) use ($mockEntity) {
 
         $is_site = 'Site' == $entityType && 123 == $entityId;
         $is_task = 'Task' == $entityType && 456 == $entityId;
@@ -61,11 +81,12 @@ class ActionGetEntityBaseTest extends TestCase {
           return $mockEntity;
         }
         throw new MissingEntityException();
-      });
+      }
+    );
 
     $this->mockClient = $mockClient;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject | \swichers\Acsf\Client\Endpoints\Action\ActionGetEntityBase $mock */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Endpoints\Action\ActionGetEntityBase $mock */
     $this->mockBase = $this->getMockBuilder(ActionGetEntityBase::class)
       ->setConstructorArgs([$this->mockClient])
       ->setMethods(['getEntityType'])

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
@@ -12,7 +12,6 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * grouped together into meaningful sets. This resource provides methods for
  * managing such groups.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(
  *   name = "Groups",
  *   entity_type = "Group"
@@ -123,4 +122,5 @@ class Groups extends ActionGetEntityBase {
 
     return 'Group';
   }
+
 }

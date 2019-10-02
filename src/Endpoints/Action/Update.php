@@ -1,5 +1,4 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
@@ -24,7 +23,6 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * progress must be monitored either by watching the site update progress page
  * on the Factory or using the WIP status REST API endpoint.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(
  *   name = "Update",
  *   entity_type="Update"
@@ -76,15 +74,18 @@ class Update extends ActionGetEntityBase {
    */
   public function updateCode(string $git_ref, array $options = []): array {
 
-    $options = $this->limitOptions($options, [
-      'scope',
-      'start_time',
-      'factory_ref',
-      'sites_type',
-      'factory_type',
-      'stack_id',
-      'db_update_arguments',
-    ]);
+    $options = $this->limitOptions(
+      $options,
+      [
+        'scope',
+        'start_time',
+        'factory_ref',
+        'sites_type',
+        'factory_type',
+        'stack_id',
+        'db_update_arguments',
+      ]
+    );
     $options['sites_ref'] = $git_ref;
     $options['stack_id'] = max(1, $options['stack_id'] ?? 1);
 
@@ -94,7 +95,10 @@ class Update extends ActionGetEntityBase {
     }
 
     if (isset($options['db_update_arguments'])) {
-      $this->requirePatternMatch($options['db_update_arguments'], '/^[a-zA-Z0-9 ]+$/');
+      $this->requirePatternMatch(
+        $options['db_update_arguments'],
+        '/^[a-zA-Z0-9 ]+$/'
+      );
     }
 
     $type_limits = [
@@ -105,7 +109,10 @@ class Update extends ActionGetEntityBase {
       if (isset($options[$type])) {
         $types = is_string($options[$type]) ? explode(',', $options[$type])
           : $options[$type];
-        $options[$type] = implode(', ', $this->filterArrayToValues($types, $limits));
+        $options[$type] = implode(
+          ', ',
+          $this->filterArrayToValues($types, $limits)
+        );
       }
     }
 

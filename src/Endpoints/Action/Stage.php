@@ -1,8 +1,6 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
-
 
 use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
@@ -14,7 +12,6 @@ use swichers\Acsf\Client\Exceptions\InvalidEnvironmentException;
  * Staging involves copying the Site Factory and a set of sites to a staging
  * environment.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(name = "Stage")
  */
 class Stage extends ActionBase {
@@ -61,13 +58,20 @@ class Stage extends ActionBase {
    *   }
    * ```
    */
-  public function stage(string $to_env, array $siteIds, array $options = []): array {
+  public function stage(
+    string $to_env,
+    array $siteIds,
+    array $options = []
+  ): array {
 
-    $options = $this->limitOptions($options, [
-      'synchronize_all_users',
-      'detailed_status',
-      'wipe_target_environment',
-    ]);
+    $options = $this->limitOptions(
+      $options,
+      [
+        'synchronize_all_users',
+        'detailed_status',
+        'wipe_target_environment',
+      ]
+    );
     $options['sites'] = $this->cleanIntArray($siteIds);
 
     $bools = [
@@ -83,7 +87,9 @@ class Stage extends ActionBase {
 
     $envs = $this->getEnvironments();
     if (!in_array($to_env, $envs)) {
-      throw new InvalidEnvironmentException('Provided environment was not listed as being a valid environment.');
+      throw new InvalidEnvironmentException(
+        'Provided environment was not listed as being a valid environment.'
+      );
     }
     $options['to_env'] = $to_env;
 

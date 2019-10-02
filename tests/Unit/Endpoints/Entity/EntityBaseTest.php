@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Entity;
 
@@ -8,17 +8,19 @@ use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 use swichers\Acsf\Client\Tests\Traits\AcsfClientTrait;
 
 /**
- * Class EntityBaseTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Entity
+ * Tests for the EntityBase abstract class.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Entity\EntityBase
+ *
+ * @group AcsfClient
  */
 class EntityBaseTest extends TestCase {
 
   use AcsfClientTrait;
 
   /**
+   * Validate we can get the Id of the entity.
+   *
    * @covers ::id
    * @covers ::__construct
    */
@@ -31,6 +33,8 @@ class EntityBaseTest extends TestCase {
   }
 
   /**
+   * Validate we can get an entity parent.
+   *
    * @covers ::getParent
    * @covers ::__construct
    */
@@ -40,7 +44,8 @@ class EntityBaseTest extends TestCase {
 
     };
 
-    $entity = new class($this->getMockAcsfClient(), 456, $parent) extends EntityBase {
+    $entity = new class($this->getMockAcsfClient(
+    ), 456, $parent) extends EntityBase {
 
     };
 

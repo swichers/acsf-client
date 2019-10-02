@@ -1,5 +1,4 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
@@ -9,7 +8,6 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
 /**
  * Class Task
  *
- * @package swichers\Acsf\Client\Endpoints\Entity
  * @Entity(name = "Task")
  */
 class Task extends EntityBase {
@@ -117,7 +115,8 @@ class Task extends EntityBase {
       $options['descendants'] = $this->ensureBool($options['descendants']);
     }
 
-    return $this->client->apiGet(['tasks', $this->id(), 'logs'], $options)->toArray();
+    return $this->client->apiGet(['tasks', $this->id(), 'logs'], $options)
+      ->toArray();
   }
 
   /**

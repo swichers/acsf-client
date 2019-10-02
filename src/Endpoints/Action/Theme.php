@@ -1,5 +1,4 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
@@ -22,7 +21,6 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * Theme event notifications are the method by which such signals are received
  * and subsequently processed by the Factory.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(name = "Theme")
  */
 class Theme extends ActionBase {
@@ -115,17 +113,27 @@ class Theme extends ActionBase {
    *   }
    * ```
    */
-  public function sendNotification(string $scope, string $event, array $options = []): array {
+  public function sendNotification(
+    string $scope,
+    string $event,
+    array $options = []
+  ): array {
 
-    $options = $this->limitOptions($options, [
-      'nid',
-      'theme',
-      'timestamp',
-      'uid',
-    ]);
+    $options = $this->limitOptions(
+      $options,
+      [
+        'nid',
+        'theme',
+        'timestamp',
+        'uid',
+      ]
+    );
     $options['scope'] = $scope;
     $options['event'] = $event;
-    $this->requireOneOf($options['scope'], ['theme', 'site', 'group', 'global']);
+    $this->requireOneOf(
+      $options['scope'],
+      ['theme', 'site', 'group', 'global']
+    );
     $this->requireOneOf($options['event'], ['create', 'modify', 'delete']);
 
     if ($options['scope'] === 'global') {

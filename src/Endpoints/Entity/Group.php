@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
@@ -8,7 +8,6 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
 /**
  * Class Group
  *
- * @package swichers\Acsf\Client\Endpoints\Entity
  * @Entity(name = "Group")
  */
 class Group extends EntityBase {

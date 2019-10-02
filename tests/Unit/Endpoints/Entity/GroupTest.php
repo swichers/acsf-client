@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Entity;
 
@@ -7,17 +7,19 @@ use swichers\Acsf\Client\Endpoints\Entity\Group;
 use swichers\Acsf\Client\Tests\Traits\AcsfClientTrait;
 
 /**
- * Class GroupTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Entity
+ * Tests for the Group entity type.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Entity\Group
+ *
+ * @group AcsfClient
  */
 class GroupTest extends TestCase {
 
   use AcsfClientTrait;
 
   /**
+   * Validate we can get Group details.
+   *
    * @covers ::details
    */
   public function testDetails() {
@@ -29,6 +31,8 @@ class GroupTest extends TestCase {
   }
 
   /**
+   * Validate we can get a list of Group members.
+   *
    * @covers ::members
    */
   public function testMembers() {

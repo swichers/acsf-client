@@ -1,8 +1,6 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints;
-
 
 use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 use const FILTER_VALIDATE_URL;
@@ -10,7 +8,7 @@ use const FILTER_VALIDATE_URL;
 /**
  * Shared Action and Entity validation helpers.
  *
- * @package swichers\Acsf\Client\Endpoints
+
  */
 trait ValidationTrait {
 
@@ -53,7 +51,10 @@ trait ValidationTrait {
    * @return array
    *   The options with paging values adjusted.
    */
-  protected function constrictPaging(array $options, int $maxLimit = 100): array {
+  protected function constrictPaging(
+    array $options,
+    int $maxLimit = 100
+  ): array {
 
     if (isset($options['limit'])) {
       // Valid values are 1 to 100.
@@ -138,7 +139,12 @@ trait ValidationTrait {
 
     if (isset($options['callback_url'])) {
       if (!filter_var($options['callback_url'], FILTER_VALIDATE_URL)) {
-        throw new InvalidOptionException(sprintf('callback_url was set to an invalid url: %s', $options['callback_url']));
+        throw new InvalidOptionException(
+          sprintf(
+            'callback_url was set to an invalid url: %s',
+            $options['callback_url']
+          )
+        );
       }
     }
 
@@ -161,7 +167,12 @@ trait ValidationTrait {
         'private files',
         'themes',
       ];
-      $options['components'] = $this->filterArrayToValues($options['components'], $allowed_components);
+
+      $options['components'] = $this->filterArrayToValues(
+        $options['components'],
+        $allowed_components
+      );
+
       if (empty($options['components'])) {
         throw new InvalidOptionException('Provided component(s) were invalid.');
       }
@@ -186,7 +197,9 @@ trait ValidationTrait {
   protected function requirePatternMatch(string $value, string $regex): bool {
 
     if (!preg_match($regex, $value)) {
-      throw new InvalidOptionException(sprintf('The value %s did not match the pattern %s.', $value, $regex));
+      throw new InvalidOptionException(
+        sprintf('The value %s did not match the pattern %s.', $value, $regex)
+      );
     }
 
     return TRUE;
@@ -205,7 +218,11 @@ trait ValidationTrait {
    * @return array
    *   The filtered array.
    */
-  protected function filterArrayToValues(array $original, array $allowedValues, bool $toLowerCase = TRUE): array {
+  protected function filterArrayToValues(
+    array $original,
+    array $allowedValues,
+    bool $toLowerCase = TRUE
+  ): array {
 
     $new = array_map('trim', $original);
     $new = array_filter($new);
@@ -236,14 +253,21 @@ trait ValidationTrait {
    *
    * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  protected function requireOneOf(string $original, array $allowedValues, bool $toLowerCase = TRUE): bool {
+  protected function requireOneOf(
+    string $original,
+    array $allowedValues,
+    bool $toLowerCase = TRUE
+  ): bool {
+
     if ($toLowerCase) {
       $original = strtolower($original);
       $allowedValues = array_map('strtolower', $allowedValues);
     }
     $found = array_search($original, $allowedValues);
     if ($found === FALSE) {
-      throw new InvalidOptionException(sprintf('Did not find %s in allowed values.', $original));
+      throw new InvalidOptionException(
+        sprintf('Did not find %s in allowed values.', $original)
+      );
     }
 
     return TRUE;

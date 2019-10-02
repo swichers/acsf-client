@@ -1,19 +1,22 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Update;
+use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 
 /**
- * Class UpdateTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Action
+ * Tests for the UpdateTest Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\Update
+ *
+ * @group AcsfClient
  */
-class UpdateTest extends ActionTestBase {
+class UpdateTest extends AbstractActionTestBase {
 
   /**
+   * Validate we can deploy new code.
+   *
    * @covers ::updateCode
    */
   public function testUpdateCode() {
@@ -44,26 +47,38 @@ class UpdateTest extends ActionTestBase {
   }
 
   /**
+   * Validate we get an exception with bad db_update_arguments.
+   *
    * @covers ::updateCode
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   *
+   * @depends testUpdateCode
    */
   public function testUpdateCodeFailDbUpdate() {
 
     $action = new Update($this->getMockAcsfClient());
+
+    $this->expectException(InvalidOptionException::class);
     $action->updateCode('tag/unit-test', ['db_update_arguments' => '$']);
   }
 
   /**
+   * Validate we get an exception with bad scope.
+   *
    * @covers ::updateCode
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   *
+   * @depends testUpdateCode
    */
   public function testUpdateCodeFailScope() {
 
     $action = new Update($this->getMockAcsfClient());
+
+    $this->expectException(InvalidOptionException::class);
     $action->updateCode('tag/unit-test', ['scope' => 'abc123']);
   }
 
   /**
+   * Validate we can get an Update entity type.
+   *
    * @covers ::getEntityType
    */
   public function testGetEntityType() {
@@ -73,6 +88,8 @@ class UpdateTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can list Update processes.
+   *
    * @covers ::list
    */
   public function testList() {
@@ -83,4 +100,5 @@ class UpdateTest extends ActionTestBase {
     $this->assertEquals([], $result['query']);
 
   }
+
 }

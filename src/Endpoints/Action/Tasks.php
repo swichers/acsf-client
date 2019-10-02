@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
@@ -8,7 +8,6 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
 /**
  * ACSF Endpoint Wrapper: Tasks.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(
  *   name = "Tasks",
  *   entity_type = "Task"
@@ -86,19 +85,28 @@ class Tasks extends ActionGetEntityBase {
    */
   public function list(array $options = []): array {
 
-    $options = $this->limitOptions($options, [
-      'limit',
-      'page',
-      'status',
-      'group',
-      'class',
-    ]);
+    $options = $this->limitOptions(
+      $options,
+      [
+        'limit',
+        'page',
+        'status',
+        'group',
+        'class',
+      ]
+    );
 
     if (isset($options['status'])) {
-      $this->requireOneOf($options['status'], ['processing', 'error', 'not-started']);
+      $this->requireOneOf(
+        $options['status'],
+        ['processing', 'error', 'not-started']
+      );
     }
     if (isset($options['class'])) {
-      $this->requireOneOf($options['class'], ['softpaused', 'softpause-for-update']);
+      $this->requireOneOf(
+        $options['class'],
+        ['softpaused', 'softpause-for-update']
+      );
     }
 
     $options = $this->constrictPaging($options);

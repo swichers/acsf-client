@@ -1,19 +1,22 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Theme;
+use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 
 /**
- * Class ThemeTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Action
+ * Tests for the ThemeTest Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\Theme
+ *
+ * @group AcsfClient
  */
-class ThemeTest extends ActionTestBase {
+class ThemeTest extends AbstractActionTestBase {
 
   /**
+   * Validate we can process theme changes.
+   *
    * @covers ::process
    */
   public function testProcess() {
@@ -28,6 +31,8 @@ class ThemeTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can deploy theme updates.
+   *
    * @covers ::deploy
    */
   public function testDeploy() {
@@ -49,6 +54,8 @@ class ThemeTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can send notifications.
+   *
    * @covers ::sendNotification
    */
   public function testSendNotification() {
@@ -70,45 +77,114 @@ class ThemeTest extends ActionTestBase {
     $this->assertEquals('UnitTheme', $result['json']['theme']);
     $this->assertArrayNotHasKey('random', $result['json']);
 
-    $this->assertArrayNotHasKey('nid', $action->sendNotification('global', 'create', ['nid' => 1000])['json']);
-    $this->assertArrayHasKey('nid', $action->sendNotification('group', 'create', ['nid' => 1000])['json']);
-    $this->assertArrayHasKey('nid', $action->sendNotification('site', 'create', ['nid' => 1000])['json']);
-    $this->assertArrayHasKey('nid', $action->sendNotification('theme', 'create', ['nid' => 1000])['json']);
+    $this->assertArrayNotHasKey(
+      'nid',
+      $action->sendNotification('global', 'create', ['nid' => 1000])['json']
+    );
+    $this->assertArrayHasKey(
+      'nid',
+      $action->sendNotification('group', 'create', ['nid' => 1000])['json']
+    );
+    $this->assertArrayHasKey(
+      'nid',
+      $action->sendNotification('site', 'create', ['nid' => 1000])['json']
+    );
+    $this->assertArrayHasKey(
+      'nid',
+      $action->sendNotification('theme', 'create', ['nid' => 1000])['json']
+    );
 
-    $this->assertArrayHasKey('theme', $action->sendNotification('theme', 'create', ['theme' => 'UnitTheme'])['json']);
-    $this->assertArrayNotHasKey('theme', $action->sendNotification('group', 'create', ['theme' => 'UnitTheme'])['json']);
-    $this->assertArrayNotHasKey('theme', $action->sendNotification('site', 'create', ['theme' => 'UnitTheme'])['json']);
-    $this->assertArrayNotHasKey('theme', $action->sendNotification('global', 'create', ['theme' => 'UnitTheme'])['json']);
+    $this->assertArrayHasKey(
+      'theme',
+      $action->sendNotification(
+        'theme',
+        'create',
+        ['theme' => 'UnitTheme']
+      )['json']
+    );
+    $this->assertArrayNotHasKey(
+      'theme',
+      $action->sendNotification(
+        'group',
+        'create',
+        ['theme' => 'UnitTheme']
+      )['json']
+    );
+    $this->assertArrayNotHasKey(
+      'theme',
+      $action->sendNotification(
+        'site',
+        'create',
+        ['theme' => 'UnitTheme']
+      )['json']
+    );
+    $this->assertArrayNotHasKey(
+      'theme',
+      $action->sendNotification(
+        'global',
+        'create',
+        ['theme' => 'UnitTheme']
+      )['json']
+    );
 
-    $this->assertEquals('theme', $action->sendNotification('theme', 'create', $options)['json']['scope']);
-    $this->assertEquals('site', $action->sendNotification('site', 'create', $options)['json']['scope']);
-    $this->assertEquals('group', $action->sendNotification('group', 'create', $options)['json']['scope']);
-    $this->assertEquals('global', $action->sendNotification('global', 'create', $options)['json']['scope']);
+    $this->assertEquals(
+      'theme',
+      $action->sendNotification('theme', 'create', $options)['json']['scope']
+    );
+    $this->assertEquals(
+      'site',
+      $action->sendNotification('site', 'create', $options)['json']['scope']
+    );
+    $this->assertEquals(
+      'group',
+      $action->sendNotification('group', 'create', $options)['json']['scope']
+    );
+    $this->assertEquals(
+      'global',
+      $action->sendNotification('global', 'create', $options)['json']['scope']
+    );
 
-    $this->assertEquals('create', $action->sendNotification('theme', 'create', $options)['json']['event']);
-    $this->assertEquals('modify', $action->sendNotification('theme', 'modify', $options)['json']['event']);
-    $this->assertEquals('delete', $action->sendNotification('theme', 'delete', $options)['json']['event']);
+    $this->assertEquals(
+      'create',
+      $action->sendNotification('theme', 'create', $options)['json']['event']
+    );
+    $this->assertEquals(
+      'modify',
+      $action->sendNotification('theme', 'modify', $options)['json']['event']
+    );
+    $this->assertEquals(
+      'delete',
+      $action->sendNotification('theme', 'delete', $options)['json']['event']
+    );
   }
 
   /**
+   * Validate a thrown exception when we send notifications with a bad scope.
+   *
    * @covers ::sendNotification
    *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   * @depends testSendNotification
    */
   public function testSendNotificationFailScope() {
 
     $action = new Theme($this->getMockAcsfClient());
+
+    $this->expectException(InvalidOptionException::class);
     $action->sendNotification('abc123', 'create');
   }
 
   /**
+   * Validate a thrown exception when we send notifications with a bad event.
+   *
    * @covers ::sendNotification
    *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   * @depends testSendNotification
    */
   public function testSendNotificationFailEvent() {
 
     $action = new Theme($this->getMockAcsfClient());
+
+    $this->expectException(InvalidOptionException::class);
     $action->sendNotification('theme', 'abc123');
   }
 

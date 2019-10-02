@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="ACSF Client"
-         xsi:noNamespaceSchemaLocation="phpcs.xsd">
+         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
   <description>The coding standard for the ACSF Client library.</description>
 
   <file>src</file>
@@ -15,15 +15,11 @@
   <config name="ignore_warnings_on_exit" value="0"/>
   <config name="ignore_errors_on_exit" value="0"/>
 
-  <rule ref="Symfony">
-    <exclude name="Symfony.Commenting.License.Warning"/>
+  <rule ref="Drupal">
+    <exclude name="Drupal.WhiteSpace.OpenTagNewline.BlankLine"/>
   </rule>
+  <rule ref="DrupalPractice" />
 
-  <rule ref="Generic.WhiteSpace.ScopeIndent">
-    <properties>
-      <property name="indent" value="2"/>
-      <property name="tabIndent" value="false"/>
-    </properties>
-  </rule>
+  <rule ref="Generic.PHP.RequireStrictTypes" />
 
 </ruleset>

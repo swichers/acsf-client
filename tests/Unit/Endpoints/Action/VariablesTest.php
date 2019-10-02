@@ -1,19 +1,21 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Variables;
 
 /**
- * Class VariablesTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Action
+ * Tests for the Variables Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\Variables
+ *
+ * @group AcsfClient
  */
-class VariablesTest extends ActionTestBase {
+class VariablesTest extends AbstractActionTestBase {
 
   /**
+   * Validates we can get a variable.
+   *
    * @covers ::get
    */
   public function testGet() {
@@ -25,6 +27,8 @@ class VariablesTest extends ActionTestBase {
   }
 
   /**
+   * Validates we can list variables.
+   *
    * @covers ::list
    */
   public function testList() {
@@ -44,6 +48,8 @@ class VariablesTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can set a variable.
+   *
    * @covers ::set
    */
   public function testSet() {

@@ -1,5 +1,4 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
@@ -10,7 +9,6 @@ use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 /**
  * Class Collection
  *
- * @package swichers\Acsf\Client\Endpoints\Entity
  * @Entity(name = "Collection")
  */
 class Collection extends EntityBase {
@@ -77,8 +75,8 @@ class Collection extends EntityBase {
    */
   public function delete(): array {
 
-    return $this->client->apiDelete(['collections', $this->id()], [])
-      ->toArray();
+    return $this->client->apiDelete(['collections', $this->id()], [])->toArray(
+    );
   }
 
   /**
@@ -224,11 +222,14 @@ class Collection extends EntityBase {
       'site_id' => $siteId,
     ];
 
-    return $this->client->apiPost([
-      'collections',
-      $this->id(),
-      'set-primary',
-    ], $data)->toArray();
+    return $this->client->apiPost(
+      [
+        'collections',
+        $this->id(),
+        'set-primary',
+      ],
+      $data
+    )->toArray();
   }
 
 }

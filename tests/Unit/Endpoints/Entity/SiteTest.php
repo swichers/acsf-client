@@ -1,21 +1,26 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Entity;
 
 use PHPUnit\Framework\TestCase;
 use swichers\Acsf\Client\Endpoints\Entity\Site;
+use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 use swichers\Acsf\Client\Tests\Traits\AcsfClientTrait;
 
 /**
- * Class SiteTest
+ * Tests for the Site entity type.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Entity\Site
+ *
+ * @group AcsfClient
  */
 class SiteTest extends TestCase {
 
   use AcsfClientTrait;
 
   /**
+   * Validates we can duplicate a Site.
+   *
    * @covers ::duplicate
    */
   public function testDuplicate() {
@@ -38,6 +43,8 @@ class SiteTest extends TestCase {
   }
 
   /**
+   * Validates we can get Site details.
+   *
    * @covers ::details
    */
   public function testDetails() {
@@ -49,6 +56,8 @@ class SiteTest extends TestCase {
   }
 
   /**
+   * Validates we can delete a Site.
+   *
    * @covers ::delete
    */
   public function testDelete() {
@@ -60,6 +69,8 @@ class SiteTest extends TestCase {
   }
 
   /**
+   * Validates we can backup a Site.
+   *
    * @covers ::backup
    */
   public function testBackup() {
@@ -79,7 +90,10 @@ class SiteTest extends TestCase {
     $this->assertEquals('UnitTest', $result['json']['label']);
     $this->assertEquals('http://example.com', $result['json']['callback_url']);
     $this->assertEquals('GET', $result['json']['callback_method']);
-    $this->assertEquals(json_encode(['test' => TRUE]), $result['json']['caller_data']);
+    $this->assertEquals(
+      json_encode(['test' => TRUE]),
+      $result['json']['caller_data']
+    );
     $this->assertEquals(['database'], $result['json']['components']);
 
     $components = [
@@ -96,54 +110,77 @@ class SiteTest extends TestCase {
   }
 
   /**
+   * Validates we get an exception when callback_urls are invalid for backups.
+   *
    * @covers ::backup
-   * @expectedException  \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   *
+   * @depends testBackup
    */
   public function testBackupFailCallbackUrl() {
 
     $action = new Site($this->getMockAcsfClient(), 1234);
+
+    $this->expectException(InvalidOptionException::class);
     $action->backup(['callback_url' => 'any random invalid url']);
   }
 
   /**
+   * Validates we get an exception for invalid backup callback methods.
+   *
    * @covers ::backup
-   * @expectedException  \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   *
+   * @depends testBackup
    */
   public function testBackupFailCallbackMethod() {
 
     $action = new Site($this->getMockAcsfClient(), 1234);
+
+    $this->expectException(InvalidOptionException::class);
     $action->backup(['callback_method' => 'any random invalid method']);
   }
 
   /**
+   * Validates we get an exception when backups are given bad component data.
+   *
    * @covers ::backup
-   * @expectedException  \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   *
+   * @depends testBackup
    */
   public function testBackupFailBadComponentsDataType() {
 
     $action = new Site($this->getMockAcsfClient(), 1234);
+
+    $this->expectException(InvalidOptionException::class);
     $action->backup(['components' => 'any random invalid data type']);
   }
 
   /**
+   * Validates we get an exception when backups are given an invalid component.
+   *
    * @covers ::backup
-   * @expectedException  \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   *
+   * @depends testBackup
    */
   public function testBackupFailBadComponentsDataValue() {
 
     $action = new Site($this->getMockAcsfClient(), 1234);
-    $action->backup([
-      'components' => [
-        'any',
-        'random',
-        'invalid',
-        'components',
-        'values',
-      ],
-    ]);
+    $this->expectException(InvalidOptionException::class);
+    $action->backup(
+      [
+        'components' => [
+          'any',
+          'random',
+          'invalid',
+          'components',
+          'values',
+        ],
+      ]
+    );
   }
 
   /**
+   * Validates we can list backups.
+   *
    * @covers ::listBackups
    */
   public function testListBackups() {
@@ -166,6 +203,8 @@ class SiteTest extends TestCase {
   }
 
   /**
+   * Validates we can clear cache.
+   *
    * @covers ::clearCache
    */
   public function testClearCache() {
@@ -177,6 +216,8 @@ class SiteTest extends TestCase {
   }
 
   /**
+   * Validates we can get domains.
+   *
    * @covers ::getDomains
    */
   public function testGetDomains() {
@@ -188,6 +229,8 @@ class SiteTest extends TestCase {
   }
 
   /**
+   * Validates we can add a domain.
+   *
    * @covers ::addDomain
    */
   public function testAddDomain() {
@@ -199,6 +242,8 @@ class SiteTest extends TestCase {
   }
 
   /**
+   * Validates we can remove a domain.
+   *
    * @covers ::removeDomain
    */
   public function testRemoveDomain() {

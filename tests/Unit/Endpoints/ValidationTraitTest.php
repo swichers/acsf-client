@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints;
 
@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionObject;
 use stdClass;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
+use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 
 /**
  * Tests to verify our input validation routines do what we expect.
@@ -14,16 +15,14 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  *
  * @group AcsfClient
  */
-class ValidationTraitTest extends TestCase
-{
+class ValidationTraitTest extends TestCase {
 
   /**
    * Validate our option limiting filters out keys.
    *
    * @covers ::limitOptions
    */
-  public function testLimitOptions()
-  {
+  public function testLimitOptions() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'limitOptions');
@@ -41,8 +40,7 @@ class ValidationTraitTest extends TestCase
    *
    * @covers ::constrictPaging
    */
-  public function testConstrictPaging()
-  {
+  public function testConstrictPaging() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'constrictPaging');
@@ -82,8 +80,7 @@ class ValidationTraitTest extends TestCase
    *
    * @covers ::ensureSortOrder
    */
-  public function testEnsureSortOrder()
-  {
+  public function testEnsureSortOrder() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'ensureSortOrder');
@@ -100,8 +97,7 @@ class ValidationTraitTest extends TestCase
    *
    * @covers ::cleanIntArray
    */
-  public function testCleanIntArray()
-  {
+  public function testCleanIntArray() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'cleanIntArray');
@@ -114,7 +110,7 @@ class ValidationTraitTest extends TestCase
       5678,
       new stdClass(),
       '',
-      null,
+      NULL,
     ];
 
     $this->assertEquals([1234, 5678], $method->invoke($object, $data));
@@ -125,8 +121,7 @@ class ValidationTraitTest extends TestCase
    *
    * @covers ::ensureBool
    */
-  public function testEnsureBool()
-  {
+  public function testEnsureBool() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'ensureBool');
@@ -135,7 +130,7 @@ class ValidationTraitTest extends TestCase
     $this->assertTrue($method->invoke($object, 'on'));
     $this->assertTrue($method->invoke($object, '1'));
     $this->assertTrue($method->invoke($object, 1));
-    $this->assertTrue($method->invoke($object, true));
+    $this->assertTrue($method->invoke($object, TRUE));
 
     $this->assertFalse($method->invoke($object, 'false'));
     $this->assertFalse($method->invoke($object, 'no'));
@@ -144,7 +139,7 @@ class ValidationTraitTest extends TestCase
     $this->assertFalse($method->invoke($object, 'anything else'));
     $this->assertFalse($method->invoke($object, -1));
     $this->assertFalse($method->invoke($object, 0));
-    $this->assertFalse($method->invoke($object, false));
+    $this->assertFalse($method->invoke($object, FALSE));
   }
 
   /**
@@ -152,8 +147,7 @@ class ValidationTraitTest extends TestCase
    *
    * @covers ::validateBackupOptions
    */
-  public function testValidateBackupOptions()
-  {
+  public function testValidateBackupOptions() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'validateBackupOptions');
@@ -180,15 +174,14 @@ class ValidationTraitTest extends TestCase
    * @covers ::validateBackupOptions
    *
    * @depends testValidateBackupOptions
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  public function testValidateBackupOptionsBadUrl()
-  {
+  public function testValidateBackupOptionsBadUrl() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'validateBackupOptions');
-    $method->invoke($object, $options = ['callback_url' => '']);
+
+    $this->expectException(InvalidOptionException::class);
+    $method->invoke($object, ['callback_url' => '']);
   }
 
   /**
@@ -197,15 +190,14 @@ class ValidationTraitTest extends TestCase
    * @covers ::validateBackupOptions
    *
    * @depends testValidateBackupOptions
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  public function testValidateBackupOptionsBadMethod()
-  {
+  public function testValidateBackupOptionsBadMethod() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'validateBackupOptions');
-    $method->invoke($object, $options = ['callback_method' => '']);
+
+    $this->expectException(InvalidOptionException::class);
+    $method->invoke($object, ['callback_method' => '']);
   }
 
   /**
@@ -214,15 +206,14 @@ class ValidationTraitTest extends TestCase
    * @covers ::validateBackupOptions
    *
    * @depends testValidateBackupOptions
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  public function testValidateBackupOptionsNotArrayComponents()
-  {
+  public function testValidateBackupOptionsNotArrayComponents() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'validateBackupOptions');
-    $method->invoke($object, $options = ['components' => '']);
+
+    $this->expectException(InvalidOptionException::class);
+    $method->invoke($object, ['components' => '']);
   }
 
   /**
@@ -231,15 +222,14 @@ class ValidationTraitTest extends TestCase
    * @covers ::validateBackupOptions
    *
    * @depends testValidateBackupOptions
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  public function testValidateBackupOptionsNotAllowedComponents()
-  {
+  public function testValidateBackupOptionsNotAllowedComponents() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'validateBackupOptions');
-    $method->invoke($object, $options = ['components' => ['not allowed']]);
+
+    $this->expectException(InvalidOptionException::class);
+    $method->invoke($object, ['components' => ['not allowed']]);
   }
 
   /**
@@ -247,8 +237,7 @@ class ValidationTraitTest extends TestCase
    *
    * @covers ::requireOneOf
    */
-  public function testRequireOneOf()
-  {
+  public function testRequireOneOf() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'requireOneOf');
@@ -262,15 +251,14 @@ class ValidationTraitTest extends TestCase
    * @covers ::requireOneOf
    *
    * @depends testRequireOneOf
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  public function testRequireOneOfFailCase()
-  {
+  public function testRequireOneOfFailCase() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'requireOneOf');
-    $method->invoke($object, 'no match', ['No MaTcH'], false);
+
+    $this->expectException(InvalidOptionException::class);
+    $method->invoke($object, 'no match', ['No MaTcH'], FALSE);
   }
 
   /**
@@ -278,8 +266,7 @@ class ValidationTraitTest extends TestCase
    *
    * @covers ::requirePatternMatch
    */
-  public function testRequirePatternMatch()
-  {
+  public function testRequirePatternMatch() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'requirePatternMatch');
@@ -292,14 +279,13 @@ class ValidationTraitTest extends TestCase
    * @covers ::requirePatternMatch
    *
    * @depends testRequirePatternMatch
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
-  public function testRequirePatternMatchFailRegex()
-  {
+  public function testRequirePatternMatchFailRegex() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'requirePatternMatch');
+
+    $this->expectException(InvalidOptionException::class);
     $method->invoke($object, '   match me', '/^match me$/');
   }
 
@@ -308,8 +294,7 @@ class ValidationTraitTest extends TestCase
    *
    * @covers ::filterArrayToValues
    */
-  public function testFilterArrayToValues()
-  {
+  public function testFilterArrayToValues() {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'filterArrayToValues');
@@ -327,14 +312,14 @@ class ValidationTraitTest extends TestCase
     );
     $this->assertEquals(
       ['allowed'],
-      $method->invoke($object, $data, ['allowed'], true)
+      $method->invoke($object, $data, ['allowed'], TRUE)
     );
     $this->assertEquals(
       [
         'allowed',
         'also allowed',
       ],
-      $method->invoke($object, $data, ['allowed', 'also allowed'], true)
+      $method->invoke($object, $data, ['allowed', 'also allowed'], TRUE)
     );
   }
 
@@ -344,13 +329,12 @@ class ValidationTraitTest extends TestCase
    * @return object
    *   A class using the ValidationTrait.
    */
-  protected function getWrappedTrait()
-  {
+  protected function getWrappedTrait() {
 
-    $wrapper = new class()
-    {
+    $wrapper = new class() {
 
       use ValidationTrait;
+
     };
 
     return $wrapper;
@@ -372,13 +356,13 @@ class ValidationTraitTest extends TestCase
    *
    * @throws \ReflectionException
    */
-  protected function getInvokableMethod($object, $methodName)
-  {
+  protected function getInvokableMethod($object, $methodName) {
 
     $ref = new ReflectionObject($object);
     $method = $ref->getMethod($methodName);
-    $method->setAccessible(true);
+    $method->setAccessible(TRUE);
 
     return $method;
   }
+
 }

@@ -1,8 +1,6 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
-
 
 use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
@@ -18,7 +16,6 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * be deployed to a given environment. The responsibility of this resource is to
  * list those refs.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(name = "Vcs")
  */
 class Vcs extends ActionBase {

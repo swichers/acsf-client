@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Discovery;
 
@@ -11,7 +11,6 @@ class Manager implements ManagerInterface {
    */
   protected $discovery;
 
-
   public function __construct(DiscovererInterface $discovery) {
 
     $this->discovery = $discovery;
@@ -23,7 +22,9 @@ class Manager implements ManagerInterface {
     if (array_key_exists($name, $workers)) {
       $class = $workers[$name]['class'];
       if (!class_exists($class)) {
-        throw new MissingEndpointException('Implementation class does not exist.');
+        throw new MissingEndpointException(
+          'Implementation class does not exist.'
+        );
       }
 
       return new $class(...$constructor_args);

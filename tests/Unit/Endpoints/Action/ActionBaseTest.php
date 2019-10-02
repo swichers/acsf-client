@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
@@ -8,11 +8,11 @@ use swichers\Acsf\Client\Client;
 use swichers\Acsf\Client\Endpoints\Action\ActionBase;
 
 /**
- * Class ActionBaseTest
- *
- * @package swichers\Acsf\Tests\Client\Endpoints\Action
+ * Tests for the ActionBaseTest Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\ActionBase
+ *
+ * @group AcsfClient
  */
 class ActionBaseTest extends TestCase {
 
@@ -26,15 +26,18 @@ class ActionBaseTest extends TestCase {
   public function test__construct() {
 
     /** @var \PHPUnit\Framework\MockObject\MockObject | \swichers\Acsf\Client\Endpoints\Action\ActionGetEntityBase $mock */
-    $mock = $this->getMockBuilder(ActionBase::class)
-      ->setConstructorArgs([$this->mockClient])
-      ->getMockForAbstractClass();
+    $mock = $this->getMockBuilder(ActionBase::class)->setConstructorArgs(
+      [$this->mockClient]
+    )->getMockForAbstractClass();
 
     $reflectionClass = new ReflectionClass(ActionBase::class);
     $reflectionProperty = $reflectionClass->getProperty('client');
     $reflectionProperty->setAccessible(TRUE);
 
-    $this->assertInstanceOf(Client::class, $reflectionProperty->getValue($mock));
+    $this->assertInstanceOf(
+      Client::class,
+      $reflectionProperty->getValue($mock)
+    );
   }
 
   protected function setUp() {

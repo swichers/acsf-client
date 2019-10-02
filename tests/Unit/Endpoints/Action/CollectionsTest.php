@@ -1,20 +1,21 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Collections;
-use swichers\Acsf\Client\Tests\Traits\SharedListChecks;
 
 /**
- * Class CollectionsTest
- *
- * @package swichers\Acsf\Tests\Client\Endpoints\Action
+ * Tests for the CollectionsTest Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\Collections
+ *
+ * @group AcsfClient
  */
-class CollectionsTest extends ActionTestBase {
+class CollectionsTest extends AbstractActionTestBase {
 
   /**
+   * Validate we can list Collections.
+   *
    * @covers ::list
    */
   public function testList() {
@@ -24,6 +25,8 @@ class CollectionsTest extends ActionTestBase {
   }
 
   /**
+   * Validate we get a Collection entity type.
+   *
    * @covers ::getEntityType
    */
   public function testGetEntityType() {
@@ -33,6 +36,8 @@ class CollectionsTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can create a Collection.
+   *
    * @covers ::create
    */
   public function testCreate() {
@@ -42,7 +47,7 @@ class CollectionsTest extends ActionTestBase {
     $result = $action->create('Test', [123], [456], []);
     $this->assertEquals('collections', $result['internal_method']);
 
-    // No options means no options
+    // No options means no options.
     $expected = [
       'name' => 'Test',
       'site_ids' => [123],
@@ -51,15 +56,25 @@ class CollectionsTest extends ActionTestBase {
     $this->assertEquals($expected, $result['json']);
 
     // We're pruning keys.
-    $result = $action->create('Test', [123], [456], [
-      'random_str' => TRUE,
-      'internal_domain_prefix' => 'xyz',
-    ]);
+    $result = $action->create(
+      'Test',
+      [123],
+      [456],
+      [
+        'random_str' => TRUE,
+        'internal_domain_prefix' => 'xyz',
+      ]
+    );
     $this->assertArrayNotHasKey('random_test', $result['json']);
     $this->assertEquals('xyz', $result['json']['internal_domain_prefix']);
 
     // We're setting values.
-    $result = $action->create('Test', [123], [456], ['internal_domain_prefix' => 'xyz']);
+    $result = $action->create(
+      'Test',
+      [123],
+      [456],
+      ['internal_domain_prefix' => 'xyz']
+    );
     $expected = [
       'name' => 'Test',
       'site_ids' => [123],
@@ -67,7 +82,6 @@ class CollectionsTest extends ActionTestBase {
       'internal_domain_prefix' => 'xyz',
     ];
     $this->assertEquals($expected, $result['json']);
-
   }
 
 }

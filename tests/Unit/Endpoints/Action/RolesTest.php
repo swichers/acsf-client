@@ -1,19 +1,21 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Roles;
 
 /**
- * Class RolesTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Action
+ * Tests for the RolesTest Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\Roles
+ *
+ * @group AcsfClient
  */
-class RolesTest extends ActionTestBase {
+class RolesTest extends AbstractActionTestBase {
 
   /**
+   * Validate we can list Roles.
+   *
    * @covers ::list
    */
   public function testList() {
@@ -23,6 +25,8 @@ class RolesTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can create Roles.
+   *
    * @covers ::create
    */
   public function testCreate() {
@@ -35,6 +39,8 @@ class RolesTest extends ActionTestBase {
   }
 
   /**
+   * Validate we get the Role entity type.
+   *
    * @covers ::getEntityType
    */
   public function testGetEntityType() {

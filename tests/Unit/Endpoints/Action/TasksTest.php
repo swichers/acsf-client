@@ -1,19 +1,22 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Tasks;
+use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 
 /**
- * Class TasksTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Action
+ * Tests for the TasksTest Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\Tasks
+ *
+ * @group AcsfClient
  */
-class TasksTest extends ActionTestBase {
+class TasksTest extends AbstractActionTestBase {
 
   /**
+   * Validate we can list Tasks.
+   *
    * @covers ::list
    */
   public function testList() {
@@ -39,33 +42,44 @@ class TasksTest extends ActionTestBase {
     $this->assertEquals('error', $result['query']['status']);
     $this->assertEquals('softpause-for-update', $result['query']['class']);
 
-
     $result = $action->list(['status' => 'not-started']);
     $this->assertEquals('not-started', $result['query']['status']);
 
   }
 
   /**
+   * Validate we get an exception with a bad List status.
+   *
    * @covers ::list
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   *
+   * @depends testList
    */
   public function testListFailStatus() {
 
     $action = new Tasks($this->getMockAcsfClient());
+
+    $this->expectException(InvalidOptionException::class);
     $action->list(['status' => 'abc123']);
   }
 
   /**
+   * Validate we get an exception with a bad List class.
+   *
    * @covers ::list
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   *
+   * @depends testList
    */
   public function testListFailClass() {
 
     $action = new Tasks($this->getMockAcsfClient());
+
+    $this->expectException(InvalidOptionException::class);
     $action->list(['class' => 'abc123']);
   }
 
   /**
+   * Validate we can pause Task processing.
+   *
    * @covers ::pause
    */
   public function testPause() {
@@ -88,6 +102,8 @@ class TasksTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can get a Task entity type.
+   *
    * @covers ::getEntityType
    */
   public function testGetEntityType() {
@@ -97,8 +113,9 @@ class TasksTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can get info by class type.
+   *
    * @covers ::getClassInfo
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
   public function testGetClassInfo() {
 
@@ -106,8 +123,24 @@ class TasksTest extends ActionTestBase {
     $result = $action->getClassInfo('softpaused');
     $this->assertEquals('classes/softpaused', $result['internal_method']);
     $result = $action->getClassInfo('softpause-for-update');
-    $this->assertEquals('classes/softpause-for-update', $result['internal_method']);
+    $this->assertEquals(
+      'classes/softpause-for-update',
+      $result['internal_method']
+    );
+  }
 
+  /**
+   * Validate we get an exception when given a bad class type.
+   *
+   * @covers ::getClassInfo
+   *
+   * @depends testGetClassInfo
+   */
+  public function testGetClassInfoFailClassType() {
+
+    $action = new Tasks($this->getMockAcsfClient());
+
+    $this->expectException(InvalidOptionException::class);
     $action->getClassInfo('abc123');
   }
 

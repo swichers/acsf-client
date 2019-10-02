@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Discovery;
 
@@ -10,19 +10,27 @@ use swichers\Acsf\Client\Client;
 use swichers\Acsf\Client\Discovery\Discoverer;
 use swichers\Acsf\Client\Discovery\Manager;
 use swichers\Acsf\Client\Endpoints\Action\Sites;
+use swichers\Acsf\Client\Exceptions\MissingEndpointException;
 
 /**
- * Class ManagerTest
- *
- * @package swichers\Acsf\Tests\Discovery
+ * Tests for our Action and Entity managers.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Discovery\Manager
+ *
+ * @group AcsfClient
  */
 class ManagerTest extends TestCase {
 
+  /**
+   * An Action discoverer.
+   *
+   * @var \swichers\Acsf\Client\Discovery\Discoverer
+   */
   protected $actionDiscoverer;
 
   /**
+   * Validates our manager can return discovered Actions.
+   *
    * @covers ::getAvailable
    * @covers ::__construct
    */
@@ -33,6 +41,8 @@ class ManagerTest extends TestCase {
   }
 
   /**
+   * Validates we can create a Manager of a certain type.
+   *
    * @covers ::create
    * @covers ::__construct
    */
@@ -44,21 +54,30 @@ class ManagerTest extends TestCase {
       ->disableOriginalConstructor()
       ->getMock();
 
-    $this->assertInstanceOf(Sites::class, $manager->create('Sites', $mockClient, 123));
+    $this->assertInstanceOf(
+      Sites::class,
+      $manager->create('Sites', $mockClient, 123)
+    );
   }
 
   /**
+   * Validate we get an exception when trying to create an invalid Manager.
+   *
    * @covers ::create
    *
-   * @expectedException \swichers\Acsf\Client\Exceptions\MissingEndpointException
+   * @depends testCreate
    */
   public function testCreateFailType() {
 
     $manager = new Manager($this->actionDiscoverer);
+
+    $this->expectException(MissingEndpointException::class);
     $manager->create('Abc' . time());
   }
 
   /**
+   * Validate we can retrieve an Action from the Manager.
+   *
    * @covers ::get
    * @covers ::__construct
    */
@@ -69,18 +88,20 @@ class ManagerTest extends TestCase {
     $this->assertFalse($manager->get('Abc' . time()));
   }
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
 
     parent::setUp();
 
+    // We must register a default loader of class_exists.
     AnnotationRegistry::registerLoader('class_exists');
 
     $namespace = '\\swichers\\Acsf\\Client\\Endpoints\\Action';
-    $directory = 'Endpoints/Action';
-    $rootDir = '.';
-    $annotationClass = Action::class;
-    $annotationReader = new AnnotationReader();
-
-    $this->actionDiscoverer = new Discoverer($namespace, $directory, $rootDir, $annotationClass, $annotationReader);
+    $this->actionDiscoverer = new Discoverer(
+      $namespace, 'Endpoints/Action', '.', Action::class, new AnnotationReader()
+    );
   }
+
 }

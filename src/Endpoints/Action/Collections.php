@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
@@ -8,7 +8,6 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
 /**
  * ACSF Endpoint Wrapper: Collections.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(name = "Collections")
  */
 class Collections extends ActionGetEntityBase {
@@ -104,7 +103,12 @@ class Collections extends ActionGetEntityBase {
    * ```
    *
    */
-  public function create(string $name, array $siteIds, array $groupIds, array $options = []): array {
+  public function create(
+    string $name,
+    array $siteIds,
+    array $groupIds,
+    array $options = []
+  ): array {
 
     $options = $this->limitOptions($options, ['internal_domain_prefix']);
 

@@ -1,15 +1,13 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
-
 
 use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 
 /**
  * An Entity creator aware version of ActionBase.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
+
  */
 abstract class ActionGetEntityBase extends ActionBase {
 
@@ -36,4 +34,5 @@ abstract class ActionGetEntityBase extends ActionBase {
    *   The name of the Entity type.
    */
   abstract function getEntityType(): string;
+
 }

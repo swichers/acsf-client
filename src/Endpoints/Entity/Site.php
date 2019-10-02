@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
@@ -8,7 +8,6 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
 /**
  * Class Site
  *
- * @package swichers\Acsf\Client\Endpoints\Entity
  * @Entity(name = "Site")
  */
 class Site extends EntityBase {
@@ -130,11 +129,14 @@ class Site extends EntityBase {
       $options['group_ids'] = $this->cleanIntArray($options['group_ids']);
     }
 
-    return $this->client->apiPost([
-      'sites',
-      $this->id(),
-      'duplicate',
-    ], $options)->toArray();
+    return $this->client->apiPost(
+      [
+        'sites',
+        $this->id(),
+        'duplicate',
+      ],
+      $options
+    )->toArray();
   }
 
   /**
@@ -178,15 +180,21 @@ class Site extends EntityBase {
    */
   public function backup(array $options = []): array {
 
-    $options = $this->limitOptions($options, array_merge(['label'], $this->backupFields));
+    $options = $this->limitOptions(
+      $options,
+      array_merge(['label'], $this->backupFields)
+    );
 
     $options = $this->validateBackupOptions($options);
 
-    return $this->client->apiPost([
-      'sites',
-      $this->id(),
-      'backup',
-    ], $options)->toArray();
+    return $this->client->apiPost(
+      [
+        'sites',
+        $this->id(),
+        'backup',
+      ],
+      $options
+    )->toArray();
   }
 
   /**
@@ -260,11 +268,14 @@ class Site extends EntityBase {
     $options = $this->limitOptions($options, ['limit', 'page']);
     $options = $this->constrictPaging($options);
 
-    return $this->client->apiGet([
-      'sites',
-      $this->id(),
-      'backups',
-    ], $options)->toArray();
+    return $this->client->apiGet(
+      [
+        'sites',
+        $this->id(),
+        'backups',
+      ],
+      $options
+    )->toArray();
   }
 
   /**
@@ -366,11 +377,14 @@ class Site extends EntityBase {
    */
   public function addDomain(string $domainName): array {
 
-    return $this->client->apiPost([
-      'domains',
-      $this->id(),
-      'add',
-    ], ['domain_name' => $domainName])->toArray();
+    return $this->client->apiPost(
+      [
+        'domains',
+        $this->id(),
+        'add',
+      ],
+      ['domain_name' => $domainName]
+    )->toArray();
   }
 
   /**
@@ -406,11 +420,14 @@ class Site extends EntityBase {
    */
   public function removeDomain(string $domainName): array {
 
-    return $this->client->apiPost([
-      'domains',
-      $this->id(),
-      'remove',
-    ], ['domain_name' => $domainName])->toArray();
+    return $this->client->apiPost(
+      [
+        'domains',
+        $this->id(),
+        'remove',
+      ],
+      ['domain_name' => $domainName]
+    )->toArray();
   }
 
 }

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Discovery;
 
@@ -64,7 +64,13 @@ class Discoverer implements DiscovererInterface {
    * @param \Doctrine\Common\Annotations\Reader $annotationReader
    *   A Doctrine annotation parser.
    */
-  public function __construct(string $namespace, string $directory, string $rootDir, string $annotationClass, Reader $annotationReader) {
+  public function __construct(
+    string $namespace,
+    string $directory,
+    string $rootDir,
+    string $annotationClass,
+    Reader $annotationReader
+  ) {
 
     $this->namespace = $namespace;
     $this->annotationReader = $annotationReader;
@@ -100,7 +106,10 @@ class Discoverer implements DiscovererInterface {
     /** @var \Symfony\Component\Finder\SplFileInfo $file */
     foreach ($finder as $file) {
       $class = $this->namespace . '\\' . $file->getBasename('.php');
-      $annotation = $this->annotationReader->getClassAnnotation(new ReflectionClass($class), $this->annotationClass);
+      $annotation = $this->annotationReader->getClassAnnotation(
+        new ReflectionClass($class),
+        $this->annotationClass
+      );
       if (!$annotation) {
         continue;
       }

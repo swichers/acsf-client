@@ -1,5 +1,4 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
@@ -9,7 +8,6 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
 /**
  * ACSF Endpoint Wrapper: Roles.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(
  *   name = "Roles",
  *   entity_type = "Role"
@@ -59,7 +57,6 @@ class Roles extends ActionGetEntityBase {
 
     return $this->client->apiGet('roles', $options)->toArray();
   }
-
 
   /**
    * Create a role.

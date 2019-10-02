@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
@@ -8,7 +8,6 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
 /**
  * ACSF Endpoint Wrapper: Sites.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(name = "SslCertificates")
  */
 class SslCertificates extends ActionBase {
@@ -132,7 +131,12 @@ class SslCertificates extends ActionBase {
    *   }
    * ```
    */
-  public function create(string $label, string $certificate, string $privateKey, array $options = []): array {
+  public function create(
+    string $label,
+    string $certificate,
+    string $privateKey,
+    array $options = []
+  ): array {
 
     $options = $this->limitOptions($options, ['stack_id', 'ca_certificates']);
     $options['label'] = $label;

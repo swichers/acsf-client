@@ -1,33 +1,41 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Stage;
+use swichers\Acsf\Client\Exceptions\InvalidEnvironmentException;
 
 /**
- * Class StageTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Action
+ * Tests for the Stage Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\Stage
+ *
+ * @group AcsfClient
  */
-class StageTest extends ActionTestBase {
+class StageTest extends AbstractActionTestBase {
 
   /**
+   * Validates we can get a list of environments.
+   *
    * @covers ::getEnvironments
    */
   public function testGetEnvironments() {
 
     $action = new Stage($this->getMockAcsfClient());
-    $this->assertEquals([
-      'dev' => 'dev',
-      'test' => 'test',
-      'live' => 'live',
-    ], $action->getEnvironments());
+    $this->assertEquals(
+      [
+        'dev' => 'dev',
+        'test' => 'test',
+        'live' => 'live',
+      ],
+      $action->getEnvironments()
+    );
 
   }
 
   /**
+   * Validates we can backport environments.
+   *
    * @covers ::stage
    */
   public function testStage() {
@@ -49,12 +57,18 @@ class StageTest extends ActionTestBase {
   }
 
   /**
+   * Validate we get an exception when trying to stage an invalid environment.
+   *
    * @covers ::stage
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidEnvironmentException
+   *
+   * @depends testStage
    */
   public function testStageEnvFail() {
 
     $action = new Stage($this->getMockAcsfClient());
+
+    $this->expectException(InvalidEnvironmentException::class);
     $action->stage('abc123', []);
   }
+
 }

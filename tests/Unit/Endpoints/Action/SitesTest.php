@@ -1,19 +1,21 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Sites;
 
 /**
- * Class SitesTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Action
+ * Tests for the SitesTest Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\Sites
+ *
+ * @group AcsfClient
  */
-class SitesTest extends ActionTestBase {
+class SitesTest extends AbstractActionTestBase {
 
   /**
+   * Validate we can get a list of Sites.
+   *
    * @covers ::list
    */
   public function testList() {
@@ -38,6 +40,8 @@ class SitesTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can create new Sites.
+   *
    * @covers ::create
    */
   public function testCreate() {
@@ -55,11 +59,13 @@ class SitesTest extends ActionTestBase {
     $this->assertEquals(1, $result['json']['stack_id']);
     $this->assertEquals([123, 456], $result['json']['group_ids']);
 
-    $result = $action->create(20, ['stack_id' => 20]);
+    $result = $action->create('UnitTest', ['stack_id' => 20]);
     $this->assertEquals(20, $result['json']['stack_id']);
   }
 
   /**
+   * Validate we can get the Site entity type.
+   *
    * @covers ::getEntityType
    */
   public function testGetEntityType() {
@@ -67,4 +73,5 @@ class SitesTest extends ActionTestBase {
     $action = new Sites($this->mockClient);
     $this->assertSame('Site', $action->getEntityType());
   }
+
 }

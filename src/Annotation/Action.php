@@ -1,9 +1,8 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;
-
 
 /**
  * @Annotation

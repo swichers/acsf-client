@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests;
 
@@ -10,19 +10,22 @@ use swichers\Acsf\Client\Endpoints\Action\ActionBase;
 use swichers\Acsf\Client\Endpoints\Action\ActionInterface;
 use swichers\Acsf\Client\Endpoints\Entity\EntityBase;
 use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
+use swichers\Acsf\Client\Exceptions\InvalidConfigurationException;
+use swichers\Acsf\Client\Exceptions\InvalidCredentialsException;
+use swichers\Acsf\Client\Exceptions\MissingActionException;
 use swichers\Acsf\Client\Exceptions\MissingEndpointException;
+use swichers\Acsf\Client\Exceptions\MissingEntityException;
 use swichers\Acsf\Client\ResponseInterface;
 use Symfony\Component\HttpClient\MockHttpClient;
 
 /**
- * Tests for the main Acsf Client class.
+ * Tests for the main ACSF Client class.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Client
  *
  * @group AcsfClient
  */
-class ClientTest extends TestCase
-{
+class ClientTest extends TestCase {
 
   /**
    * A mocked Action Manager.
@@ -43,8 +46,7 @@ class ClientTest extends TestCase
    *
    * @covers ::__construct
    */
-  public function testConstructClient()
-  {
+  public function testConstructClient() {
 
     $this->assertInstanceOf(Client::class, $this->getClient());
   }
@@ -56,8 +58,7 @@ class ClientTest extends TestCase
    * @covers ::getConfig
    * @covers ::validateConfig
    */
-  public function testSetConfig()
-  {
+  public function testSetConfig() {
 
     $client = $this->getClient();
 
@@ -74,13 +75,12 @@ class ClientTest extends TestCase
    * @covers ::setConfig
    *
    * @depends testSetConfig
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidConfigurationException
    */
-  public function testSetConfigFailNoConfig()
-  {
+  public function testSetConfigFailNoConfig() {
 
     $client = $this->getClient();
+
+    $this->expectException(InvalidConfigurationException::class);
     $client->setConfig([]);
   }
 
@@ -90,19 +90,17 @@ class ClientTest extends TestCase
    * @covers ::setConfig
    *
    * @depends testSetConfig
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidConfigurationException
    */
-  public function testSetConfigFailEmptyConfig()
-  {
+  public function testSetConfigFailEmptyConfig() {
 
     $client = $this->getClient();
+    $this->expectException(InvalidConfigurationException::class);
     $client->setConfig(
       [
-        'username' => null,
-        'api_key' => null,
-        'domain' => null,
-        'environment' => null,
+        'username' => NULL,
+        'api_key' => NULL,
+        'domain' => NULL,
+        'environment' => NULL,
       ]
     );
   }
@@ -113,13 +111,11 @@ class ClientTest extends TestCase
    * @covers ::setConfig
    *
    * @depends testSetConfig
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidConfigurationException
    */
-  public function testSetConfigFailNoEnv()
-  {
+  public function testSetConfigFailNoEnv() {
 
     $client = $this->getClient();
+    $this->expectException(InvalidConfigurationException::class);
     $client->setConfig(
       [
         'username' => 'abc',
@@ -135,13 +131,11 @@ class ClientTest extends TestCase
    * @covers ::setConfig
    *
    * @depends testSetConfig
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidConfigurationException
    */
-  public function testSetConfigFailNoApiKey()
-  {
+  public function testSetConfigFailNoApiKey() {
 
     $client = $this->getClient();
+    $this->expectException(InvalidConfigurationException::class);
     $client->setConfig(
       [
         'username' => 'abc',
@@ -157,13 +151,11 @@ class ClientTest extends TestCase
    * @covers ::setConfig
    *
    * @depends testSetConfig
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidConfigurationException
    */
-  public function testSetConfigFailNoDomain()
-  {
+  public function testSetConfigFailNoDomain() {
 
     $client = $this->getClient();
+    $this->expectException(InvalidConfigurationException::class);
     $client->setConfig(
       [
         'username' => 'abc',
@@ -179,13 +171,11 @@ class ClientTest extends TestCase
    * @covers ::setConfig
    *
    * @depends testSetConfig
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidConfigurationException
    */
-  public function testSetConfigFailNoUsername()
-  {
+  public function testSetConfigFailNoUsername() {
 
     $client = $this->getClient();
+    $this->expectException(InvalidConfigurationException::class);
     $client->setConfig(
       [
         'api_key' => 'abc',
@@ -202,8 +192,7 @@ class ClientTest extends TestCase
    *
    * @depends testSetConfig
    */
-  public function testGetApiUrl()
-  {
+  public function testGetApiUrl() {
 
     $client = $this->getClient(
       [
@@ -270,28 +259,25 @@ class ClientTest extends TestCase
    *
    * @depends testSetConfig
    */
-  public function testTestConnection()
-  {
+  public function testTestConnection() {
 
     $client = $this->getClient();
-    $this->assertTrue($client->testConnection(false));
+    $this->assertTrue($client->testConnection(FALSE));
 
     $client->setConfig(['username' => 'abc123'] + $client->getConfig());
-    $this->assertFalse($client->testConnection(false));
+    $this->assertFalse($client->testConnection(FALSE));
   }
 
   /**
    * Validate that a failed connection can trigger an exception.
    *
    * @covers ::testConnection
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidCredentialsException
    */
-  public function testTestConnectionFailCredsExcept()
-  {
+  public function testTestConnectionFailCredsExcept() {
 
     $client = $this->getClient(['username' => 'abc123']);
-    $client->testConnection(true);
+    $this->expectException(InvalidCredentialsException::class);
+    $client->testConnection(TRUE);
   }
 
   /**
@@ -301,8 +287,7 @@ class ClientTest extends TestCase
    * @covers ::apiRequest
    * @covers ::getMethodUrl
    */
-  public function testApiGet()
-  {
+  public function testApiGet() {
 
     $client = $this->getClient();
     $resp = $client->apiGet('Unit/Test');
@@ -334,8 +319,7 @@ class ClientTest extends TestCase
    * @covers ::apiRequest
    * @covers ::getMethodUrl
    */
-  public function testApiPost()
-  {
+  public function testApiPost() {
 
     $resp = $this->getClient()->apiPost('Unit/Test', []);
     $this->assertInstanceOf(ResponseInterface::class, $resp);
@@ -352,8 +336,7 @@ class ClientTest extends TestCase
    * @covers ::apiRequest
    * @covers ::getMethodUrl
    */
-  public function testApiDelete()
-  {
+  public function testApiDelete() {
 
     $resp = $this->getClient()->apiDelete('Unit/Test', []);
     $this->assertInstanceOf(ResponseInterface::class, $resp);
@@ -370,8 +353,7 @@ class ClientTest extends TestCase
    * @covers ::apiRequest
    * @covers ::getMethodUrl
    */
-  public function testApiPut()
-  {
+  public function testApiPut() {
 
     $resp = $this->getClient()->apiPut('Unit/Test', []);
     $this->assertInstanceOf(ResponseInterface::class, $resp);
@@ -386,8 +368,7 @@ class ClientTest extends TestCase
    *
    * @covers ::getAction
    */
-  public function testGetAction()
-  {
+  public function testGetAction() {
 
     $client = $this->getClient();
     $this->assertInstanceOf(
@@ -400,13 +381,11 @@ class ClientTest extends TestCase
    * Validate invalid Actions cause an Exception.
    *
    * @covers ::getAction
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\MissingActionException
    */
-  public function testGetActionFailType()
-  {
+  public function testGetActionFailType() {
 
     $client = $this->getClient();
+    $this->expectException(MissingActionException::class);
     $client->getAction('ThisActionDoesNotExist');
   }
 
@@ -415,8 +394,7 @@ class ClientTest extends TestCase
    *
    * @covers ::getEntity
    */
-  public function testGetEntity()
-  {
+  public function testGetEntity() {
 
     $client = $this->getClient();
     $this->assertInstanceOf(
@@ -431,13 +409,11 @@ class ClientTest extends TestCase
    * @covers ::getEntity
    *
    * @depends testGetEntity
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\MissingEntityException
    */
-  public function testGetEntityFailType()
-  {
+  public function testGetEntityFailType() {
 
     $client = $this->getClient();
+    $this->expectException(MissingEntityException::class);
     $client->getEntity('ThisEntityDoesNotExist', 123);
   }
 
@@ -447,21 +423,18 @@ class ClientTest extends TestCase
    * @covers ::getEntity
    *
    * @depends testGetEntity
-   *
-   * @expectedException \swichers\Acsf\Client\Exceptions\MissingEndpointException
    */
-  public function testGetEntityFailId()
-  {
+  public function testGetEntityFailId() {
 
     $client = $this->getClient();
+    $this->expectException(MissingEndpointException::class);
     $client->getEntity('Backup', 456);
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp()
-  {
+  protected function setUp() {
 
     parent::setUp();
 
@@ -490,7 +463,7 @@ class ClientTest extends TestCase
           return $mockAction;
         }
 
-        return null;
+        return NULL;
       }
     );
 
@@ -535,9 +508,9 @@ class ClientTest extends TestCase
    *   An array of config information to use.
    *
    * @return \swichers\Acsf\Client\Client
+   *   An ACSF Client.
    */
-  protected function getClient(array $config = [])
-  {
+  protected function getClient(array $config = []) {
 
     $defaultConfig = [
       'username' => 'Nulla Etiam nisi',
@@ -553,4 +526,5 @@ class ClientTest extends TestCase
       $config + $defaultConfig
     );
   }
+
 }

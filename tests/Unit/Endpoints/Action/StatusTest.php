@@ -1,19 +1,21 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Status;
 
 /**
- * Class StatusTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Action
+ * Tests for the StatusTest Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\Status
+ *
+ * @group AcsfClient
  */
-class StatusTest extends ActionTestBase {
+class StatusTest extends AbstractActionTestBase {
 
   /**
+   * Validate we can get ACSF info.
+   *
    * @covers ::getSiteFactoryInfo
    */
   public function testGetSiteFactoryInfo() {
@@ -25,6 +27,8 @@ class StatusTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can execute a ping request.
+   *
    * @covers ::ping
    */
   public function testPing() {
@@ -36,6 +40,8 @@ class StatusTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can get a status report.
+   *
    * @covers ::get
    */
   public function testGet() {
@@ -48,6 +54,8 @@ class StatusTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can set ACSF service status.
+   *
    * @covers ::set
    */
   public function testSet() {
@@ -65,10 +73,13 @@ class StatusTest extends ActionTestBase {
     $this->assertEquals('status', $result['internal_method']);
     $this->assertFalse($result['json']['all']);
     $this->assertTrue($result['json']['site_creation']);
-    $this->assertEquals('tomorrow +3 days', $result['json']['site_duplication']);
+    $this->assertEquals(
+      'tomorrow +3 days',
+      $result['json']['site_duplication']
+    );
     $this->assertEquals('now', $result['json']['domain_management']);
     $this->assertEquals(1234567890, $result['json']['bulk_operations']);
     $this->assertArrayNotHasKey('random', $result['json']);
-
   }
+
 }

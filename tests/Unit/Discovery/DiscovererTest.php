@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Discovery;
 
@@ -10,30 +10,30 @@ use swichers\Acsf\Client\Discovery\Discoverer;
 use swichers\Acsf\Client\Endpoints\Action\Sites;
 
 /**
- * Class DiscovererTest
- *
- * @package swichers\Acsf\Tests\Discovery
+ * Tests for our Action and Entity discoverer helper.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Discovery\Discoverer
+ *
+ * @group AcsfClient
  */
 class DiscovererTest extends TestCase {
 
   /**
+   * Validate we can get a list of discovered items.
+   *
    * @covers ::getItems
    * @covers ::discoverItems
    * @covers ::__construct
    */
   public function testGetItems() {
 
+    // We must register a default loader of class_exists.
     AnnotationRegistry::registerLoader('class_exists');
 
     $namespace = '\\swichers\\Acsf\\Client\\Endpoints\\Action';
-    $directory = 'Endpoints/Action';
-    $rootDir = '.';
-    $annotationClass = Action::class;
-    $annotationReader = new AnnotationReader();
-
-    $disc = new Discoverer($namespace, $directory, $rootDir, $annotationClass, $annotationReader);
+    $disc = new Discoverer(
+      $namespace, 'Endpoints/Action', '.', Action::class, new AnnotationReader()
+    );
     $items = $disc->getItems();
 
     $this->assertArrayHasKey('Sites', $items);
@@ -48,4 +48,5 @@ class DiscovererTest extends TestCase {
     ];
     $this->assertEquals($sites, $items['Sites']);
   }
+
 }

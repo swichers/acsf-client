@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
@@ -11,7 +11,6 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * Sites are the product of the Site Factory. This resource is responsible for
  * managing those sites.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
  * @Action(
  *   name = "Sites",
  *   entity_type = "Site"
@@ -76,18 +75,23 @@ class Sites extends ActionGetEntityBase {
    */
   public function list(array $options = []): array {
 
-    $options = $this->limitOptions($options, [
-      'limit',
-      'page',
-      'canary',
-      'show_incomplete',
-    ]);
+    $options = $this->limitOptions(
+      $options,
+      [
+        'limit',
+        'page',
+        'canary',
+        'show_incomplete',
+      ]
+    );
     $options = $this->constrictPaging($options);
     if (isset($options['canary'])) {
       $options['canary'] = $this->ensureBool($options['canary']);
     }
     if (isset($options['show_incomplete'])) {
-      $options['show_incomplete'] = $this->ensureBool($options['show_incomplete']);
+      $options['show_incomplete'] = $this->ensureBool(
+        $options['show_incomplete']
+      );
     }
 
     return $this->client->apiGet('sites', $options)->toArray();
@@ -140,11 +144,14 @@ class Sites extends ActionGetEntityBase {
    */
   public function create(string $siteName, array $options = []): array {
 
-    $options = $this->limitOptions($options, [
-      'group_ids',
-      'install_profile',
-      'stack_id',
-    ]);
+    $options = $this->limitOptions(
+      $options,
+      [
+        'group_ids',
+        'install_profile',
+        'stack_id',
+      ]
+    );
     $options['site_name'] = $siteName;
     $options['stack_id'] = max(1, $options['stack_id'] ?? 1);
 
