@@ -1,6 +1,7 @@
 .vscode/*
 .idea/*
 /vendor/
+.phpcs-cache
 
 # macOS
 

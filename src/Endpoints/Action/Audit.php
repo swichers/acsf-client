@@ -1,9 +1,7 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
@@ -15,10 +13,9 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * modified, or deleted. This API endpoint is for users to remotely interact
  * with the audit logging system.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
- * @Action(name = "Audit")
+ * @\swichers\Acsf\Client\Annotation\Action(name = "Audit")
  */
-class Audit extends ActionBase {
+class Audit extends AbstractAction {
 
   use ValidationTrait;
 
@@ -72,16 +69,19 @@ class Audit extends ActionBase {
    */
   public function list(array $options = []): array {
 
-    $options = $this->limitOptions($options, [
-      'limit',
-      'page',
-      'order',
-      'source',
-      'scope',
-      'type',
-      'nid',
-      'uid',
-    ]);
+    $options = $this->limitOptions(
+      $options,
+      [
+        'limit',
+        'page',
+        'order',
+        'source',
+        'scope',
+        'type',
+        'nid',
+        'uid',
+      ]
+    );
     $options = $this->constrictPaging($options);
 
     return $this->client->apiGet('audit', $options)->toArray();

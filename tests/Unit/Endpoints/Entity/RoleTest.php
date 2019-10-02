@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Entity;
 
@@ -7,17 +7,19 @@ use swichers\Acsf\Client\Endpoints\Entity\Role;
 use swichers\Acsf\Client\Tests\Traits\AcsfClientTrait;
 
 /**
- * Class RoleTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Entity
+ * Tests for the Role entity type.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Entity\Role
+ *
+ * @group AcsfClient
  */
 class RoleTest extends TestCase {
 
   use AcsfClientTrait;
 
   /**
+   * Validate we can get Role details.
+   *
    * @covers ::details
    */
   public function testDetails() {
@@ -28,6 +30,8 @@ class RoleTest extends TestCase {
   }
 
   /**
+   * Validate we can update a Role.
+   *
    * @covers ::update
    */
   public function testUpdate() {
@@ -39,6 +43,8 @@ class RoleTest extends TestCase {
   }
 
   /**
+   * Validate we can delete a Role.
+   *
    * @covers ::delete
    */
   public function testDelete() {

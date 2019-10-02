@@ -1,17 +1,15 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
-use swichers\Acsf\Client\Annotation\Entity;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
- * Class Backup
+ * Class Backup.
  *
- * @package swichers\Acsf\Client\Endpoints\Entity
- * @Entity(name = "Backup")
+ * @\swichers\Acsf\Client\Annotation\Entity(name = "Backup")
  */
-class Backup extends EntityBase {
+class Backup extends AbstractEntity {
 
   use ValidationTrait;
 
@@ -19,7 +17,7 @@ class Backup extends EntityBase {
    * Get temporary site backup URL.
    *
    * @param array $options
-   *  Additional request options.
+   *   Additional request options.
    *
    * @return array
    *   A temporary site backup URL.
@@ -50,13 +48,16 @@ class Backup extends EntityBase {
       $options['lifetime'] = max(1, $options['lifetime']);
     }
 
-    return $this->client->apiGet([
-      'sites',
-      $this->getParent()->id(),
-      'backups',
-      $this->id(),
-      'url',
-    ], $options)->toArray();
+    return $this->client->apiGet(
+      [
+        'sites',
+        $this->getParent()->id(),
+        'backups',
+        $this->id(),
+        'url',
+      ],
+      $options
+    )->toArray();
   }
 
   /**
@@ -86,20 +87,26 @@ class Backup extends EntityBase {
    */
   public function delete(array $options = []): array {
 
-    $options = $this->limitOptions($options, [
-      'callback_url',
-      'callback_method',
-      'caller_data',
-    ]);
+    $options = $this->limitOptions(
+      $options,
+      [
+        'callback_url',
+        'callback_method',
+        'caller_data',
+      ]
+    );
 
     $options = $this->validateBackupOptions($options);
 
-    return $this->client->apiDelete([
-      'sites',
-      $this->getParent()->id(),
-      'backups',
-      $this->id(),
-    ], $options)->toArray();
+    return $this->client->apiDelete(
+      [
+        'sites',
+        $this->getParent()->id(),
+        'backups',
+        $this->id(),
+      ],
+      $options
+    )->toArray();
   }
 
   /**
@@ -110,8 +117,6 @@ class Backup extends EntityBase {
    *
    * @return array
    *   Restore task information.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @version v1
    * @title Restore a site backup
@@ -153,11 +158,14 @@ class Backup extends EntityBase {
 
     $options = $this->validateBackupOptions($options);
 
-    return $this->client->apiPost([
-      'sites',
-      $this->getParent()->id(),
-      'restore',
-    ], $options)->toArray();
+    return $this->client->apiPost(
+      [
+        'sites',
+        $this->getParent()->id(),
+        'restore',
+      ],
+      $options
+    )->toArray();
   }
 
 }

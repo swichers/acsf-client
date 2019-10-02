@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
@@ -6,10 +6,8 @@ use swichers\Acsf\Client\ClientInterface;
 
 /**
  * Class ActionBase.
- *
- * @package swichers\Acsf\Client\Endpoints\Action
  */
-abstract class ActionBase implements ActionInterface {
+abstract class AbstractAction implements ActionInterface {
 
   /**
    * ACSF Client.

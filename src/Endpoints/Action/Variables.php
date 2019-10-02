@@ -1,9 +1,7 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
@@ -13,10 +11,9 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * (variable_get/set/del). It can be used to remotely modify the configuration
  * of the Factory.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
- * @Action(name = "Variables")
+ * @\swichers\Acsf\Client\Annotation\Action(name = "Variables")
  */
-class Variables extends ActionBase {
+class Variables extends AbstractAction {
 
   use ValidationTrait;
 

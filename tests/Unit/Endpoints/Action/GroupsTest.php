@@ -1,20 +1,21 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Groups;
 
 /**
- * Class GroupsTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Action
+ * Tests for the GroupsTest Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\Groups
+ *
+ * @group AcsfClient
  */
-class GroupsTest extends ActionTestBase {
-
+class GroupsTest extends AbstractActionTestBase {
 
   /**
+   * Validate we get a Group entity type.
+   *
    * @covers ::getEntityType
    */
   public function testGetEntityType() {
@@ -24,15 +25,20 @@ class GroupsTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can create a Group.
+   *
    * @covers ::create
    */
   public function testCreate() {
 
     $action = new Groups($this->getMockAcsfClient());
-    $result = $action->create('Unit/Test', [
-      'parent_id' => 123,
-      'random_stuff' => TRUE,
-    ]);
+    $result = $action->create(
+      'Unit/Test',
+      [
+        'parent_id' => 123,
+        'random_stuff' => TRUE,
+      ]
+    );
     $this->assertEquals('Unit/Test', $result['json']['group_name']);
     $this->assertEquals('groups', $result['internal_method']);
     $this->assertEquals(123, $result['json']['parent_id']);
@@ -40,6 +46,8 @@ class GroupsTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can list Groups.
+   *
    * @covers ::list
    */
   public function testList() {
@@ -47,6 +55,5 @@ class GroupsTest extends ActionTestBase {
     $action = new Groups($this->getMockAcsfClient());
     $this->assertSharedListValidation('groups', $action, 'list');
   }
-
 
 }

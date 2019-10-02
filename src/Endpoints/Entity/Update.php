@@ -1,17 +1,13 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
-use swichers\Acsf\Client\Annotation\Entity;
-
 /**
- * Class Update
+ * Class Update.
  *
- * @package swichers\Acsf\Client\Endpoints\Entity
- * @Entity(name = "Update")
+ * @\swichers\Acsf\Client\Annotation\Entity(name = "Update")
  */
-class Update extends EntityBase {
+class Update extends AbstractEntity {
 
   /**
    * Resume update processing.
@@ -52,11 +48,14 @@ class Update extends EntityBase {
    */
   public function pause(bool $pause = TRUE): array {
 
-    return $this->client->apiPost([
-      'update',
-      $this->id(),
-      'pause',
-    ], ['pause' => $pause])->toArray();
+    return $this->client->apiPost(
+      [
+        'update',
+        $this->id(),
+        'pause',
+      ],
+      ['pause' => $pause]
+    )->toArray();
   }
 
   /**

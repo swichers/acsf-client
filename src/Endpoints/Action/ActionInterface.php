@@ -1,14 +1,14 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
+
+use swichers\Acsf\Client\Endpoints\EndpointInterface;
 
 /**
  * Interface ActionInterface.
  *
  * Primarily used for type hinting and restriction.
- *
- * @package swichers\Acsf\Client\Endpoints\Action
  */
-interface ActionInterface {
+interface ActionInterface extends EndpointInterface {
 
 }

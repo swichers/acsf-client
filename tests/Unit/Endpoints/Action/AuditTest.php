@@ -1,19 +1,21 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Audit;
 
 /**
- * Class AuditTest
- *
- * @package swichers\Acsf\Tests\Client\Endpoints\Action
+ * Tests for the AuditTest Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\Audit
+ *
+ * @group AcsfClient
  */
-class AuditTest extends ActionTestBase {
+class AuditTest extends AbstractActionTestBase {
 
   /**
+   * Validate we can list audit logs.
+   *
    * @covers ::list
    */
   public function testList() {

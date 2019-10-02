@@ -1,17 +1,15 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
  * ACSF Endpoint Wrapper: Sites.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
- * @Action(name = "SslCertificates")
+ * @\swichers\Acsf\Client\Annotation\Action(name = "SslCertificates")
  */
-class SslCertificates extends ActionBase {
+class SslCertificates extends AbstractAction {
 
   use ValidationTrait;
 

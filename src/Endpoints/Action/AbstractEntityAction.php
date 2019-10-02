@@ -1,17 +1,13 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
-
 
 use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 
 /**
  * An Entity creator aware version of ActionBase.
- *
- * @package swichers\Acsf\Client\Endpoints\Action
  */
-abstract class ActionGetEntityBase extends ActionBase {
+abstract class AbstractEntityAction extends AbstractAction {
 
   /**
    * Gets an object helper for the entity ID.
@@ -21,8 +17,6 @@ abstract class ActionGetEntityBase extends ActionBase {
    *
    * @return \swichers\Acsf\Client\Endpoints\Entity\EntityInterface
    *   An instance of the object.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\MissingEntityException
    */
   public function get(int $entityId): EntityInterface {
 
@@ -35,5 +29,6 @@ abstract class ActionGetEntityBase extends ActionBase {
    * @return string
    *   The name of the Entity type.
    */
-  abstract function getEntityType(): string;
+  abstract public function getEntityType(): string;
+
 }

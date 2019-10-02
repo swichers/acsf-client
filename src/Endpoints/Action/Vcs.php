@@ -1,10 +1,7 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
@@ -18,10 +15,9 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * be deployed to a given environment. The responsibility of this resource is to
  * list those refs.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
- * @Action(name = "Vcs")
+ * @\swichers\Acsf\Client\Annotation\Action(name = "Vcs")
  */
-class Vcs extends ActionBase {
+class Vcs extends AbstractAction {
 
   use ValidationTrait;
 
@@ -33,8 +29,6 @@ class Vcs extends ActionBase {
    *
    * @return array
    *   A list of VCS refs.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @version v1
    * @title List deployable refs
@@ -59,7 +53,7 @@ class Vcs extends ActionBase {
    *     ],
    *     "current": "tags\/2.85.0.3085"
    *   }
-   *```
+   * ```
    */
   public function list(array $options = []): array {
 

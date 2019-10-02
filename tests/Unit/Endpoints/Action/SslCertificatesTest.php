@@ -1,19 +1,21 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\SslCertificates;
 
 /**
- * Class SslCertificatesTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Action
+ * Tests for the SslCertificatesTest Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\SslCertificates
+ *
+ * @group AcsfClient
  */
-class SslCertificatesTest extends ActionTestBase {
+class SslCertificatesTest extends AbstractActionTestBase {
 
   /**
+   * Validate we can get a list of SSL certs.
+   *
    * @covers ::list
    */
   public function testList() {
@@ -31,6 +33,8 @@ class SslCertificatesTest extends ActionTestBase {
   }
 
   /**
+   * Validate we can install new SSL certs.
+   *
    * @covers ::create
    */
   public function testCreate() {
@@ -41,7 +45,12 @@ class SslCertificatesTest extends ActionTestBase {
       'ca_certificates' => 'UnitTestCA',
       'another key' => TRUE,
     ];
-    $result = $action->create('UnitTest', 'UnitTestCert', 'UnitTestPrivKey', $options);
+    $result = $action->create(
+      'UnitTest',
+      'UnitTestCert',
+      'UnitTestPrivKey',
+      $options
+    );
     $this->assertEquals('ssl/certificates', $result['internal_method']);
     $this->assertEquals('UnitTest', $result['json']['label']);
     $this->assertEquals('UnitTestCert', $result['json']['certificate']);
@@ -50,8 +59,13 @@ class SslCertificatesTest extends ActionTestBase {
     $this->assertEquals(1, $result['json']['stack_id']);
     $this->assertArrayNotHasKey('another key', $result['json']);
 
-    $result = $action->create('UnitTest', 'UnitTestCert', 'UnitTestPrivKey', ['stack_id' => 3]);
+    $result = $action->create(
+      'UnitTest',
+      'UnitTestCert',
+      'UnitTestPrivKey',
+      ['stack_id' => 3]
+    );
     $this->assertEquals(3, $result['json']['stack_id']);
-
   }
+
 }

@@ -1,16 +1,13 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
-use swichers\Acsf\Client\Annotation\Entity;
-
 /**
- * Class Role
+ * Class Role.
  *
- * @package swichers\Acsf\Client\Endpoints\Entity
- * @Entity(name = "Role")
+ * @\swichers\Acsf\Client\Annotation\Entity(name = "Role")
  */
-class Role extends EntityBase {
+class Role extends AbstractEntity {
 
   /**
    * Retrieve a role by role ID.
@@ -68,10 +65,13 @@ class Role extends EntityBase {
    */
   public function update(string $newName): array {
 
-    return $this->client->apiPut([
-      'roles',
-      $this->id(),
-    ], ['new_name' => $newName])->toArray();
+    return $this->client->apiPut(
+      [
+        'roles',
+        $this->id(),
+      ],
+      ['new_name' => $newName]
+    )->toArray();
   }
 
   /**

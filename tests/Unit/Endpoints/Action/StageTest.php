@@ -1,36 +1,44 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Stage;
+use swichers\Acsf\Client\Exceptions\InvalidEnvironmentException;
 
 /**
- * Class StageTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Action
+ * Tests for the Stage Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\Stage
+ *
+ * @group AcsfClient
  */
-class StageTest extends ActionTestBase {
+class StageTest extends AbstractActionTestBase {
 
   /**
+   * Validates we can get a list of environments.
+   *
    * @covers ::getEnvironments
    */
   public function testGetEnvironments() {
 
     $action = new Stage($this->getMockAcsfClient());
-    $this->assertEquals([
-      'dev' => 'dev',
-      'test' => 'test',
-      'live' => 'live',
-    ], $action->getEnvironments());
+    $this->assertEquals(
+      [
+        'dev' => 'dev',
+        'test' => 'test',
+        'live' => 'live',
+      ],
+      $action->getEnvironments()
+    );
 
   }
 
   /**
-   * @covers ::stage
+   * Validates we can backport environments.
+   *
+   * @covers ::backport
    */
-  public function testStage() {
+  public function testBackport() {
 
     $action = new Stage($this->getMockAcsfClient());
     $options = [
@@ -39,7 +47,7 @@ class StageTest extends ActionTestBase {
       'wipe_target_environment' => 'true',
       'random_str' => FALSE,
     ];
-    $result = $action->stage('dev', [123, 456, 'abc123'], $options);
+    $result = $action->backport('dev', [123, 456, 'abc123'], $options);
     $this->assertTrue($result['json']['synchronize_all_users']);
     $this->assertFalse($result['json']['detailed_status']);
     $this->assertTrue($result['json']['wipe_target_environment']);
@@ -49,12 +57,18 @@ class StageTest extends ActionTestBase {
   }
 
   /**
-   * @covers ::stage
-   * @expectedException \swichers\Acsf\Client\Exceptions\InvalidEnvironmentException
+   * Validate we get an exception when trying to stage an invalid environment.
+   *
+   * @covers ::backport
+   *
+   * @depends testBackport
    */
-  public function testStageEnvFail() {
+  public function testBackportEnvFail() {
 
     $action = new Stage($this->getMockAcsfClient());
-    $action->stage('abc123', []);
+
+    $this->expectException(InvalidEnvironmentException::class);
+    $action->backport('abc123', []);
   }
+
 }

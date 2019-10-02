@@ -1,16 +1,13 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
-
-use swichers\Acsf\Client\Annotation\Action;
 
 /**
  * ACSF Endpoint Wrapper: Stacks.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
- * @Action(name = "Stacks")
+ * @\swichers\Acsf\Client\Annotation\Action(name = "Stacks")
  */
-class Stacks extends ActionBase {
+class Stacks extends AbstractAction {
 
   /**
    * Fetches the list of available stacks.

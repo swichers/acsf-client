@@ -1,15 +1,15 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
+
+use swichers\Acsf\Client\Endpoints\EndpointInterface;
 
 /**
  * Interface EntityInterface.
  *
  * Primarily used for type hinting and restriction.
- *
- * @package swichers\Acsf\Client\Endpoints\Entity
  */
-interface EntityInterface {
+interface EntityInterface extends EndpointInterface {
 
   /**
    * Get the entity ID.

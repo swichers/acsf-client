@@ -1,15 +1,44 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Discovery;
 
+use swichers\Acsf\Client\Endpoints\EndpointInterface;
 
+/**
+ * Interface ManagerInterface.
+ */
 interface ManagerInterface {
 
-  public function getAvailable();
+  /**
+   * Get the discovered items.
+   *
+   * @return array
+   *   An array of discovered items.
+   */
+  public function getAvailable(): array;
 
-  public function get($name);
+  /**
+   * Get details about the discovered class.
+   *
+   * @param string $name
+   *   The name of a discovered Endpoint.
+   *
+   * @return bool|object
+   *   The Annotation object or FALSE if not found.
+   */
+  public function get(string $name);
 
-  public function create($name, ...$constructor_args);
+  /**
+   * Create an instance of the requested class.
+   *
+   * @param string $name
+   *   The name of the item type to create.
+   * @param mixed $constructor_args
+   *   Arguments vary based on the type of item being created.
+   *
+   * @return \swichers\Acsf\Client\Endpoints\EndpointInterface
+   *   The created object.
+   */
+  public function create(string $name, ...$constructor_args): EndpointInterface;
 
 }

@@ -1,19 +1,21 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Vcs;
 
 /**
- * Class VcsTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Action
+ * Tests for the VcsTest Action.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\Vcs
+ *
+ * @group AcsfClient
  */
-class VcsTest extends ActionTestBase {
+class VcsTest extends AbstractActionTestBase {
 
   /**
+   * Validates we can list Vcs items.
+   *
    * @covers ::list
    */
   public function testList() {

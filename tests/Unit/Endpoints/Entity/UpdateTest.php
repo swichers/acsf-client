@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests\Endpoints\Entity;
 
@@ -7,17 +7,19 @@ use swichers\Acsf\Client\Endpoints\Entity\Update;
 use swichers\Acsf\Client\Tests\Traits\AcsfClientTrait;
 
 /**
- * Class UpdateTest
- *
- * @package swichers\Acsf\Client\Tests\Endpoints\Entity
+ * Tests for the Update entity type.
  *
  * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Entity\Update
+ *
+ * @group AcsfClient
  */
 class UpdateTest extends TestCase {
 
   use AcsfClientTrait;
 
   /**
+   * Validate we can pause an update.
+   *
    * @covers ::pause
    */
   public function testPause() {
@@ -33,6 +35,8 @@ class UpdateTest extends TestCase {
   }
 
   /**
+   * Validate we can get the status of an update.
+   *
    * @covers ::progress
    */
   public function testProgress() {
@@ -43,7 +47,11 @@ class UpdateTest extends TestCase {
   }
 
   /**
+   * Validate we can resume an update.
+   *
    * @covers ::resume
+   *
+   * @depends testPause
    */
   public function testResume() {
 

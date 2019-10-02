@@ -1,21 +1,18 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
  * ACSF Endpoint Wrapper: Roles.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
- * @Action(
+ * @\swichers\Acsf\Client\Annotation\Action(
  *   name = "Roles",
- *   entity_type = "Role"
+ *   entityType = "Role"
  * )
  */
-class Roles extends ActionGetEntityBase {
+class Roles extends AbstractEntityAction {
 
   use ValidationTrait;
 
@@ -59,7 +56,6 @@ class Roles extends ActionGetEntityBase {
 
     return $this->client->apiGet('roles', $options)->toArray();
   }
-
 
   /**
    * Create a role.

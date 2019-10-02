@@ -1,18 +1,15 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
-use swichers\Acsf\Client\Annotation\Entity;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
- * Class Task
+ * Class Task.
  *
- * @package swichers\Acsf\Client\Endpoints\Entity
- * @Entity(name = "Task")
+ * @\swichers\Acsf\Client\Annotation\Entity(name = "Task")
  */
-class Task extends EntityBase {
+class Task extends AbstractEntity {
 
   use ValidationTrait;
 
@@ -77,8 +74,6 @@ class Task extends EntityBase {
    * @return array
    *   Task log entries.
    *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
-   *
    * @version v1
    * @title (Internal use only) Get Task log information.
    * @group Tasks
@@ -117,7 +112,8 @@ class Task extends EntityBase {
       $options['descendants'] = $this->ensureBool($options['descendants']);
     }
 
-    return $this->client->apiGet(['tasks', $this->id(), 'logs'], $options)->toArray();
+    return $this->client->apiGet(['tasks', $this->id(), 'logs'], $options)
+      ->toArray();
   }
 
   /**
@@ -174,8 +170,6 @@ class Task extends EntityBase {
    * @return array
    *   Task pause status.
    *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
-   *
    * @version v1
    * @title Pause/resume task processing for a specific task
    * @group Tasks
@@ -214,8 +208,6 @@ class Task extends EntityBase {
    *
    * @return array
    *   Task pause status.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @see Task::pause()
    */

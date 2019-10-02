@@ -1,18 +1,15 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
  * ACSF Endpoint Wrapper: Dynamic Requests.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
- * @Action(name = "PageView")
+ * @\swichers\Acsf\Client\Annotation\Action(name = "PageView")
  */
-class PageView extends ActionBase {
+class PageView extends AbstractAction {
 
   use ValidationTrait;
 
@@ -26,8 +23,6 @@ class PageView extends ActionBase {
    *
    * @return array
    *   Dynamic request statistics.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @version v1
    * @title List monthly dynamic request statistics by domain.
@@ -75,13 +70,16 @@ class PageView extends ActionBase {
    */
   public function getMonthlyDataByDomain(string $date, array $options = []): array {
 
-    $options = $this->limitOptions($options, [
-      'stack_id',
-      'domain_name',
-      'sort_order',
-      'limit',
-      'page',
-    ]);
+    $options = $this->limitOptions(
+      $options,
+      [
+        'stack_id',
+        'domain_name',
+        'sort_order',
+        'limit',
+        'page',
+      ]
+    );
     $options['date'] = $date;
     $options['stack_id'] = max(1, $options['stack_id'] ?? 1);
 
@@ -97,8 +95,6 @@ class PageView extends ActionBase {
    *
    * @return array
    *   Dynamic request statistics.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    *
    * @version v1
    * @title List monthly aggregated dynamic request statistics.
@@ -144,13 +140,16 @@ class PageView extends ActionBase {
    */
   public function getMonthlyData(array $options = []): array {
 
-    $options = $this->limitOptions($options, [
-      'stack_id',
-      'start_from',
-      'sort_order',
-      'limit',
-      'page',
-    ]);
+    $options = $this->limitOptions(
+      $options,
+      [
+        'stack_id',
+        'start_from',
+        'sort_order',
+        'limit',
+        'page',
+      ]
+    );
     $options['stack_id'] = max(1, $options['stack_id'] ?? 1);
 
     return $this->genericDataRequest('start_from', FALSE, $options);
@@ -168,13 +167,14 @@ class PageView extends ActionBase {
    *
    * @return array
    *   The request result.
-   *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
   protected function genericDataRequest(string $dateKey, bool $byDomain = FALSE, array $options = []): array {
 
     if (isset($options[$dateKey])) {
-      $options[$dateKey] = $this->requirePatternMatch($options[$dateKey], '/^[0-9]{4}-[0-9]{2}$/');
+      $options[$dateKey] = $this->requirePatternMatch(
+        $options[$dateKey],
+        '/^[0-9]{4}-[0-9]{2}$/'
+      );
     }
 
     // This is the only endpoint that uses sort_order instead of order.

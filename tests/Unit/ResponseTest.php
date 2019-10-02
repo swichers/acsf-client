@@ -1,21 +1,25 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Tests;
 
 use PHPUnit\Framework\TestCase;
 use swichers\Acsf\Client\Response;
+use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
 /**
- * Class ResponseTest
+ * Tests for our ACSF Client response wrapper.
  *
- * @package swichers\Acsf\Client
  * @coversDefaultClass \swichers\Acsf\Client\Response
+ *
+ * @group AcsfClient
  */
 class ResponseTest extends TestCase {
 
   /**
+   * Validate our response can return an array.
+   *
    * @covers ::toArray
    */
   public function testToArray() {
@@ -27,19 +31,23 @@ class ResponseTest extends TestCase {
   }
 
   /**
-   * @covers ::toArray
+   * Validate we can throw an exception when asking for an array.
    *
-   * @expectedException \Symfony\Component\HttpClient\Exception\TransportException
+   * @covers ::toArray
    */
   public function testToArrayFailTransport() {
 
     $client = new MockHttpClient();
     $original = $client->request('GET', 'http://example.com');
     $resp = new Response($original);
+
+    $this->expectException(TransportException::class);
     $resp->toArray(TRUE);
   }
 
   /**
+   * Validate we can get the original Symfony response.
+   *
    * @covers ::getOriginalResponse
    * @covers ::__construct
    */

@@ -1,9 +1,7 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
-use swichers\Acsf\Client\Annotation\Action;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
@@ -24,13 +22,12 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  * progress must be monitored either by watching the site update progress page
  * on the Factory or using the WIP status REST API endpoint.
  *
- * @package swichers\Acsf\Client\Endpoints\Action
- * @Action(
+ * @\swichers\Acsf\Client\Annotation\Action(
  *   name = "Update",
- *   entity_type="Update"
+ *   entityType="Update"
  * )
  */
-class Update extends ActionGetEntityBase {
+class Update extends AbstractEntityAction {
 
   use ValidationTrait;
 
@@ -45,8 +42,6 @@ class Update extends ActionGetEntityBase {
    * @return array
    *   Update task information.
    *
-   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
-   *
    * @version v1
    * @title Start an update
    * @group Tasks
@@ -54,7 +49,7 @@ class Update extends ActionGetEntityBase {
    * @resource /api/v1/update
    * @body
    * scope        | string | no  | Either "sites", "factory", or "both". | sites
-   * start_time   | mixed  | no  | A start time string, parseable by
+   * start_time   | mixed  | no  | A start time string, parsable by
    *                               strtotime(), or "now". | now
    * sites_ref    | string | no  | A VCS ref to deploy to the sites.
    * factory_ref  | string | no  | A VCS ref to deploy to the Factory.
@@ -76,15 +71,18 @@ class Update extends ActionGetEntityBase {
    */
   public function updateCode(string $git_ref, array $options = []): array {
 
-    $options = $this->limitOptions($options, [
-      'scope',
-      'start_time',
-      'factory_ref',
-      'sites_type',
-      'factory_type',
-      'stack_id',
-      'db_update_arguments',
-    ]);
+    $options = $this->limitOptions(
+      $options,
+      [
+        'scope',
+        'start_time',
+        'factory_ref',
+        'sites_type',
+        'factory_type',
+        'stack_id',
+        'db_update_arguments',
+      ]
+    );
     $options['sites_ref'] = $git_ref;
     $options['stack_id'] = max(1, $options['stack_id'] ?? 1);
 
@@ -94,7 +92,10 @@ class Update extends ActionGetEntityBase {
     }
 
     if (isset($options['db_update_arguments'])) {
-      $this->requirePatternMatch($options['db_update_arguments'], '/^[a-zA-Z0-9 ]+$/');
+      $this->requirePatternMatch(
+        $options['db_update_arguments'],
+        '/^[a-zA-Z0-9 ]+$/'
+      );
     }
 
     $type_limits = [
@@ -103,9 +104,13 @@ class Update extends ActionGetEntityBase {
     ];
     foreach ($type_limits as $type => $limits) {
       if (isset($options[$type])) {
-        $types = is_string($options[$type]) ? explode(',', $options[$type])
-          : $options[$type];
-        $options[$type] = implode(', ', $this->filterArrayToValues($types, $limits));
+        $types =
+          is_string($options[$type]) ? explode(',', $options[$type])
+            : $options[$type];
+        $options[$type] = implode(
+          ', ',
+          $this->filterArrayToValues($types, $limits)
+        );
       }
     }
 
@@ -119,7 +124,7 @@ class Update extends ActionGetEntityBase {
    *   Additional request options.
    *
    * @return array
-   * Update process history.
+   *   Update process history.
    *
    * @version v1
    * @title List updates
@@ -135,7 +140,7 @@ class Update extends ActionGetEntityBase {
    *     {"added":"1423760581","status":"16"},
    *    "1291":
    *     {"added":"1423741555","status":"16"}}
-   *```
+   * ```
    */
   public function list(array $options = []): array {
 

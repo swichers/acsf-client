@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace swichers\Acsf\Client\Discovery;
 
@@ -6,6 +6,9 @@ use Doctrine\Common\Annotations\Reader;
 use ReflectionClass;
 use Symfony\Component\Finder\Finder;
 
+/**
+ * Class Discoverer.
+ */
 class Discoverer implements DiscovererInterface {
 
   /**
@@ -88,8 +91,6 @@ class Discoverer implements DiscovererInterface {
 
   /**
    * Discovers items.
-   *
-   * @throws \ReflectionException
    */
   protected function discoverItems(): void {
 
@@ -100,7 +101,10 @@ class Discoverer implements DiscovererInterface {
     /** @var \Symfony\Component\Finder\SplFileInfo $file */
     foreach ($finder as $file) {
       $class = $this->namespace . '\\' . $file->getBasename('.php');
-      $annotation = $this->annotationReader->getClassAnnotation(new ReflectionClass($class), $this->annotationClass);
+      $annotation = $this->annotationReader->getClassAnnotation(
+        new ReflectionClass($class),
+        $this->annotationClass
+      );
       if (!$annotation) {
         continue;
       }
