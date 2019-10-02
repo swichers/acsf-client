@@ -2,6 +2,7 @@
 
 namespace swichers\Acsf\Client\Tests;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 use swichers\Acsf\Client\Client;
 use swichers\Acsf\Client\Discovery\ActionManager;
@@ -16,7 +17,9 @@ use swichers\Acsf\Client\Exceptions\MissingActionException;
 use swichers\Acsf\Client\Exceptions\MissingEndpointException;
 use swichers\Acsf\Client\Exceptions\MissingEntityException;
 use swichers\Acsf\Client\ResponseInterface;
+use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\MockHttpClient;
+use Symfony\Component\HttpClient\Response\MockResponse;
 
 /**
  * Tests for the main ACSF Client class.
@@ -73,6 +76,7 @@ class ClientTest extends TestCase {
    * Validate we can get the configuration.
    *
    * @covers ::setConfig
+   * @covers ::validateConfig
    *
    * @depends testSetConfig
    */
@@ -88,6 +92,7 @@ class ClientTest extends TestCase {
    * Validate that setting will fail when required keys are empty.
    *
    * @covers ::setConfig
+   * @covers ::validateConfig
    *
    * @depends testSetConfig
    */
@@ -109,6 +114,7 @@ class ClientTest extends TestCase {
    * Validate setting will fail when environment is missing.
    *
    * @covers ::setConfig
+   * @covers ::validateConfig
    *
    * @depends testSetConfig
    */
@@ -129,6 +135,7 @@ class ClientTest extends TestCase {
    * Validate setting will fail when api_key is missing.
    *
    * @covers ::setConfig
+   * @covers ::validateConfig
    *
    * @depends testSetConfig
    */
@@ -149,6 +156,7 @@ class ClientTest extends TestCase {
    * Validate setting will fail when domain is missing.
    *
    * @covers ::setConfig
+   * @covers ::validateConfig
    *
    * @depends testSetConfig
    */
@@ -169,6 +177,7 @@ class ClientTest extends TestCase {
    * Validate setting will fail when username is missing.
    *
    * @covers ::setConfig
+   * @covers ::validateConfig
    *
    * @depends testSetConfig
    */
@@ -269,14 +278,53 @@ class ClientTest extends TestCase {
   }
 
   /**
-   * Validate that a failed connection can trigger an exception.
+   * Validate that we can get an InvalidCredentialsException.
    *
    * @covers ::testConnection
+   *
+   * @depends testTestConnection
    */
   public function testTestConnectionFailCredsExcept() {
 
     $client = $this->getClient(['username' => 'abc123']);
+    $client->testConnection(FALSE);
+    $client->testConnection(FALSE);
+    $client->testConnection(FALSE);
+
     $this->expectException(InvalidCredentialsException::class);
+    $client->testConnection(TRUE);
+  }
+
+  /**
+   * Validate that we can get a failed request exception.
+   *
+   * @covers ::testConnection
+   *
+   * @depends testTestConnection
+   */
+  public function testTestConnectionFailClientExcept() {
+
+    $client = $this->getClient(['username' => 'abc123']);
+    $client->testConnection(FALSE);
+    $client->testConnection(FALSE);
+
+    $this->expectException(ClientException::class);
+    $client->testConnection(TRUE);
+  }
+
+  /**
+   * Validate that we can get a general exception.
+   *
+   * @covers ::testConnection
+   *
+   * @depends testTestConnection
+   */
+  public function testTestConnectionFailGeneral() {
+
+    $client = $this->getClient(['username' => 'abc123']);
+    $client->testConnection(FALSE);
+
+    $this->expectException(Exception::class);
     $client->testConnection(TRUE);
   }
 
@@ -438,10 +486,69 @@ class ClientTest extends TestCase {
 
     parent::setUp();
 
+    $status_check = function () {
+
+      static $calls = 0;
+      // Call 1 is in the constructor.
+      // Call N+1 is the actual method call.
+      $calls++;
+
+      // Simulate a non-ClientException.
+      if (3 == $calls) {
+        throw new Exception();
+      }
+      // Simulate a 404.
+      elseif (4 == $calls) {
+        $coded_response = new class() extends MockResponse {
+
+          /**
+           * {@inheritdoc}
+           */
+          public function getStatusCode(): int {
+
+            return 404;
+          }
+
+        };
+        MockResponse::fromRequest(
+          'GET',
+          'http://example.com',
+          [],
+          $coded_response
+        );
+        throw new ClientException($coded_response);
+      }
+      // Simulate a 403.
+      elseif (5 == $calls) {
+        $coded_response = new class() extends MockResponse {
+
+          /**
+           * {@inheritdoc}
+           */
+          public function getStatusCode(): int {
+
+            return 403;
+          }
+
+        };
+        MockResponse::fromRequest(
+          'GET',
+          'http://example.com',
+          [],
+          $coded_response
+        );
+
+        throw new ClientException($coded_response);
+      }
+
+      return TRUE;
+    };
+
     /** @var \swichers\Acsf\Client\Endpoints\Action\ActionInterface|\PHPUnit\Framework\MockObject\MockObject $mockAction */
     $mockAction = $this->getMockBuilder(AbstractAction::class)->setMethods(
       ['ping']
     )->disableOriginalConstructor()->getMockForAbstractClass();
+    $mockAction->method('ping')->willReturnCallback($status_check);
 
     /** @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Discovery\ActionManagerInterface $mockActionManager */
     $mockActionManager =

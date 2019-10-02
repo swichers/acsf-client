@@ -34,15 +34,9 @@ class Manager implements ManagerInterface {
   public function create(string $name, ...$constructor_args): EndpointInterface {
 
     $workers = $this->discovery->getItems();
-    if (array_key_exists($name, $workers)) {
-      $class = $workers[$name]['class'];
-      if (!class_exists($class)) {
-        throw new MissingEndpointException(
-          'Implementation class does not exist.'
-        );
-      }
-
-      return new $class(...$constructor_args);
+    if (!empty($workers[$name]['class']) &&
+      class_exists($workers[$name]['class'])) {
+      return new $workers[$name]['class'](...$constructor_args);
     }
 
     throw new MissingEndpointException('Implementation does not exist.');
