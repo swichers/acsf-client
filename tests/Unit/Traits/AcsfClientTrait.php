@@ -43,22 +43,49 @@ trait AcsfClientTrait {
       $api_method =
         is_array($api_method) ? implode('/', $api_method) : $api_method;
 
-      $data = json_encode(['internal_method' => $api_method] + $options);
+      $data = ['internal_method' => $api_method] + $options;
+
       // We specifically handle getting the environments because this endpoint
       // implementation looks at the returned data.
       if ('stage' === $api_method && 'GET' === $http_method) {
-        $data = json_encode(
-          [
-            'environments' => [
-              'dev' => 'dev',
-              'test' => 'test',
-              'live' => 'live',
-            ],
-          ]
-        );
+        $data = [
+          'environments' => [
+            'dev' => 'dev',
+            'test' => 'test',
+            'live' => 'live',
+          ],
+        ];
+      }
+      elseif ('wip/task/1234/status' === $api_method &&
+        'GET' === $http_method) {
+
+        static $completed_time = 0;
+        static $error_time = 0;
+        static $calls = 0;
+
+        $calls++;
+
+        if (2 === $calls && empty($completed_time)) {
+          $completed_time = time();
+          $calls = 0;
+        }
+        elseif (4 === $calls && empty($error_time)) {
+          $error_time = time();
+          $calls = 0;
+        }
+        elseif (5 <= $calls) {
+          $completed_time = 0;
+          $error_time = 0;
+          $calls = 0;
+        }
+
+        $data['wip_task'] = [
+          'completed' => $completed_time,
+          'error' => $error_time,
+        ];
       }
 
-      $mockResp = new MockResponse($data);
+      $mockResp = new MockResponse(json_encode($data));
       $mockHttp = new MockHttpClient($mockResp);
 
       return new Response($mockHttp->request('GET', 'http://example.com'));

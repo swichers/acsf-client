@@ -3,6 +3,7 @@
 namespace swichers\Acsf\Client\Tests\Endpoints\Entity;
 
 use PHPUnit\Framework\TestCase;
+use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 use swichers\Acsf\Client\Endpoints\Entity\Task;
 use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 use swichers\Acsf\Client\Tests\Traits\AcsfClientTrait;
@@ -177,6 +178,95 @@ class TaskTest extends TestCase {
     $this->assertEquals('pause/1234', $result['internal_method']);
     $this->assertFalse($result['json']['paused']);
     $this->assertArrayNotHasKey('random', $result['json']);
+  }
+
+  /**
+   * Validates we can wait for a task.
+   *
+   * @param int $expectedWait
+   *   The expected wait time in seconds.
+   * @param int $delay
+   *   The delay between checks.
+   * @param string $statusKey
+   *   The status key to check against.
+   *
+   * @covers ::wait
+   *
+   * @dataProvider dpWaitIntervals
+   */
+  public function testWait(int $expectedWait, int $delay, $statusKey = NULL) {
+
+    $action = new Task($this->getMockAcsfClient(), 1234);
+    $this->assertGreaterThanOrEqual(
+      $expectedWait,
+      $action->wait($delay, NULL, $statusKey)
+    );
+  }
+
+  /**
+   * Validate we can pass in a tick update function.
+   *
+   * @covers ::wait
+   */
+  public function testWaitCallable() {
+
+    $action = new Task($this->getMockAcsfClient(), 1234);
+    $callable_called = FALSE;
+    $action->wait(
+      1,
+      function (EntityInterface $task, array $taskStatus) use (&$callable_called) {
+
+        $callable_called = TRUE;
+      }
+    );
+    $this->assertTrue($callable_called);
+  }
+
+  /**
+   * Data provider for testWait().
+   *
+   * @return array
+   *   An array of arguments to pass to testWait().
+   */
+  public function dpWaitIntervals(): array {
+
+    return [
+      [
+        2,
+        1,
+        NULL,
+      ],
+      [
+        2,
+        -1,
+        NULL,
+      ],
+      [
+        2,
+        0,
+        NULL,
+      ],
+      [
+        9,
+        3,
+        'error',
+      ],
+    ];
+  }
+
+  /**
+   * Validates we get an exception when a key is not found.
+   *
+   * @covers ::wait
+   *
+   * @depends testWait
+   */
+  public function testWaitFailKey() {
+
+    $action = new Task($this->getMockAcsfClient(), 1234);
+
+    $this->expectException(InvalidOptionException::class);
+    $action->wait(1, NULL, 'Abc' . time());
   }
 
 }

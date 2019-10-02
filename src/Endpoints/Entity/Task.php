@@ -3,6 +3,7 @@
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
+use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 
 /**
  * Class Task.
@@ -216,6 +217,45 @@ class Task extends AbstractEntity {
     $options = $this->limitOptions($options, ['level']);
 
     return $this->pause(FALSE, $options);
+  }
+
+  /**
+   * Wait for the task to finish.
+   *
+   * @param int $delaySeconds
+   *   Number of seconds to wait between status checks.
+   * @param callable|null $tickUpdate
+   *   A callback function that executes each iteration.
+   * @param string $statusKey
+   *   The key to use for status checks. Will exit when finding a non-empty
+   *   value.
+   *
+   * @return int
+   *   The time spent waiting, in seconds.
+   */
+  public function wait(int $delaySeconds = 15, callable $tickUpdate = NULL, $statusKey = 'completed'): int {
+
+    $statusKey = $statusKey ?: 'completed';
+    $delaySeconds = $delaySeconds > 0 ? $delaySeconds : 1;
+
+    $startTime = time();
+
+    do {
+      $task_status = $this->status()['wip_task'];
+      if (!isset($task_status[$statusKey])) {
+        throw new InvalidOptionException(
+          sprintf('Status key %s was not found.', $statusKey)
+        );
+      }
+
+      if (!empty($tickUpdate) && is_callable($tickUpdate)) {
+        $tickUpdate($this, $task_status);
+      }
+
+      sleep($delaySeconds);
+    } while (empty($task_status[$statusKey]));
+
+    return time() - $startTime;
   }
 
 }
