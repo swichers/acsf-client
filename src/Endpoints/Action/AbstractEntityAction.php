@@ -9,7 +9,7 @@ use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
  *
 
  */
-abstract class ActionGetEntityBase extends ActionBase {
+abstract class AbstractEntityAction extends AbstractAction {
 
   /**
    * Gets an object helper for the entity ID.

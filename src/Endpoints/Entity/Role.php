@@ -5,11 +5,11 @@ namespace swichers\Acsf\Client\Endpoints\Entity;
 use swichers\Acsf\Client\Annotation\Entity;
 
 /**
- * Class Role
+ * Class Role.
  *
  * @Entity(name = "Role")
  */
-class Role extends EntityBase {
+class Role extends AbstractEntity {
 
   /**
    * Retrieve a role by role ID.

@@ -33,8 +33,8 @@ class ActionTest extends TestCase {
 
     $action = new Action();
     $this->assertNull($action->getEntityType());
-    $action->entity_type = 'UnitTest';
-    $this->assertEquals($action->entity_type, $action->getEntityType());
+    $action->entityType = 'UnitTest';
+    $this->assertEquals($action->entityType, $action->getEntityType());
   }
 
 }

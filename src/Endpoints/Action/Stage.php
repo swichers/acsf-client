@@ -14,7 +14,7 @@ use swichers\Acsf\Client\Exceptions\InvalidEnvironmentException;
  *
  * @Action(name = "Stage")
  */
-class Stage extends ActionBase {
+class Stage extends AbstractAction {
 
   use ValidationTrait;
 

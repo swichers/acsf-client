@@ -7,11 +7,11 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
 use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 
 /**
- * Class Collection
+ * Class Collection.
  *
  * @Entity(name = "Collection")
  */
-class Collection extends EntityBase {
+class Collection extends AbstractEntity {
 
   use ValidationTrait;
 

@@ -23,7 +23,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  *
  * @Action(name = "Theme")
  */
-class Theme extends ActionBase {
+class Theme extends AbstractAction {
 
   use ValidationTrait;
 

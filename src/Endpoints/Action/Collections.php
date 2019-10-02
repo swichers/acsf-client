@@ -10,7 +10,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  *
  * @Action(name = "Collections")
  */
-class Collections extends ActionGetEntityBase {
+class Collections extends AbstractEntityAction {
 
   use ValidationTrait;
 

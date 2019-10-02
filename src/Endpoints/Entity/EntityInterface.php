@@ -2,14 +2,14 @@
 
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
+use swichers\Acsf\Client\Endpoints\EndpointInterface;
+
 /**
  * Interface EntityInterface.
  *
  * Primarily used for type hinting and restriction.
- *
-
  */
-interface EntityInterface {
+interface EntityInterface extends EndpointInterface {
 
   /**
    * Get the entity ID.

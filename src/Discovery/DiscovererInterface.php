@@ -2,6 +2,9 @@
 
 namespace swichers\Acsf\Client\Discovery;
 
+/**
+ * Interface DiscovererInterface.
+ */
 interface DiscovererInterface {
 
   /**

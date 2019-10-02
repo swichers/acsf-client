@@ -5,11 +5,9 @@ namespace swichers\Acsf\Client\Endpoints\Entity;
 use swichers\Acsf\Client\ClientInterface;
 
 /**
- * Class EntityBase.
- *
-
+ * Class AbstractEntity.
  */
-abstract class EntityBase implements EntityInterface {
+abstract class AbstractEntity implements EntityInterface {
 
   /**
    * An ACSF client.
@@ -21,7 +19,7 @@ abstract class EntityBase implements EntityInterface {
   /**
    * The parent of this entity (if any).
    *
-   * @var \swichers\Acsf\Client\Endpoints\Entity\EntityInterface|NULL
+   * @var \swichers\Acsf\Client\Endpoints\Entity\EntityInterface|null
    */
   protected $parent;
 
@@ -36,17 +34,13 @@ abstract class EntityBase implements EntityInterface {
    * EntityBase constructor.
    *
    * @param \swichers\Acsf\Client\ClientInterface $client
-   *  An ACSF client.
+   *   An ACSF client.
    * @param int $id
    *   The ID of this entity.
-   * @param \swichers\Acsf\Client\Endpoints\Entity\EntityInterface|NULL $parent
+   * @param \swichers\Acsf\Client\Endpoints\Entity\EntityInterface|null $parent
    *   The parent of this entity (if any).
    */
-  public function __construct(
-    ClientInterface $client,
-    int $id,
-    EntityInterface $parent = NULL
-  ) {
+  public function __construct(ClientInterface $client, int $id, EntityInterface $parent = NULL) {
 
     $this->client = $client;
     $this->parent = $parent;

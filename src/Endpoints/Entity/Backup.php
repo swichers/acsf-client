@@ -6,11 +6,11 @@ use swichers\Acsf\Client\Annotation\Entity;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
- * Class Backup
+ * Class Backup.
  *
  * @Entity(name = "Backup")
  */
-class Backup extends EntityBase {
+class Backup extends AbstractEntity {
 
   use ValidationTrait;
 
@@ -18,7 +18,7 @@ class Backup extends EntityBase {
    * Get temporary site backup URL.
    *
    * @param array $options
-   *  Additional request options.
+   *   Additional request options.
    *
    * @return array
    *   A temporary site backup URL.

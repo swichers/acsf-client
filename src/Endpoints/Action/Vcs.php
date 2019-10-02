@@ -18,7 +18,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  *
  * @Action(name = "Vcs")
  */
-class Vcs extends ActionBase {
+class Vcs extends AbstractAction {
 
   use ValidationTrait;
 

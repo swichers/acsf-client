@@ -2,21 +2,39 @@
 
 namespace swichers\Acsf\Client\Discovery;
 
+use swichers\Acsf\Client\Endpoints\EndpointInterface;
 use swichers\Acsf\Client\Exceptions\MissingEndpointException;
 
+/**
+ * Class Manager.
+ */
 class Manager implements ManagerInterface {
 
   /**
+   * A typed Endpoint discoverer.
+   *
    * @var \swichers\Acsf\Client\Discovery\Discoverer
    */
   protected $discovery;
 
+  /**
+   * Manager constructor.
+   *
+   * @param \swichers\Acsf\Client\Discovery\DiscovererInterface $discovery
+   *   The API Endpoint discoverer.
+   */
   public function __construct(DiscovererInterface $discovery) {
 
     $this->discovery = $discovery;
   }
 
-  public function create($name, ...$constructor_args) {
+  /**
+   * {@inheritdoc}
+   *
+   * @throws \ReflectionException
+   * @throws \swichers\Acsf\Client\Exceptions\MissingEndpointException
+   */
+  public function create(string $name, ...$constructor_args): EndpointInterface {
 
     $workers = $this->discovery->getItems();
     if (array_key_exists($name, $workers)) {
@@ -33,7 +51,10 @@ class Manager implements ManagerInterface {
     throw new MissingEndpointException('Implementation does not exist.');
   }
 
-  public function get($name) {
+  /**
+   * {@inheritdoc}
+   */
+  public function get(string $name) {
 
     $workers = $this->discovery->getItems();
     if (isset($workers[$name])) {
@@ -43,7 +64,10 @@ class Manager implements ManagerInterface {
     return FALSE;
   }
 
-  public function getAvailable() {
+  /**
+   * {@inheritDoc}
+   */
+  public function getAvailable(): array {
 
     return $this->discovery->getItems();
   }

@@ -4,21 +4,41 @@ namespace swichers\Acsf\Client;
 
 use Symfony\Contracts\HttpClient\ResponseInterface as SymfonyResponseInterface;
 
+/**
+ * Class Response.
+ */
 class Response implements ResponseInterface {
 
+  /**
+   * The original Symfony response.
+   *
+   * @var \Symfony\Contracts\HttpClient\ResponseInterface
+   */
   protected $originalResponse;
 
+  /**
+   * Response constructor.
+   *
+   * @param \Symfony\Contracts\HttpClient\ResponseInterface $response
+   *   The Symfony Response to wrap.
+   */
   public function __construct(SymfonyResponseInterface $response) {
 
     $this->originalResponse = $response;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getOriginalResponse(): SymfonyResponseInterface {
 
     return $this->originalResponse;
   }
 
-  public function toArray(bool $throw = TRUE) {
+  /**
+   * {@inheritdoc}
+   */
+  public function toArray(bool $throw = TRUE): array {
 
     return $this->originalResponse->toArray($throw);
   }

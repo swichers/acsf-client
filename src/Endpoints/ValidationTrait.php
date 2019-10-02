@@ -7,8 +7,6 @@ use const FILTER_VALIDATE_URL;
 
 /**
  * Shared Action and Entity validation helpers.
- *
-
  */
 trait ValidationTrait {
 

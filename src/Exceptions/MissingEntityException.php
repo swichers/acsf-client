@@ -4,6 +4,9 @@ namespace swichers\Acsf\Client\Exceptions;
 
 use Exception;
 
+/**
+ * Class MissingEntityException.
+ */
 class MissingEntityException extends Exception {
 
 }

@@ -6,11 +6,11 @@ use swichers\Acsf\Client\Annotation\Entity;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
- * Class Group
+ * Class Group.
  *
  * @Entity(name = "Group")
  */
-class Group extends EntityBase {
+class Group extends AbstractEntity {
 
   use ValidationTrait;
 

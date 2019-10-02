@@ -14,10 +14,10 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  *
  * @Action(
  *   name = "Groups",
- *   entity_type = "Group"
+ *   entityType = "Group"
  * )
  */
-class Groups extends ActionGetEntityBase {
+class Groups extends AbstractEntityAction {
 
   use ValidationTrait;
 

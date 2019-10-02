@@ -2,6 +2,8 @@
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
+use swichers\Acsf\Client\Endpoints\EndpointInterface;
+
 /**
  * Interface ActionInterface.
  *
@@ -9,6 +11,6 @@ namespace swichers\Acsf\Client\Endpoints\Action;
  *
 
  */
-interface ActionInterface {
+interface ActionInterface extends EndpointInterface {
 
 }

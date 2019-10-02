@@ -2,6 +2,9 @@
 
 namespace swichers\Acsf\Client\Discovery;
 
+/**
+ * Interface EntityManagerInterface.
+ */
 interface EntityManagerInterface extends ManagerInterface {
 
 }

@@ -6,11 +6,11 @@ use swichers\Acsf\Client\Annotation\Entity;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
- * Class Task
+ * Class Task.
  *
  * @Entity(name = "Task")
  */
-class Task extends EntityBase {
+class Task extends AbstractEntity {
 
   use ValidationTrait;
 

@@ -10,10 +10,10 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  *
  * @Action(
  *   name = "Tasks",
- *   entity_type = "Task"
+ *   entityType = "Task"
  * )
  */
-class Tasks extends ActionGetEntityBase {
+class Tasks extends AbstractEntityAction {
 
   use ValidationTrait;
 

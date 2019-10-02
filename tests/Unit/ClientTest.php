@@ -6,9 +6,9 @@ use PHPUnit\Framework\TestCase;
 use swichers\Acsf\Client\Client;
 use swichers\Acsf\Client\Discovery\ActionManager;
 use swichers\Acsf\Client\Discovery\EntityManager;
-use swichers\Acsf\Client\Endpoints\Action\ActionBase;
+use swichers\Acsf\Client\Endpoints\Action\AbstractAction;
 use swichers\Acsf\Client\Endpoints\Action\ActionInterface;
-use swichers\Acsf\Client\Endpoints\Entity\EntityBase;
+use swichers\Acsf\Client\Endpoints\Entity\AbstractEntity;
 use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 use swichers\Acsf\Client\Exceptions\InvalidConfigurationException;
 use swichers\Acsf\Client\Exceptions\InvalidCredentialsException;
@@ -439,7 +439,7 @@ class ClientTest extends TestCase {
     parent::setUp();
 
     /** @var \swichers\Acsf\Client\Endpoints\Action\ActionInterface|\PHPUnit\Framework\MockObject\MockObject $mockAction */
-    $mockAction = $this->getMockBuilder(ActionBase::class)->setMethods(
+    $mockAction = $this->getMockBuilder(AbstractAction::class)->setMethods(
       ['ping']
     )->disableOriginalConstructor()->getMockForAbstractClass();
 
@@ -468,7 +468,7 @@ class ClientTest extends TestCase {
     );
 
     /** @var \swichers\Acsf\Client\Endpoints\Entity\EntityInterface|\PHPUnit\Framework\MockObject\MockObject $mockEntity */
-    $mockEntity = $this->getMockBuilder(EntityBase::class)
+    $mockEntity = $this->getMockBuilder(AbstractEntity::class)
       ->setMethods([])
       ->disableOriginalConstructor()
       ->getMockForAbstractClass();

@@ -5,27 +5,34 @@ namespace swichers\Acsf\Client\Annotation;
 use Doctrine\Common\Annotations\Annotation;
 
 /**
+ * Annotation definition for API endpoint Actions.
+ *
  * @Annotation
  * @Target("CLASS")
  */
 class Action {
 
   /**
-   * @Required
+   * The name of the Action type.
    *
    * @var string
+   *
+   * @Required
    */
   public $name;
 
   /**
+   * The entity type of the Action.
+   *
    * @var string
    */
-  public $entity_type;
+  public $entityType;
 
   /**
-   * Get the name of the Action.
+   * Get the name of the Action type.
    *
    * @return string
+   *   The name of the Action type.
    */
   public function getName() {
 
@@ -35,11 +42,13 @@ class Action {
   /**
    * Get the name of the Entity this Action can create (if available).
    *
-   * @return string|NULL
+   * @return string|null
+   *   The name of the entity type or NULL if this Action does not create
+   *   entities.
    */
   public function getEntityType() {
 
-    return $this->entity_type ?? NULL;
+    return $this->entityType ?? NULL;
   }
 
 }

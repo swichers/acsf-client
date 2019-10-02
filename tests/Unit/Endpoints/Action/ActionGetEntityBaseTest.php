@@ -4,14 +4,14 @@ namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use PHPUnit\Framework\TestCase;
 use swichers\Acsf\Client\Client;
-use swichers\Acsf\Client\Endpoints\Action\ActionGetEntityBase;
+use swichers\Acsf\Client\Endpoints\Action\AbstractEntityAction;
 use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 use swichers\Acsf\Client\Exceptions\MissingEntityException;
 
 /**
  * Tests for ActionGetEntityBase.
  *
- * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\ActionGetEntityBase
+ * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Action\AbstractEntityAction
  *
  * @group AcsfClient
  */
@@ -27,7 +27,7 @@ class ActionGetEntityBaseTest extends TestCase {
   /**
    * A mock class implementing ActionGetEntityBase.
    *
-   * @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Endpoints\Action\ActionGetEntityBase
+   * @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Endpoints\Action\AbstractEntityAction
    */
   protected $mockBase;
 
@@ -86,8 +86,8 @@ class ActionGetEntityBaseTest extends TestCase {
 
     $this->mockClient = $mockClient;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Endpoints\Action\ActionGetEntityBase $mock */
-    $this->mockBase = $this->getMockBuilder(ActionGetEntityBase::class)
+    /** @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Endpoints\Action\AbstractEntityAction $mock */
+    $this->mockBase = $this->getMockBuilder(AbstractEntityAction::class)
       ->setConstructorArgs([$this->mockClient])
       ->setMethods(['getEntityType'])
       ->getMockForAbstractClass();

@@ -40,7 +40,7 @@ class DiscovererTest extends TestCase {
 
     $action = new Action();
     $action->name = 'Sites';
-    $action->entity_type = 'Site';
+    $action->entityType = 'Site';
 
     $sites = [
       'class' => '\\' . Sites::class,

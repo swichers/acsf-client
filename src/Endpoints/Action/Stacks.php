@@ -9,7 +9,7 @@ use swichers\Acsf\Client\Annotation\Action;
  *
  * @Action(name = "Stacks")
  */
-class Stacks extends ActionBase {
+class Stacks extends AbstractAction {
 
   /**
    * Fetches the list of available stacks.

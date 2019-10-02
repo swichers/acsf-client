@@ -5,11 +5,11 @@ namespace swichers\Acsf\Client\Endpoints\Entity;
 use swichers\Acsf\Client\Annotation\Entity;
 
 /**
- * Class Update
+ * Class Update.
  *
  * @Entity(name = "Update")
  */
-class Update extends EntityBase {
+class Update extends AbstractEntity {
 
   /**
    * Resume update processing.

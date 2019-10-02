@@ -6,6 +6,9 @@ use Doctrine\Common\Annotations\Reader;
 use ReflectionClass;
 use Symfony\Component\Finder\Finder;
 
+/**
+ * Class Discoverer.
+ */
 class Discoverer implements DiscovererInterface {
 
   /**
@@ -64,13 +67,7 @@ class Discoverer implements DiscovererInterface {
    * @param \Doctrine\Common\Annotations\Reader $annotationReader
    *   A Doctrine annotation parser.
    */
-  public function __construct(
-    string $namespace,
-    string $directory,
-    string $rootDir,
-    string $annotationClass,
-    Reader $annotationReader
-  ) {
+  public function __construct(string $namespace, string $directory, string $rootDir, string $annotationClass, Reader $annotationReader) {
 
     $this->namespace = $namespace;
     $this->annotationReader = $annotationReader;
@@ -82,6 +79,8 @@ class Discoverer implements DiscovererInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \ReflectionException
    */
   public function getItems(): array {
 

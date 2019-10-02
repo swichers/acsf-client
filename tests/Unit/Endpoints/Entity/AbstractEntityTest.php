@@ -3,14 +3,14 @@
 namespace swichers\Acsf\Client\Tests\Endpoints\Entity;
 
 use PHPUnit\Framework\TestCase;
-use swichers\Acsf\Client\Endpoints\Entity\EntityBase;
+use swichers\Acsf\Client\Endpoints\Entity\AbstractEntity;
 use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 use swichers\Acsf\Client\Tests\Traits\AcsfClientTrait;
 
 /**
  * Tests for the EntityBase abstract class.
  *
- * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Entity\EntityBase
+ * @coversDefaultClass \swichers\Acsf\Client\Endpoints\Entity\AbstractEntity
  *
  * @group AcsfClient
  */
@@ -26,7 +26,7 @@ class EntityBaseTest extends TestCase {
    */
   public function testId() {
 
-    $entity = new class($this->getMockAcsfClient(), 123) extends EntityBase {
+    $entity = new class($this->getMockAcsfClient(), 123) extends AbstractEntity {
 
     };
     $this->assertEquals(123, $entity->id());
@@ -40,12 +40,12 @@ class EntityBaseTest extends TestCase {
    */
   public function testGetParent() {
 
-    $parent = new class($this->getMockAcsfClient(), 123) extends EntityBase {
+    $parent = new class($this->getMockAcsfClient(), 123) extends AbstractEntity {
 
     };
 
     $entity = new class($this->getMockAcsfClient(
-    ), 456, $parent) extends EntityBase {
+    ), 456, $parent) extends AbstractEntity {
 
     };
 

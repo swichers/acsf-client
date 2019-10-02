@@ -10,7 +10,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  *
  * @Action(name = "SslCertificates")
  */
-class SslCertificates extends ActionBase {
+class SslCertificates extends AbstractAction {
 
   use ValidationTrait;
 

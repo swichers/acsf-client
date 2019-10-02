@@ -4,6 +4,9 @@ namespace swichers\Acsf\Client\Exceptions;
 
 use Exception;
 
+/**
+ * Class InvalidEnvironmentException.
+ */
 class InvalidEnvironmentException extends Exception {
 
 }

@@ -9,7 +9,7 @@ use swichers\Acsf\Client\ClientInterface;
  *
 
  */
-abstract class ActionBase implements ActionInterface {
+abstract class AbstractAction implements ActionInterface {
 
   /**
    * ACSF Client.

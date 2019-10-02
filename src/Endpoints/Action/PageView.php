@@ -10,7 +10,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
  *
  * @Action(name = "PageView")
  */
-class PageView extends ActionBase {
+class PageView extends AbstractAction {
 
   use ValidationTrait;
 
