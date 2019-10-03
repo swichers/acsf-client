@@ -1,0 +1,25 @@
+language: php
+
+php:
+  - '7.2'
+  - '7.3'
+
+git:
+  quiet: true
+  depth: false
+
+branches:
+  only:
+    - master
+    - develop
+
+install:
+  - composer require --dev codacy/coverage
+  - composer install --no-interaction
+
+script:
+  - php vendor/bin/phpcs
+  - php vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
+
+after_script:
+  - php vendor/bin/codacycoverage clover ./build/logs/clover.xml
