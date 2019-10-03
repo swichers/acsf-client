@@ -104,7 +104,7 @@ class ClientTest extends TestCase {
       [
         'username' => NULL,
         'api_key' => NULL,
-        'domain' => NULL,
+        'site_group' => NULL,
         'environment' => NULL,
       ]
     );
@@ -125,7 +125,7 @@ class ClientTest extends TestCase {
     $client->setConfig(
       [
         'username' => 'abc',
-        'domain' => 'abc',
+        'site_group' => 'abc',
         'api_key' => 'abc',
       ]
     );
@@ -146,7 +146,7 @@ class ClientTest extends TestCase {
     $client->setConfig(
       [
         'username' => 'abc',
-        'domain' => 'abc',
+        'site_group' => 'abc',
         'environment' => 'abc',
       ]
     );
@@ -188,7 +188,7 @@ class ClientTest extends TestCase {
     $client->setConfig(
       [
         'api_key' => 'abc',
-        'domain' => 'abc',
+        'site_group' => 'abc',
         'environment' => 'abc',
       ]
     );
@@ -206,7 +206,7 @@ class ClientTest extends TestCase {
     $client = $this->getClient(
       [
         'environment' => 'dev',
-        'domain' => 'example',
+        'site_group' => 'example',
       ]
     );
 
@@ -625,7 +625,7 @@ class ClientTest extends TestCase {
     $defaultConfig = [
       'username' => 'Nulla Etiam nisi',
       'api_key' => 'Donec justo, venenatis tellus',
-      'domain' => 'dapibus',
+      'site_group' => 'dapibus',
       'environment' => 'ligula',
     ];
 

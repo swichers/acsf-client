@@ -43,7 +43,7 @@ class Client implements ClientInterface {
   /**
    * The active client configuration.
    *
-   * Expects an array of username, api_key, domain, and environment.
+   * Expects an array of username, api_key, site_group, and environment.
    *
    * @var array
    */
@@ -60,7 +60,7 @@ class Client implements ClientInterface {
    *   An Entity Manager.
    * @param array $config
    *   An array of client configuration. Expects an array of username, api_key,
-   *   domain, and environment.
+   *   site_group, and environment.
    */
   public function __construct(HttpClientInterface $httpClient, ActionManagerInterface $actionManager, EntityManagerInterface $entityManager, array $config) {
 
@@ -134,7 +134,7 @@ class Client implements ClientInterface {
     return sprintf(
       'https://www.%s%s.acsitefactory.com/api/v%d/',
       $env_prefix,
-      $this->config['domain'],
+      $this->config['site_group'],
       max($version, 1)
     );
   }
@@ -215,7 +215,7 @@ class Client implements ClientInterface {
    */
   protected function validateConfig(array $config) {
 
-    $required = ['domain', 'environment', 'username', 'api_key'];
+    $required = ['site_group', 'environment', 'username', 'api_key'];
     foreach ($required as $key) {
       if (empty($config[$key])) {
         throw new InvalidConfigurationException(
