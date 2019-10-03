@@ -30,6 +30,8 @@ composer require swichers/acsf-client
 ```php
 <?php declare(strict_types=1);
 
+  require 'vendor/autoload.php';
+
   use swichers\Acsf\Client\ServiceLoader;
   
   $base_config = [
@@ -66,6 +68,8 @@ This script shows an example of backporting specific sites from live to a UAT en
 
 ```php
 <?php declare(strict_types=1);
+
+  require 'vendor/autoload.php';
 
   use swichers\Acsf\Client\ServiceLoader;
   use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
