@@ -4,7 +4,8 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Build Status](https://travis-ci.com/swichers/acsf-client.svg?token=Lm6gQQWsBsnzoGah2JXY&branch=master)](https://travis-ci.com/swichers/acsf-client)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f8600bde4f684cf98b8255c814d753c3)](https://www.codacy.com/manual/swichers/acsf-client)
+[![Codacy Quality](https://api.codacy.com/project/badge/Grade/f8600bde4f684cf98b8255c814d753c3)](https://www.codacy.com/manual/swichers/acsf-client)
+[![Codacy Coverage](https://api.codacy.com/project/badge/Coverage/f8600bde4f684cf98b8255c814d753c3)](https://www.codacy.com/manual/swichers/acsf-client)
 
 Acquia Cloud Site Factory is a hosting platform provided by Acquia. As part of that platform an API is provided for developers to use. The goal of this library is to wrap that API in such a way that it becomes trivial to leverage it in PHP applications.
 
@@ -15,7 +16,7 @@ Acquia Cloud Site Factory is a hosting platform provided by Acquia. As part of t
 **Requirements**
 
 * PHP >= 7.2
-* API access to ACSF
+* [API access to ACSF](https://docs.acquia.com/site-factory/extend/api/#obtaining-your-api-key)
 * Composer for dependency installs
 
 Installation should be straightforward when using composer.
