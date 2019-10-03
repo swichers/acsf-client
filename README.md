@@ -9,6 +9,8 @@
 
 Acquia Cloud Site Factory is a hosting platform provided by Acquia. As part of that platform an API is provided for developers to use. The goal of this library is to wrap that API in such a way that it becomes trivial to leverage it in PHP applications.
 
+![Backporting sites to dev demonstration](https://user-images.githubusercontent.com/5890607/66103462-b6579d00-e56a-11e9-88c3-bc10936afb94.gif)
+
 **Caution:** Test coverage in this library is around validation of calls to the API, and is not testing interaction with the actual ACSF API. Not all wrapped endpoints have been validated as properly implemented, and live calls to the API may have unexpected results. Review all scripts and calls for proper behavior before executing against a live environment.
 
 ## Installation
