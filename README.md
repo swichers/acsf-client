@@ -86,11 +86,11 @@ This script shows an example of backporting specific sites from live to a UAT en
   $container->setParameter('acsf.client.connection', $base_config);
   $client = $container->get('acsf.client');
 
-  // List all available sites.
-  print_r($client->getAction('Sites')->list());
+  // Grab all available sites.
+  $site_ids = array_column($client->getAction('Sites')->list()['sites'], 'id');
 
   // Start a backport from production to UAT.
-  $task_info = $client->getAction('Stage')->backport('uat', [123, 456], [
+  $task_info = $client->getAction('Stage')->backport('uat', $site_ids, [
     'synchronize_all_users' => 'yes',
     'wipe_target_environment' => 'yes',
     'detailed_status' => 'no',
@@ -110,6 +110,7 @@ This script shows an example of backporting specific sites from live to a UAT en
   $client->getEntity('Task', $task_info['task_id'])->wait();
 
   // Clear Drupal and Varnish cache for the backported sites.
-  $client->getEntity('Site', 123)->clearCache();
-  $client->getEntity('Site', 456)->clearCache();
+  foreach ($site_ids as $site_id) {
+    $client->getEntity('Site', $site_id)->clearCache();
+  }
 ```
