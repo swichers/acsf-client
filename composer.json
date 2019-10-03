@@ -14,7 +14,6 @@
     "ext-json": "*",
     "doctrine/annotations": "^1.7",
     "symfony/config": "^4.3",
-    "symfony/console": "^4.3",
     "symfony/dependency-injection": "^4.3",
     "symfony/finder": "^4.3",
     "symfony/http-client": "^4.3",
@@ -22,9 +21,9 @@
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+    "drupal/coder": "^8.3",
     "localheinz/composer-normalize": "^1.3",
-    "phpunit/phpunit": "^6.5 || ^4.8",
-    "drupal/coder": "^8.3"
+    "phpunit/phpunit": "^6.5 || ^4.8"
   },
   "config": {
     "platform": {
@@ -44,8 +43,5 @@
       "swichers\\Acsf\\Client\\Tests\\": "tests/Unit"
     }
   },
-  "minimum-stability": "stable",
-  "scripts": {
-    "phpcs": "vendor/bin/phpcs"
-  }
+  "minimum-stability": "stable"
 }
