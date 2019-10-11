@@ -2,7 +2,7 @@
   "name": "swichers/acsf-client",
   "type": "library",
   "description": "A Client library for Acquia's ACSF platform.",
-  "license": "GPL-3.0",
+  "license": "GPL-3.0-or-later",
   "authors": [
     {
       "name": "Steven Wichers",
