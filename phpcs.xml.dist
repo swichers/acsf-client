@@ -3,6 +3,7 @@
          xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
   <description>The coding standard for the ACSF Client library.</description>
 
+  <file>examples</file>
   <file>src</file>
   <file>tests</file>
 
