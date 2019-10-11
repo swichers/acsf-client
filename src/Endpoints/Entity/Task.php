@@ -251,9 +251,7 @@ class Task extends AbstractEntity {
       if (!empty($tickUpdate) && is_callable($tickUpdate)) {
         $tickUpdate($this, $task_status);
       }
-
-      sleep($delaySeconds);
-    } while (empty($task_status[$statusKey]));
+    } while (empty($task_status[$statusKey]) && sleep($delaySeconds) !== FALSE);
 
     return time() - $startTime;
   }

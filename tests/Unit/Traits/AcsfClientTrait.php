@@ -65,15 +65,15 @@ trait AcsfClientTrait {
 
         $calls++;
 
-        if (2 === $calls && empty($completed_time)) {
+        if (3 === $calls && empty($completed_time)) {
           $completed_time = time();
           $calls = 0;
         }
-        elseif (4 === $calls && empty($error_time)) {
+        elseif (5 === $calls && empty($error_time)) {
           $error_time = time();
           $calls = 0;
         }
-        elseif (5 <= $calls) {
+        elseif (6 <= $calls) {
           $completed_time = 0;
           $error_time = 0;
           $calls = 0;
