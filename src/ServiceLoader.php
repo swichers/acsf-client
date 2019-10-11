@@ -22,6 +22,11 @@ class ServiceLoader {
    *
    * @return \Symfony\Component\DependencyInjection\ContainerBuilder
    *   A container with the discovered services.
+   *
+   * @BUG Can't get unique clients via the service container.
+   *   Do we want this behavior? It's clunky to get a workable client using the
+   *   container, but easy to change the config after we have it.
+   *   https://symfony.com/doc/current/service_container/shared.html
    */
   public static function build(string $servicePath = NULL, string $serviceFile = 'services.yml'): ContainerBuilder {
 
@@ -50,6 +55,31 @@ class ServiceLoader {
     }
 
     return $containerBuilder[$servicePath][$serviceFile];
+  }
+
+  /**
+   * Creates a service container and sets parameters.
+   *
+   * @param array $config
+   *   A key value array of configuration to set on the container.
+   * @param string|null $servicePath
+   *   The path to scan for the services file.
+   * @param string $serviceFile
+   *   The name of the services file.
+   *
+   * @return \Symfony\Component\DependencyInjection\ContainerBuilder
+   *   A container with the discovered services.
+   *
+   * @see \swichers\Acsf\Client\ServiceLoader::build()
+   */
+  public static function buildFromConfig(array $config, string $servicePath = NULL, string $serviceFile = 'services.yml'): ContainerBuilder {
+    $container = self::build($servicePath, $serviceFile);
+
+    foreach ($config as $key => $value) {
+      $container->setParameter($key, $value);
+    }
+
+    return $container;
   }
 
 }
