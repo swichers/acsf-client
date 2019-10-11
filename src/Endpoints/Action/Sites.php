@@ -161,4 +161,40 @@ class Sites extends AbstractEntityAction {
     return $this->client->apiPost('sites', $options)->toArray();
   }
 
+  /**
+   * Initiates a backup for all sites.
+   *
+   * @param bool $waitForComplete
+   *   TRUE to wait for the task to complete before returning.
+   * @param int $delaySeconds
+   *   The number of seconds to wait before checks for task status.
+   * @param callable|null $tickUpdate
+   *   A function to call while waiting for the backup to complete.
+   *
+   * @return array
+   *   An array of task information.
+   */
+  public function backupAll(bool $waitForComplete = TRUE, int $delaySeconds = 30, callable $tickUpdate = NULL): array {
+    $backup_tasks = [];
+
+    $site_ids = array_column($this->list()['sites'], 'id');
+
+    foreach ($site_ids as $site_id) {
+      /** @var \swichers\Acsf\Client\Endpoints\Entity\Site $site */
+      $site = $this->get($site_id);
+      $label = sprintf('%s API-initiated backup', $site->details()['site']);
+      $backup_tasks[] = $site->backup(['label' => $label]);
+    }
+
+    if (!empty($backup_tasks) && $waitForComplete) {
+      foreach ($backup_tasks as $task_info) {
+        $this->client
+          ->getEntity('Task', intval($task_info['task_id']))
+          ->wait(max(1, $delaySeconds), $tickUpdate);
+      }
+    }
+
+    return $backup_tasks;
+  }
+
 }
