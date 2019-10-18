@@ -29,6 +29,8 @@ composer require swichers/acsf-client
 
 ## Usage
 
+Example scripts are available in the [examples](examples/) folder.
+
 ```php
 <?php declare(strict_types=1);
 
@@ -40,13 +42,11 @@ composer require swichers/acsf-client
     'username' => 'example.user',
     'api_key' => 'example.key',
     'site_group' => 'example.group',
+    'environment' => 'live',
   ];
 
-  $container = ServiceLoader::build();
-  $container->setParameter('acsf.client.connection', ['environment' => 'live'] +
-  $base_config);
-
-  $client = $container->get('acsf.client');
+  $client = ServiceLoader::buildFromConfig(['acsf.client.connection' => $base_config])
+    ->get('acsf.client');
 
   // Check the service status.
   print_r($client->getAction('Status')->ping());
@@ -62,57 +62,4 @@ $ vendor/bin/phpunit
 **Checking code formatting**
 ```sh
 $ vendor/bin/phpcs
-```
-
-## Example: Backport and code deploy
-
-This script shows an example of backporting specific sites from live to a UAT environment and then deploying a new tag to the UAT environment.
-
-```php
-<?php declare(strict_types=1);
-
-  require 'vendor/autoload.php';
-
-  use swichers\Acsf\Client\ServiceLoader;
-  use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
-
-  $base_config = [
-    'username' => 'example.user',
-    'api_key' => 'example.key',
-    'site_group' => 'example.group',
-    'environment' => 'live',
-  ];
-
-  // Utilize the Symfony service container for ease of client creation.
-  $container = ServiceLoader::build();
-  $container->setParameter('acsf.client.connection', $base_config);
-  $client = $container->get('acsf.client');
-
-  // Grab all available sites.
-  $site_ids = array_column($client->getAction('Sites')->list()['sites'], 'id');
-
-  // Start a backport from production to UAT.
-  $task_info = $client->getAction('Stage')->backport('uat', $site_ids, [
-    'synchronize_all_users' => 'yes',
-    'wipe_target_environment' => 'yes',
-    'detailed_status' => 'no',
-  ]);
-
-  // Wait for that backport to finish while printing the current status.
-  $client->getEntity('Task', $task_info['task_id'])->wait(15, function (EntityInterface $task, array $task_status) {
-    printf("Backport (%d): %s\n", $task->id(), $task_status['status_string']);
-  });
-
-  // Change the connection to the UAT environment.
-  $client->setConfig(['environment' => 'uat'] + $base_config);
-
-  // Deploy a new tag to UAT.
-  $task_info = $client->getAction('Update')->updateCode('tags/1.5.0-build');
-  // Wait for that task to finish.
-  $client->getEntity('Task', $task_info['task_id'])->wait();
-
-  // Clear Drupal and Varnish cache for the backported sites.
-  foreach ($site_ids as $site_id) {
-    $client->getEntity('Site', $site_id)->clearCache();
-  }
 ```

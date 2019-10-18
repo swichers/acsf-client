@@ -208,35 +208,35 @@ class Sites extends AbstractEntityAction {
    *   A function to call while waiting for the task to complete.
    *
    * @return array
-   *   An array of task information.
+   *   An array of task IDs.
    */
   public function clearCaches(bool $waitForComplete = TRUE, int $delaySeconds = 30, callable $tickUpdate = NULL): array {
 
-    $tasks = [];
+    $task_ids = [];
 
     $site_ids = array_column($this->list()['sites'], 'id');
 
     foreach ($site_ids as $site_id) {
       $cache_tasks = $this->get($site_id)->clearCache();
       if (!empty($cache_tasks['task_ids'])) {
-        $tasks[] = intval($cache_tasks['task_ids']['drupal_cache_clear']);
-        $tasks[] = intval($cache_tasks['task_ids']['varnish_cache_clear']);
+        $task_ids[] = intval($cache_tasks['task_ids']['drupal_cache_clear']);
+        $task_ids[] = intval($cache_tasks['task_ids']['varnish_cache_clear']);
       }
     }
 
-    array_unique($tasks);
-    array_filter($tasks);
+    $task_ids = array_unique($task_ids);
+    $task_ids = array_filter($task_ids);
 
-    if (!empty($tasks) && $waitForComplete) {
-      foreach ($tasks as $task_info) {
-        $this->client->getEntity('Task', intval($task_info['task_id']))->wait(
+    if (!empty($task_ids) && $waitForComplete) {
+      foreach ($task_ids as $task_id) {
+          $this->client->getEntity('Task', $task_id)->wait(
             max(1, $delaySeconds),
             $tickUpdate
           );
       }
     }
 
-    return $tasks;
+    return $task_ids;
   }
 
 }
