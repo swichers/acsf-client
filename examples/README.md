@@ -23,12 +23,12 @@ Usage: `php backup.php live`
 
 Creates a backup of each site on the given environment.
 
-### deploy-prod.php
+### deploy.php
 
-Usage: `php deploy-prod.php tags/2.4.2-build`
+Usage: `php deploy.php live tags/2.7.0-beta.1-build`
 
-Deploys a new tag or branch to the production environment. Creates a backup in
-the process.
+Deploys a new tag or branch to the target environment. Creates a backup in
+the process if the target environment is `live`.
 
 ### deploy-uat.php
 
