@@ -229,10 +229,10 @@ class Sites extends AbstractEntityAction {
 
     if (!empty($task_ids) && $waitForComplete) {
       foreach ($task_ids as $task_id) {
-          $this->client->getEntity('Task', $task_id)->wait(
-            max(1, $delaySeconds),
-            $tickUpdate
-          );
+        $this->client->getEntity('Task', $task_id)->wait(
+          max(1, $delaySeconds),
+          $tickUpdate
+        );
       }
     }
 
