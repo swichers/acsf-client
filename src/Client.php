@@ -76,7 +76,7 @@ class Client implements ClientInterface {
    */
   public function apiDelete($method, array $data, int $api_version = NULL): ResponseInterface {
 
-    return $this->apiRequest('DELETE', $method, ['json' => $data]);
+    return $this->apiRequest('DELETE', $method, ['json' => $data], $api_version);
   }
 
   /**
@@ -84,12 +84,7 @@ class Client implements ClientInterface {
    */
   public function apiGet($method, array $params = [], int $api_version = NULL): ResponseInterface {
 
-    return $this->apiRequest(
-      'GET',
-      $method,
-      ['query' => $params],
-      $api_version
-    );
+    return $this->apiRequest('GET', $method, ['query' => $params], $api_version);
   }
 
   /**
@@ -97,7 +92,7 @@ class Client implements ClientInterface {
    */
   public function apiPost($method, array $data, int $api_version = NULL): ResponseInterface {
 
-    return $this->apiRequest('POST', $method, ['json' => $data]);
+    return $this->apiRequest('POST', $method, ['json' => $data], $api_version);
   }
 
   /**
@@ -105,7 +100,7 @@ class Client implements ClientInterface {
    */
   public function apiPut($method, array $data, int $api_version = NULL): ResponseInterface {
 
-    return $this->apiRequest('PUT', $method, ['json' => $data]);
+    return $this->apiRequest('PUT', $method, ['json' => $data], $api_version);
   }
 
   /**
