@@ -375,6 +375,13 @@ class ClientTest extends TestCase {
       'https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test',
       $resp->getOriginalResponse()->getInfo('url')
     );
+
+    $resp = $this->getClient()->apiPost('Unit/Test', [], 2);
+    $this->assertInstanceOf(ResponseInterface::class, $resp);
+    $this->assertEquals(
+      'https://www.ligula-dapibus.acsitefactory.com/api/v2/Unit/Test',
+      $resp->getOriginalResponse()->getInfo('url')
+    );
   }
 
   /**
@@ -392,6 +399,13 @@ class ClientTest extends TestCase {
       'https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test',
       $resp->getOriginalResponse()->getInfo('url')
     );
+
+    $resp = $this->getClient()->apiDelete('Unit/Test', [], 2);
+    $this->assertInstanceOf(ResponseInterface::class, $resp);
+    $this->assertEquals(
+      'https://www.ligula-dapibus.acsitefactory.com/api/v2/Unit/Test',
+      $resp->getOriginalResponse()->getInfo('url')
+    );
   }
 
   /**
@@ -407,6 +421,13 @@ class ClientTest extends TestCase {
     $this->assertInstanceOf(ResponseInterface::class, $resp);
     $this->assertEquals(
       'https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test',
+      $resp->getOriginalResponse()->getInfo('url')
+    );
+
+    $resp = $this->getClient()->apiPut('Unit/Test', [], 2);
+    $this->assertInstanceOf(ResponseInterface::class, $resp);
+    $this->assertEquals(
+      'https://www.ligula-dapibus.acsitefactory.com/api/v2/Unit/Test',
       $resp->getOriginalResponse()->getInfo('url')
     );
   }
