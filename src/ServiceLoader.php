@@ -39,7 +39,7 @@ class ServiceLoader {
 
     $servicePath = realpath($servicePath);
 
-    if (is_null($containerBuilder[$servicePath][$serviceFile])) {
+    if (empty($containerBuilder[$servicePath][$serviceFile])) {
       // This is required for the automatic loading of Annotation enabled
       // classes.
       AnnotationRegistry::registerLoader('class_exists');
