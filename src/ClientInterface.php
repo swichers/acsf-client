@@ -99,11 +99,13 @@ interface ClientInterface {
    *   The type of entity to get.
    * @param int $entityId
    *   The ID of the entity to get.
+   * @param \swichers\Acsf\Client\Endpoints\Entity\EntityInterface $parent
+   *   The parent entity (if any).
    *
    * @return \swichers\Acsf\Client\Endpoints\Entity\EntityInterface
    *   The requested Entity.
    */
-  public function getEntity(string $type, int $entityId): EntityInterface;
+  public function getEntity(string $type, int $entityId, EntityInterface $parent = NULL): EntityInterface;
 
   /**
    * Test the ACSF Client connection.
