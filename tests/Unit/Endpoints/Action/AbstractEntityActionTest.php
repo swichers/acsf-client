@@ -67,12 +67,6 @@ class AbstractEntityActionTest extends TestCase {
       $this->getMockBuilder(Client::class)
         ->disableOriginalConstructor()
         ->getMock();
-    $mockClient->method('getEntity')->willReturnMap(
-      [
-        ['Site', 123, $mockEntity],
-        ['Task', 456, $mockEntity],
-      ]
-    );
     $mockClient->method('getEntity')->willReturnCallback(
       function ($entityType, $entityId) use ($mockEntity) {
 

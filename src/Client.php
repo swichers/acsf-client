@@ -157,7 +157,7 @@ class Client implements ClientInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEntity(string $type, int $entityId): EntityInterface {
+  public function getEntity(string $type, int $entityId, EntityInterface $parent = NULL): EntityInterface {
 
     if (!$this->entityManager->get($type)) {
       throw new MissingEntityException(
@@ -165,7 +165,7 @@ class Client implements ClientInterface {
       );
     }
 
-    return $this->entityManager->create($type, $this, $entityId);
+    return $this->entityManager->create($type, $this, $entityId, $parent);
   }
 
   /**
