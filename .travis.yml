@@ -10,8 +10,7 @@ git:
 
 branches:
   only:
-    - master
-    - develop
+    - /.*/
 
 install:
   - composer require --dev codacy/coverage
