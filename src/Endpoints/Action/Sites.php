@@ -179,14 +179,9 @@ class Sites extends AbstractEntityAction {
   public function backupAll(array $backupOptions = [], bool $waitForComplete = TRUE, int $delaySeconds = 30, callable $tickUpdate = NULL): array {
     $tasks = [];
 
-    $site_ids = array_column($this->listAll()['sites'], 'id');
-
-    foreach ($site_ids as $site_id) {
-      /** @var \swichers\Acsf\Client\Endpoints\Entity\Site $site */
-      $site = $this->get($site_id);
-
+    /** @var \swichers\Acsf\Client\Endpoints\Entity\Site $site */
+    foreach ($this->getAll() as $site) {
       $backupOptions['label'] = sprintf('%s API-initiated backup', $site->details()['site']);
-
       $tasks[] = $site->backup($backupOptions);
     }
 
@@ -218,10 +213,9 @@ class Sites extends AbstractEntityAction {
 
     $task_ids = [];
 
-    $site_ids = array_column($this->listAll()['sites'], 'id');
-
-    foreach ($site_ids as $site_id) {
-      $cache_tasks = $this->get($site_id)->clearCache();
+    /** @var \swichers\Acsf\Client\Endpoints\Entity\Site $site */
+    foreach ($this->getAll() as $site) {
+      $cache_tasks = $site->clearCache();
       if (!empty($cache_tasks['task_ids'])) {
         $task_ids[] = intval($cache_tasks['task_ids']['drupal_cache_clear']);
         $task_ids[] = intval($cache_tasks['task_ids']['varnish_cache_clear']);
