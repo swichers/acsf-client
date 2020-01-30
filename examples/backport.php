@@ -46,7 +46,7 @@ $client = ServiceLoader::buildFromConfig(
   ['acsf.client.connection' => ['environment' => SOURCE_ENV] + $base_config]
 )->get('acsf.client');
 
-$sites = $client->getAction('Sites')->list();
+$sites = $client->getAction('Sites')->listAll();
 $site_ids = array_column($sites['sites'], 'id');
 
 printf(

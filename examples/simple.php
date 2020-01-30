@@ -26,7 +26,7 @@ $client =
     ->get('acsf.client');
 
 // Grab all available sites.
-$site_ids = array_column($client->getAction('Sites')->list()['sites'], 'id');
+$site_ids = array_column($client->getAction('Sites')->listAll()['sites'], 'id');
 
 // Start a backport from production to the target environment.
 $task_info = $client->getAction('Stage')->backport('uat', $site_ids);
