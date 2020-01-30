@@ -164,7 +164,7 @@ function start_production_backport(ClientInterface $client, $toEnv = 'uat') {
   $original_config = $client->getConfig();
   $client->setConfig(['environment' => 'live'] + $original_config);
 
-  $sites = $client->getAction('Sites')->list();
+  $sites = $client->getAction('Sites')->listAll();
   $site_ids = array_column($sites['sites'] ?? [], 'id');
   if (empty($site_ids)) {
     printf("Unable to get site IDs to stage.\n");

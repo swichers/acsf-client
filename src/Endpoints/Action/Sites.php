@@ -179,7 +179,7 @@ class Sites extends AbstractEntityAction {
   public function backupAll(array $backupOptions = [], bool $waitForComplete = TRUE, int $delaySeconds = 30, callable $tickUpdate = NULL): array {
     $tasks = [];
 
-    $site_ids = array_column($this->list()['sites'], 'id');
+    $site_ids = array_column($this->listAll()['sites'], 'id');
 
     foreach ($site_ids as $site_id) {
       /** @var \swichers\Acsf\Client\Endpoints\Entity\Site $site */
@@ -218,7 +218,7 @@ class Sites extends AbstractEntityAction {
 
     $task_ids = [];
 
-    $site_ids = array_column($this->list()['sites'], 'id');
+    $site_ids = array_column($this->listAll()['sites'], 'id');
 
     foreach ($site_ids as $site_id) {
       $cache_tasks = $this->get($site_id)->clearCache();
@@ -241,6 +241,62 @@ class Sites extends AbstractEntityAction {
     }
 
     return $task_ids;
+  }
+
+  /**
+   * Get a list of all available sites.
+   *
+   * @return array
+   *   An array of all available sites.
+   */
+  public function listAll() : array {
+
+    $sites = [
+      'count' => 0,
+      'sites' => [],
+    ];
+
+    $current_page = 1;
+
+    do {
+
+      $options = [
+        'page' => $current_page,
+        'limit' => 10,
+      ];
+
+      $site_info = $this->list($options);
+      $sites['sites'] = array_merge($sites['sites'], $site_info['sites'] ?: []);
+
+      $has_more =
+        !empty($site_info['count']) &&
+        ($site_info['count'] > ($current_page * $options['limit']));
+      $current_page++;
+    } while ($has_more);
+
+    $sites['count'] = count($sites['sites']);
+
+    return $sites;
+  }
+
+  /**
+   * Get an array of all available sites as Site entities.
+   *
+   * @return array
+   *   An array of Site entities.
+   */
+  public function getAll() : array {
+
+    $sites = [];
+
+    $sites_list = $this->listAll()['sites'] ?: [];
+
+    $site_ids = array_column($sites_list, 'id');
+    foreach ($site_ids as $id) {
+      $sites[$id] = $this->get($id);
+    }
+
+    return $sites ?: [];
   }
 
 }
