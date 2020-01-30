@@ -185,10 +185,7 @@ class Sites extends AbstractEntityAction {
       /** @var \swichers\Acsf\Client\Endpoints\Entity\Site $site */
       $site = $this->get($site_id);
 
-      if (empty($backupOptions['label'])) {
-        $backupOptions['label'] =
-          sprintf('%s API-initiated backup', $site->details()['site']);
-      }
+      $backupOptions['label'] = sprintf('%s API-initiated backup', $site->details()['site']);
 
       $tasks[] = $site->backup($backupOptions);
     }
