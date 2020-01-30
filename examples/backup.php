@@ -41,6 +41,7 @@ $client = ServiceLoader::buildFromConfig(
 )->get('acsf.client');
 
 $client->getAction('Sites')->backupAll(
+  ['components' => ['database']],
   TRUE,
   30,
   function (EntityInterface $task, $task_status) {
