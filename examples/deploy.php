@@ -56,6 +56,7 @@ printf("Deploying: %s\n", DEPLOY_REF);
 
 if ('live' == TARGET_ENV) {
   $client->getAction('Sites')->backupAll(
+    ['components' => ['database']],
     TRUE,
     30,
     function (EntityInterface $task, $task_status) {
