@@ -142,7 +142,7 @@ class SitesTest extends AbstractActionTestBase {
   /**
    * Validate we get a MissingEntityException if a bad name is given.
    *
-   * @covers ::testGetByName
+   * @covers ::getByName
    *
    * @depends testGetByName
    */
