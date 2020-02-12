@@ -184,7 +184,7 @@ function start_production_backport(ClientInterface $client, $toEnv = 'uat') {
     $site_ids,
     [
       'synchronize_all_users' => 'yes',
-      'wipe_target_environment' => 'yes',
+      'wipe_target_environment' => 'no',
       'detailed_status' => 'no',
     ]
   );
