@@ -63,6 +63,14 @@ class Backup extends AbstractEntity {
   /**
    * Delete a site backup.
    *
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   The delete request response.
+   *
+   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
+   *
    * @version v1
    * @title Delete a site backup
    * @http_method DELETE

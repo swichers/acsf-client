@@ -193,6 +193,8 @@ class TaskTest extends TestCase {
    * @covers ::wait
    *
    * @dataProvider dpWaitIntervals
+   *
+   * @throws \swichers\Acsf\Client\Exceptions\InvalidOptionException
    */
   public function testWait(int $expectedWait, int $delay, $statusKey = NULL) {
 

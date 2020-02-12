@@ -84,12 +84,15 @@ class SitesTest extends AbstractActionTestBase {
    */
   public function testListAll() {
 
+    /** @var \swichers\Acsf\Client\Endpoints\Action\Sites|\PHPUnit\Framework\MockObject\MockObject $action */
     $action = $this->getMockBuilder(Sites::class)
       ->setConstructorArgs([$this->mockClient])
-      ->setMethods(['list'])
+      ->onlyMethods(['list'])
       ->getMock();
     $action->method('list')->willReturnCallback(function ($options) {
       $page = $options['page'] ?: 1;
+
+      $sites = [];
 
       if ($page == 1) {
         $sites = range(1, 10);
@@ -98,7 +101,7 @@ class SitesTest extends AbstractActionTestBase {
         $sites = range(1, 5);
       }
 
-      return ['sites' => $sites ?: [], 'count' => 15];
+      return ['sites' => $sites, 'count' => 15];
     });
 
     $list = $action->listAll();
@@ -115,9 +118,10 @@ class SitesTest extends AbstractActionTestBase {
    */
   public function testGetByName() {
 
+    /** @var \swichers\Acsf\Client\Endpoints\Action\Sites|\PHPUnit\Framework\MockObject\MockObject $action */
     $action = $this->getMockBuilder(Sites::class)
       ->setConstructorArgs([$this->mockClient])
-      ->setMethods(['listAll', 'get'])
+      ->onlyMethods(['listAll', 'get'])
       ->getMock();
 
     $action->method('get')->willReturnMap([

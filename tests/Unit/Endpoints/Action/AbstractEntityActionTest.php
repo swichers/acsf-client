@@ -83,9 +83,10 @@ class AbstractEntityActionTest extends TestCase {
 
     /** @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Endpoints\Action\AbstractEntityAction $mock */
     $this->mockBase =
-      $this->getMockBuilder(AbstractEntityAction::class)->setConstructorArgs(
-          [$this->mockClient]
-        )->setMethods(['getEntityType'])->getMockForAbstractClass();
+      $this->getMockBuilder(AbstractEntityAction::class)
+        ->setConstructorArgs([$this->mockClient])
+        ->onlyMethods(['getEntityType'])
+        ->getMockForAbstractClass();
 
     $this->mockBase->method('getEntityType')->willReturn('Site', 'Task');
   }

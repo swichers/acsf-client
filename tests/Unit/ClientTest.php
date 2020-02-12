@@ -520,45 +520,12 @@ class ClientTest extends TestCase {
       }
       // Simulate a 404.
       elseif (4 == $calls) {
-        $coded_response = new class() extends MockResponse {
-
-          /**
-           * {@inheritdoc}
-           */
-          public function getStatusCode(): int {
-
-            return 404;
-          }
-
-        };
-        MockResponse::fromRequest(
-          'GET',
-          'http://example.com',
-          [],
-          $coded_response
-        );
+        $coded_response = new MockResponse('', ['http_code' => 404]);
         throw new ClientException($coded_response);
       }
       // Simulate a 403.
       elseif (5 == $calls) {
-        $coded_response = new class() extends MockResponse {
-
-          /**
-           * {@inheritdoc}
-           */
-          public function getStatusCode(): int {
-
-            return 403;
-          }
-
-        };
-        MockResponse::fromRequest(
-          'GET',
-          'http://example.com',
-          [],
-          $coded_response
-        );
-
+        $coded_response = new MockResponse('', ['http_code' => 403]);
         throw new ClientException($coded_response);
       }
 
@@ -566,15 +533,16 @@ class ClientTest extends TestCase {
     };
 
     /** @var \swichers\Acsf\Client\Endpoints\Action\ActionInterface|\PHPUnit\Framework\MockObject\MockObject $mockAction */
-    $mockAction = $this->getMockBuilder(AbstractAction::class)->setMethods(
-      ['ping']
-    )->disableOriginalConstructor()->getMockForAbstractClass();
+    $mockAction = $this->getMockBuilder(AbstractAction::class)
+      ->addMethods(['ping'])
+      ->disableOriginalConstructor()
+      ->getMockForAbstractClass();
     $mockAction->method('ping')->willReturnCallback($status_check);
 
     /** @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Discovery\ActionManagerInterface $mockActionManager */
     $mockActionManager =
       $this->getMockBuilder(ActionManager::class)
-        ->setMethods(['get', 'create'])
+        ->onlyMethods(['get', 'create'])
         ->disableOriginalConstructor()
         ->getMock();
     $mockActionManager->method('get')->willReturnMap(
@@ -599,14 +567,14 @@ class ClientTest extends TestCase {
     /** @var \swichers\Acsf\Client\Endpoints\Entity\EntityInterface|\PHPUnit\Framework\MockObject\MockObject $mockEntity */
     $mockEntity =
       $this->getMockBuilder(AbstractEntity::class)
-        ->setMethods([])
+        ->onlyMethods([])
         ->disableOriginalConstructor()
         ->getMockForAbstractClass();
 
     /** @var \PHPUnit\Framework\MockObject\MockObject|\swichers\Acsf\Client\Discovery\EntityManagerInterface $mockEntityManager */
     $mockEntityManager =
       $this->getMockBuilder(EntityManager::class)
-        ->setMethods(['get', 'create'])
+        ->onlyMethods(['get', 'create'])
         ->disableOriginalConstructor()
         ->getMock();
     $mockEntityManager->method('get')->willReturnMap(
