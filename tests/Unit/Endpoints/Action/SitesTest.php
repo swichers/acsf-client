@@ -3,6 +3,9 @@
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use swichers\Acsf\Client\Endpoints\Action\Sites;
+use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
+use swichers\Acsf\Client\Endpoints\Entity\Site;
+use swichers\Acsf\Client\Exceptions\MissingEntityException;
 
 /**
  * Tests for the SitesTest Action.
@@ -72,6 +75,82 @@ class SitesTest extends AbstractActionTestBase {
 
     $action = new Sites($this->mockClient);
     $this->assertSame('Site', $action->getEntityType());
+  }
+
+  /**
+   * Validates we can get a list of all Sites despite pagination.
+   *
+   * @covers ::listAll
+   */
+  public function testListAll() {
+
+    $action = $this->getMockBuilder(Sites::class)
+      ->setConstructorArgs([$this->mockClient])
+      ->setMethods(['list'])
+      ->getMock();
+    $action->method('list')->willReturnCallback(function ($options) {
+      $page = $options['page'] ?: 1;
+
+      if ($page == 1) {
+        $sites = range(1, 10);
+      }
+      elseif ($page == 2) {
+        $sites = range(1, 5);
+      }
+
+      return ['sites' => $sites ?: [], 'count' => 15];
+    });
+
+    $list = $action->listAll();
+    $this->assertArrayHasKey('sites', $list);
+    $this->assertArrayHasKey('count', $list);
+    $this->assertCount(15, $list['sites']);
+    $this->assertEquals(15, $list['count']);
+  }
+
+  /**
+   * Validates we can get a Site by its name.
+   *
+   * @covers ::getByName
+   */
+  public function testGetByName() {
+
+    $action = $this->getMockBuilder(Sites::class)
+      ->setConstructorArgs([$this->mockClient])
+      ->setMethods(['listAll', 'get'])
+      ->getMock();
+
+    $action->method('get')->willReturnMap([
+      [123, new Site($this->mockClient, 123)],
+    ]);
+
+    $action->method('listAll')->willReturn([
+      'sites' => [
+        [
+          'site' => 'UnitTest',
+          'id' => 123,
+        ],
+      ],
+    ]);
+
+    /** @var \swichers\Acsf\Client\Endpoints\Entity\Site $site */
+    $site = $action->getByName('UnitTest');
+    $this->assertInstanceOf(EntityInterface::class, $site);
+    $this->assertEquals(123, $site->id());
+  }
+
+  /**
+   * Validate we get a MissingEntityException if a bad name is given.
+   *
+   * @covers ::getByName
+   *
+   * @depends testGetByName
+   */
+  public function testGetByNameMissing() {
+
+    $action = new Sites($this->getMockAcsfClient());
+    $this->expectException(MissingEntityException::class);
+    $action->getByName('No site');
   }
 
 }

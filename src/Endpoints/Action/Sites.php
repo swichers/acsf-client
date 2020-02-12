@@ -2,7 +2,9 @@
 
 namespace swichers\Acsf\Client\Endpoints\Action;
 
+use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
+use swichers\Acsf\Client\Exceptions\MissingEntityException;
 
 /**
  * ACSF Endpoint Wrapper: Sites.
@@ -260,7 +262,7 @@ class Sites extends AbstractEntityAction {
       ];
 
       $site_info = $this->list($options);
-      $sites['sites'] = array_merge($sites['sites'], $site_info['sites'] ?: []);
+      $sites['sites'] = array_merge($sites['sites'], $site_info['sites'] ?? []);
 
       $has_more =
         !empty($site_info['count']) &&
@@ -291,6 +293,29 @@ class Sites extends AbstractEntityAction {
     }
 
     return $sites ?: [];
+  }
+
+  /**
+   * Get a Site by its human name instead of ID.
+   *
+   * @param string $name
+   *   The human name of a site factory site.
+   *
+   * @return \swichers\Acsf\Client\Endpoints\Entity\EntityInterface
+   *   The site that matches the given name.
+   *
+   * @throws \swichers\Acsf\Client\Exceptions\MissingEntityException
+   */
+  public function getByName(string $name) : EntityInterface {
+
+    $sites_list = $this->listAll()['sites'] ?? [];
+    foreach ($sites_list as $info) {
+      if ($info['site'] == $name) {
+        return $this->get($info['id']);
+      }
+    }
+
+    throw new MissingEntityException(sprintf('Unable to load Site with the name %s.', $name));
   }
 
 }
