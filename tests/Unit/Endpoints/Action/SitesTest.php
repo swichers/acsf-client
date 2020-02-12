@@ -129,7 +129,7 @@ class SitesTest extends AbstractActionTestBase {
         [
           'site' => 'UnitTest',
           'id' => 123,
-        ]
+        ],
       ],
     ]);
 
