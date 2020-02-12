@@ -262,7 +262,7 @@ class Sites extends AbstractEntityAction {
       ];
 
       $site_info = $this->list($options);
-      $sites['sites'] = array_merge($sites['sites'], $site_info['sites'] ?: []);
+      $sites['sites'] = array_merge($sites['sites'], $site_info['sites'] ?? []);
 
       $has_more =
         !empty($site_info['count']) &&
@@ -308,7 +308,7 @@ class Sites extends AbstractEntityAction {
    */
   public function getByName(string $name) : EntityInterface {
 
-    $sites_list = $this->listAll()['sites'] ?: [];
+    $sites_list = $this->listAll()['sites'] ?? [];
     foreach ($sites_list as $info) {
       if ($info['site'] == $name) {
         return $this->get($info['id']);
