@@ -302,6 +302,7 @@ class Sites extends AbstractEntityAction {
    *   The human name of a site factory site.
    *
    * @return \swichers\Acsf\Client\Endpoints\Entity\EntityInterface
+   *   The site that matches the given name.
    *
    * @throws \swichers\Acsf\Client\Exceptions\MissingEntityException
    */
