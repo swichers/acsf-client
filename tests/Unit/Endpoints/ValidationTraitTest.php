@@ -331,13 +331,11 @@ class ValidationTraitTest extends TestCase {
    */
   protected function getWrappedTrait() {
 
-    $wrapper = new class() {
+    return new class() {
 
       use ValidationTrait;
 
     };
-
-    return $wrapper;
   }
 
   /**

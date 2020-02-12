@@ -85,7 +85,7 @@ class ManagerTest extends TestCase {
   public function testGet() {
 
     $manager = new Manager($this->actionDiscoverer);
-    $this->assertInternalType('array', $manager->get('Sites'));
+    $this->assertIsArray($manager->get('Sites'));
     $this->assertFalse($manager->get('Abc' . time()));
   }
 
