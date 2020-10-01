@@ -97,6 +97,7 @@ class SiteTest extends TestCase {
     $this->assertEquals(['database'], $result['json']['components']);
 
     $components = [
+      'codebase',
       'database',
       'themes',
       'public files',
