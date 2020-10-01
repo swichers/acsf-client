@@ -137,4 +137,23 @@ interface ClientInterface {
    */
   public function getConfig(): array;
 
+  /**
+   * Set the active environment.
+   *
+   * @param string $environment
+   *   The environment to change to.
+   *
+   * @return string
+   *   The previous environment.
+   */
+  public function setEnvironment(string $environment): string;
+
+  /**
+   * Get the active environment.
+   *
+   * @return string
+   *   The active environment.
+   */
+  public function getEnvironment(): string;
+
 }

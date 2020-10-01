@@ -9,21 +9,11 @@
 
 declare(strict_types = 1);
 
-require 'vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
-use swichers\Acsf\Client\ServiceLoader;
+use swichers\Acsf\Client\ClientFactory;
 
-$base_config = [
-  'username' => 'example.user',
-  'api_key' => 'example.key',
-  'site_group' => 'example.group',
-  'environment' => 'live',
-];
-
-// Utilize the Symfony service container for ease of client creation.
-$client =
-  ServiceLoader::buildFromConfig(['acsf.client.connection' => $base_config])
-    ->get('acsf.client');
+$client = ClientFactory::create('example.user', 'example.key', 'example.group', 'live');
 
 // Grab all available sites.
 $site_ids = array_column($client->getAction('Sites')->listAll()['sites'], 'id');
@@ -35,7 +25,7 @@ $task_info = $client->getAction('Stage')->backport('uat', $site_ids);
 $client->getEntity('Task', intval($task_info['task_id']))->wait();
 
 // Change the connection to the target environment.
-$client->setConfig(['environment' => 'uat'] + $base_config);
+$client->setEnvironment('uat');
 
 // Deploy a new tag to the target environment.
 $task_info = $client->getAction('Update')->updateCode('tags/1.5.0-build');

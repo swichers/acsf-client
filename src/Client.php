@@ -150,8 +150,32 @@ class Client implements ClientInterface {
     $this->validateConfig($config);
     $old_config = $this->config ?? [];
     $this->config = $config;
+    $this->config['site_group'] = strtolower($this->config['site_group'] ?? '');
+    $this->setEnvironment($config['environment'] ?? '');
 
     return $old_config;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setEnvironment(string $environment): string {
+    $current_environment = $this->getEnvironment();
+
+    // AH_SITE_ENVIRONMENT can have the stack ID in it, so let's blindly strip
+    // starting numbers from our given environment. This should be safe because
+    // valid environment names cannot start with numbers anyway.
+    $environment = (string) preg_replace('/^\d/m', '', $environment);
+    $this->config['environment'] = strtolower($environment);
+
+    return $current_environment;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getEnvironment(): string {
+    return $this->config['environment'];
   }
 
   /**

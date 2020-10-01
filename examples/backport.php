@@ -11,10 +11,9 @@
 declare(strict_types = 1);
 
 use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
-use swichers\Acsf\Client\ServiceLoader;
+use swichers\Acsf\Client\ClientFactory;
 
-require 'config.php';
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 // The environment to backport to.
 define('TARGET_ENV', $argv[1] ?? '');
@@ -36,15 +35,7 @@ if (empty(TARGET_ENV) || empty(DEPLOY_REF)) {
 
 $start_time = new DateTime();
 
-$base_config = [
-  'username' => API_USERNAME,
-  'api_key' => API_KEY,
-  'site_group' => ACSF_SITE_GROUP,
-];
-
-$client = ServiceLoader::buildFromConfig(
-  ['acsf.client.connection' => ['environment' => SOURCE_ENV] + $base_config]
-)->get('acsf.client');
+$client = ClientFactory::createFromEnvironment(SOURCE_ENV);
 
 $sites = $client->getAction('Sites')->listAll();
 $site_ids = array_column($sites['sites'], 'id');
@@ -80,7 +71,7 @@ $client->getEntity('Task', intval($task_info['task_id']))->wait(
 );
 
 // Change to the target environment.
-$client->setConfig(['environment' => TARGET_ENV] + $base_config);
+$client->setEnvironment(TARGET_ENV);
 
 $refs = $client->getAction('Vcs')->list(['stack_id' => STACK_ID]);
 if (!in_array(DEPLOY_REF, $refs['available'])) {
