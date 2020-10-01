@@ -147,16 +147,11 @@ class Client implements ClientInterface {
    */
   public function setConfig(array $config): array {
 
-    $tolowers = ['environment', 'site_group'];
-    foreach ($tolowers as $tolower) {
-      if (isset($config[$tolower])) {
-        $config[$tolower] = strtolower($config[$tolower]);
-      }
-    }
-
     $this->validateConfig($config);
     $old_config = $this->config ?? [];
     $this->config = $config;
+    $this->config['site_group'] = strtolower($this->config['site_group'] ?? '');
+    $this->setEnvironment($config['environment'] ?? '');
 
     return $old_config;
   }
@@ -166,7 +161,13 @@ class Client implements ClientInterface {
    */
   public function setEnvironment(string $environment): string {
     $current_environment = $this->getEnvironment();
-    $this->config['environment'] = $environment;
+
+    // AH_SITE_ENVIRONMENT can have the stack ID in it, so let's blindly strip
+    // all numbers from our given environment. This should be safe because valid
+    // environment names cannot contain numbers anyway.
+    $environment = (string) preg_replace('/\d/m', '', $environment);
+    $this->config['environment'] = strtolower($environment);
+
     return $current_environment;
   }
 

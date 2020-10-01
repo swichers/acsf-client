@@ -68,10 +68,6 @@ class ClientFactory {
     // and then finally fall back to dev.
     $environment =
       ($environment ?? (string) getenv('AH_SITE_ENVIRONMENT')) ?? 'dev';
-    // AH_SITE_ENVIRONMENT can have the stack ID in it, so let's blindly strip
-    // all numbers from our given environment. This should be safe because valid
-    // environment names cannot contain numbers anyway.
-    $environment = (string) preg_replace('/\d/m', '', $environment);
 
     return self::createFromArray(
       [
