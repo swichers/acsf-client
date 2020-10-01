@@ -10,11 +10,10 @@
 
 declare(strict_types = 1);
 
+use swichers\Acsf\Client\ClientFactory;
 use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
-use swichers\Acsf\Client\ServiceLoader;
 
-require 'config.php';
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 // The environment to back up.
 define('TARGET_ENV', $argv[1] ?? '');
@@ -30,15 +29,7 @@ if (empty(TARGET_ENV)) {
 
 $start_time = new DateTime();
 
-$base_config = [
-  'username' => API_USERNAME,
-  'api_key' => API_KEY,
-  'site_group' => ACSF_SITE_GROUP,
-];
-
-$client = ServiceLoader::buildFromConfig(
-  ['acsf.client.connection' => ['environment' => TARGET_ENV] + $base_config]
-)->get('acsf.client');
+$client = ClientFactory::createFromEnvironment(TARGET_ENV);
 
 $client->getAction('Sites')->backupAll(
   ['components' => ['database']],

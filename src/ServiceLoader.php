@@ -2,13 +2,12 @@
 
 namespace swichers\Acsf\Client;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * Symfony helper class to load ACSF Client services into a container.
+ *
+ * @deprecated Use ClientFactory directly.
  */
 class ServiceLoader {
 
@@ -27,34 +26,14 @@ class ServiceLoader {
    *   Do we want this behavior? It's clunky to get a workable client using the
    *   container, but easy to change the config after we have it.
    *   https://symfony.com/doc/current/service_container/shared.html
+   *
+   * @deprecated
+   *
+   * @see \swichers\Acsf\Client\ClientFactory::getServices()
    */
   public static function build(string $servicePath = NULL, string $serviceFile = 'services.yml'): ContainerBuilder {
 
-    static $containerBuilder;
-
-    // Default to the client library configuration.
-    if (empty($servicePath)) {
-      $servicePath = __DIR__ . '/../';
-    }
-
-    $servicePath = realpath($servicePath);
-
-    if (empty($containerBuilder[$servicePath][$serviceFile])) {
-      // This is required for the automatic loading of Annotation enabled
-      // classes.
-      AnnotationRegistry::registerLoader('class_exists');
-
-      $containerBuilder[$servicePath][$serviceFile] = new ContainerBuilder();
-
-      $loader = new YamlFileLoader(
-        $containerBuilder[$servicePath][$serviceFile],
-        new FileLocator($servicePath)
-      );
-      $loader->load($serviceFile);
-
-    }
-
-    return $containerBuilder[$servicePath][$serviceFile];
+    return ClientFactory::getServices($servicePath, $serviceFile);
   }
 
   /**
@@ -70,16 +49,14 @@ class ServiceLoader {
    * @return \Symfony\Component\DependencyInjection\ContainerBuilder
    *   A container with the discovered services.
    *
+   * @deprecated
+   *
    * @see \swichers\Acsf\Client\ServiceLoader::build()
+   * @see \swichers\Acsf\Client\ClientFactory::getServices()
    */
   public static function buildFromConfig(array $config, string $servicePath = NULL, string $serviceFile = 'services.yml'): ContainerBuilder {
-    $container = self::build($servicePath, $serviceFile);
 
-    foreach ($config as $key => $value) {
-      $container->setParameter($key, $value);
-    }
-
-    return $container;
+    return ClientFactory::getServices($servicePath, $serviceFile, $config);
   }
 
 }

@@ -1,11 +1,11 @@
 # Library Usage Examples
 
 This folder contains some examples of how to use the library to script ACSF 
-deployments and associated tasks. To use these examples rename the
-`example.config.php` file to `config.php` and add your ACSF credentials.
-
+deployments and associated tasks. To use these examples copy the `.env.dist`
+file to `.env` in this folder. Then edit and configure each value in that file.
+ 
 ```sh
-cp example.config.php config.php
+cp ../.env.dist .env
 ```
 
 ## Files

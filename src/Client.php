@@ -147,11 +147,34 @@ class Client implements ClientInterface {
    */
   public function setConfig(array $config): array {
 
+    $tolowers = ['environment', 'site_group'];
+    foreach ($tolowers as $tolower) {
+      if (isset($config[$tolower])) {
+        $config[$tolower] = strtolower($config[$tolower]);
+      }
+    }
+
     $this->validateConfig($config);
     $old_config = $this->config ?? [];
     $this->config = $config;
 
     return $old_config;
+  }
+
+  /**
+   * {@inheritdoc }
+   */
+  public function setEnvironment(string $environment): string {
+    $current_environment = $this->getEnvironment();
+    $this->config['environment'] = $environment;
+    return $current_environment;
+  }
+
+  /**
+   * {@inheritdoc }
+   */
+  public function getEnvironment(): string {
+    return $this->config['environment'];
   }
 
   /**

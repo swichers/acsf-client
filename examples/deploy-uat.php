@@ -12,12 +12,11 @@
 
 declare(strict_types = 1);
 
+use swichers\Acsf\Client\ClientFactory;
 use swichers\Acsf\Client\ClientInterface;
 use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
-use swichers\Acsf\Client\ServiceLoader;
 
-require 'config.php';
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 // The code reference to deploy to uat.
 define('DEPLOY_REF', $argv[1] ?? '');
@@ -38,15 +37,7 @@ if (empty(DEPLOY_REF)) {
 
 $start_time = new DateTime();
 
-$base_config = [
-  'username' => API_USERNAME,
-  'api_key' => API_KEY,
-  'site_group' => ACSF_SITE_GROUP,
-];
-
-$client = ServiceLoader::buildFromConfig(
-  ['acsf.client.connection' => ['environment' => 'live'] + $base_config]
-)->get('acsf.client');
+$client = ClientFactory::createFromEnvironment('live');
 
 $task_id = start_production_backport($client, TARGET_ENV);
 if (FALSE === $task_id) {
@@ -66,7 +57,7 @@ $client->getEntity('Task', $task_id)->wait(
 );
 
 // Swap to the destination environment.
-$client->setConfig(['environment' => TARGET_ENV] + $base_config);
+$client->setEnvironment(TARGET_ENV);
 
 $refs = $client->getAction('Vcs')->list(['stack_id' => STACK_ID]);
 if (!in_array(DEPLOY_REF, $refs['available'])) {

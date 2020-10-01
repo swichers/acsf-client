@@ -36,7 +36,7 @@ Example scripts are available in the [examples](examples/) folder.
 
   require 'vendor/autoload.php';
 
-  use swichers\Acsf\Client\ServiceLoader;
+  use swichers\Acsf\Client\ClientFactory;
   
   $base_config = [
     'username' => 'example.user',
@@ -45,8 +45,7 @@ Example scripts are available in the [examples](examples/) folder.
     'environment' => 'live',
   ];
 
-  $client = ServiceLoader::buildFromConfig(['acsf.client.connection' => $base_config])
-    ->get('acsf.client');
+  $client = ClientFactory::createFromArray($base_config);
 
   // Check the service status.
   print_r($client->getAction('Status')->ping());
