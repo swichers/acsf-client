@@ -157,7 +157,7 @@ class Client implements ClientInterface {
   }
 
   /**
-   * {@inheritdoc }
+   * {@inheritdoc}
    */
   public function setEnvironment(string $environment): string {
     $current_environment = $this->getEnvironment();
@@ -172,7 +172,7 @@ class Client implements ClientInterface {
   }
 
   /**
-   * {@inheritdoc }
+   * {@inheritdoc}
    */
   public function getEnvironment(): string {
     return $this->config['environment'];
