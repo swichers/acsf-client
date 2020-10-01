@@ -163,9 +163,9 @@ class Client implements ClientInterface {
     $current_environment = $this->getEnvironment();
 
     // AH_SITE_ENVIRONMENT can have the stack ID in it, so let's blindly strip
-    // all numbers from our given environment. This should be safe because valid
-    // environment names cannot contain numbers anyway.
-    $environment = (string) preg_replace('/\d/m', '', $environment);
+    // starting numbers from our given environment. This should be safe because
+    // valid environment names cannot start with numbers anyway.
+    $environment = (string) preg_replace('/^\d/m', '', $environment);
     $this->config['environment'] = strtolower($environment);
 
     return $current_environment;
