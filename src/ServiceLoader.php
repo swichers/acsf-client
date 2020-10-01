@@ -7,7 +7,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * Symfony helper class to load ACSF Client services into a container.
  *
- * @deprecated Use ClientFactory directly.
+ * @deprecated This class has been superseded by ClientFactory.
+ *
+ * @see \swichers\Acsf\Client\ClientFactory
  */
 class ServiceLoader {
 
@@ -27,7 +29,7 @@ class ServiceLoader {
    *   container, but easy to change the config after we have it.
    *   https://symfony.com/doc/current/service_container/shared.html
    *
-   * @deprecated
+   * @deprecated Replaced by the getServices method in ClientFactory.
    *
    * @see \swichers\Acsf\Client\ClientFactory::getServices()
    */
@@ -49,10 +51,9 @@ class ServiceLoader {
    * @return \Symfony\Component\DependencyInjection\ContainerBuilder
    *   A container with the discovered services.
    *
-   * @deprecated
+   * @deprecated Replaced by createFromConfig in ClientFactory
    *
-   * @see \swichers\Acsf\Client\ServiceLoader::build()
-   * @see \swichers\Acsf\Client\ClientFactory::getServices()
+   * @see \swichers\Acsf\Client\ClientFactory::createFromConfig()
    */
   public static function buildFromConfig(array $config, string $servicePath = NULL, string $serviceFile = 'services.yml'): ContainerBuilder {
 
