@@ -4,7 +4,7 @@ namespace swichers\Acsf\Client\Tests;
 
 use PHPUnit\Framework\TestCase;
 use swichers\Acsf\Client\Response;
-use Symfony\Component\HttpClient\Exception\TransportException;
+use Symfony\Component\HttpClient\Exception\JsonException;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
@@ -41,7 +41,7 @@ class ResponseTest extends TestCase {
     $original = $client->request('GET', 'http://example.com');
     $resp = new Response($original);
 
-    $this->expectException(TransportException::class);
+    $this->expectException(JsonException::class);
     $resp->toArray(TRUE);
   }
 
