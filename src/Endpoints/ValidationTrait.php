@@ -154,6 +154,7 @@ trait ValidationTrait {
       }
 
       $allowed_components = [
+        'codebase',
         'database',
         'public files',
         'private files',
