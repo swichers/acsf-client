@@ -67,7 +67,7 @@ class ClientFactory {
     // Prefer what was passed in, fall back to the environment defined target,
     // and then finally fall back to dev.
     $environment =
-      ($environment ?? (string) getenv('AH_SITE_ENVIRONMENT')) ?? 'dev';
+      ($environment ?: (string) getenv('AH_SITE_ENVIRONMENT')) ?: 'dev';
 
     return self::createFromArray(
       [
