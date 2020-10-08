@@ -55,12 +55,14 @@ class ClientFactory {
   public static function createFromEnvironment(string $environment = NULL, bool $loadEnvFile = TRUE): ClientInterface {
 
     if ($loadEnvFile) {
-      try {
-        (new Dotenv())->load(...self::getEnvPaths());
-      }
-      catch (PathException $x) {
-        // We don't necessarily care if this fails. It just means we rely on the
-        // actual system environment variables.
+      foreach (self::getEnvPaths() as $path) {
+        try {
+          (new Dotenv())->load($path);
+        }
+        catch (PathException $x) {
+          // We don't necessarily care if this fails. It just means we rely on the
+          // actual system environment variables.
+        }
       }
     }
 
