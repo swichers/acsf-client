@@ -60,8 +60,8 @@ class ClientFactory {
           (new Dotenv())->load($path);
         }
         catch (PathException $x) {
-          // We don't necessarily care if this fails. It just means we rely on the
-          // actual system environment variables.
+          // We don't necessarily care if this fails. It just means we rely on
+          // the actual system environment variables.
         }
       }
     }
