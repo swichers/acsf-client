@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * A simple usage of the library.
@@ -22,7 +23,7 @@ $site_ids = array_column($client->getAction('Sites')->listAll()['sites'], 'id');
 $task_info = $client->getAction('Stage')->backport('uat', $site_ids);
 
 // Wait for that backport to finish.
-$client->getEntity('Task', intval($task_info['task_id']))->wait();
+$client->getEntity('Task', (int) $task_info['task_id'])->wait();
 
 // Change the connection to the target environment.
 $client->setEnvironment('uat');
@@ -31,9 +32,9 @@ $client->setEnvironment('uat');
 $task_info = $client->getAction('Update')->updateCode('tags/1.5.0-build');
 
 // Wait for that task to finish.
-$client->getEntity('Task', intval($task_info['task_id']))->wait();
+$client->getEntity('Task', (int) $task_info['task_id'])->wait();
 
 // Clear Drupal and Varnish cache for the backported sites.
 $client->getAction('Sites')->clearCaches();
 
-exit(1);
+exit(0);
