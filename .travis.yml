@@ -19,7 +19,7 @@ install:
 
 script:
   - php vendor/bin/phpcs
-  - php vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
+  - XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
 
 after_script:
   - php vendor/bin/codacycoverage clover ./build/logs/clover.xml
