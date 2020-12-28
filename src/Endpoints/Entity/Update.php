@@ -3,7 +3,7 @@
 namespace swichers\Acsf\Client\Endpoints\Entity;
 
 /**
- * Class Update.
+ * Update endpoint wrapper.
  *
  * @\swichers\Acsf\Client\Annotation\Entity(name = "Update")
  */

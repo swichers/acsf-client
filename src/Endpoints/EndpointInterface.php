@@ -3,7 +3,7 @@
 namespace swichers\Acsf\Client\Endpoints;
 
 /**
- * Interface EndpointInterface.
+ * Contract for endpoint handlers.
  */
 interface EndpointInterface {
 

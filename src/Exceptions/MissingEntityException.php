@@ -2,11 +2,9 @@
 
 namespace swichers\Acsf\Client\Exceptions;
 
-use Exception;
-
 /**
- * Class MissingEntityException.
+ * Exception for when an entity is not found.
  */
-class MissingEntityException extends Exception {
+class MissingEntityException extends \RuntimeException {
 
 }

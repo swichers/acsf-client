@@ -3,7 +3,7 @@
 namespace swichers\Acsf\Client\Discovery;
 
 /**
- * Class EntityManager.
+ * Manages Entity endpoints.
  */
 class EntityManager extends Manager implements EntityManagerInterface {
 

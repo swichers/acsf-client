@@ -2,7 +2,6 @@
 
 namespace swichers\Acsf\Client;
 
-use Exception;
 use swichers\Acsf\Client\Discovery\ActionManagerInterface;
 use swichers\Acsf\Client\Discovery\EntityManagerInterface;
 use swichers\Acsf\Client\Endpoints\Action\ActionInterface;
@@ -214,7 +213,7 @@ class Client implements ClientInterface {
         throw $x;
       }
     }
-    catch (Exception $x) {
+    catch (\Exception $x) {
       if ($throwException) {
         throw $x;
       }

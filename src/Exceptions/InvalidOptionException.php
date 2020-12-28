@@ -2,11 +2,9 @@
 
 namespace swichers\Acsf\Client\Exceptions;
 
-use Exception;
-
 /**
- * Class InvalidOptionException.
+ * Exception for when an invalid endpoint option was given.
  */
-class InvalidOptionException extends Exception {
+class InvalidOptionException extends \RuntimeException {
 
 }

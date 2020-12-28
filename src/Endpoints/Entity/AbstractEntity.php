@@ -5,7 +5,7 @@ namespace swichers\Acsf\Client\Endpoints\Entity;
 use swichers\Acsf\Client\ClientInterface;
 
 /**
- * Class AbstractEntity.
+ * Base Entity implementation.
  */
 abstract class AbstractEntity implements EntityInterface {
 

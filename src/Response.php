@@ -5,7 +5,7 @@ namespace swichers\Acsf\Client;
 use Symfony\Contracts\HttpClient\ResponseInterface as SymfonyResponseInterface;
 
 /**
- * Class Response.
+ * API endpoint response wrapper.
  */
 class Response implements ResponseInterface {
 

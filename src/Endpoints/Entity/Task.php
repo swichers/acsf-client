@@ -6,7 +6,7 @@ use swichers\Acsf\Client\Endpoints\ValidationTrait;
 use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 
 /**
- * Class Task.
+ * Task endpoint wrapper.
  *
  * @\swichers\Acsf\Client\Annotation\Entity(name = "Task")
  */

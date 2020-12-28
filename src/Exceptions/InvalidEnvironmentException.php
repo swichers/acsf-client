@@ -2,11 +2,9 @@
 
 namespace swichers\Acsf\Client\Exceptions;
 
-use Exception;
-
 /**
- * Class InvalidEnvironmentException.
+ * Exception for when an invalid environment was requested.
  */
-class InvalidEnvironmentException extends Exception {
+class InvalidEnvironmentException extends \RuntimeException {
 
 }
