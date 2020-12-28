@@ -18,6 +18,7 @@
 
   <rule ref="Drupal">
     <exclude name="Drupal.WhiteSpace.OpenTagNewline.BlankLine"/>
+    <exclude name="Drupal.Commenting.TodoComment.TodoFormat"/>
     <exclude name="Drupal.Commenting.Deprecated"/>
   </rule>
   <rule ref="DrupalPractice" />
