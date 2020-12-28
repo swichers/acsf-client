@@ -67,27 +67,39 @@ function prune_site_backups(ClientInterface $client, Site $site, int $maxAge = 1
     // We need to calculate what the last page is so we can work our way
     // backwards. If we start at the front we may miss items as page numbers
     // shift during the loop.
-    $currentPage = (int) ceil($site->listBackups(['limit' => 1])['count'] / $perPage) ?: 1;
+    $currentPage =
+      (int) ceil($site->listBackups(['limit' => 1])['count'] / $perPage) ?: 1;
   }
 
   try {
-    $backups = $site->listBackups([
-      'limit' => $perPage,
-      'page' => $currentPage,
-    ]);
+    $backups = $site->listBackups(
+      [
+        'limit' => $perPage,
+        'page' => $currentPage,
+      ]
+    );
   }
   catch (ClientException $x) {
     fwrite(STDERR, $x->getMessage() . PHP_EOL);
     return;
   }
 
-  $prunables = array_filter($backups['backups'], static function ($backup) use ($maxAge) {
-    return $backup['timestamp'] <= strtotime(sprintf('-%d days', $maxAge));
-  });
+  $prunables = array_filter(
+    $backups['backups'],
+    static function ($backup) use ($maxAge) {
+
+      return $backup['timestamp'] <= strtotime(sprintf('-%d days', $maxAge));
+    }
+  );
 
   if (!empty($prunables)) {
     foreach ($prunables as $prunable) {
-      printf("%s: Delete %s %s\n", $site->details()['site'], $prunable['label'], date('c', $prunable['timestamp']));
+      printf(
+        "%s: Delete %s %s\n",
+        $site->details()['site'],
+        $prunable['label'],
+        date('c', $prunable['timestamp'])
+      );
       /** @var \swichers\Acsf\Client\Endpoints\Entity\Backup $backup */
       $backup = $client->getEntity('Backup', $prunable['id'], $site);
       $backup->delete();

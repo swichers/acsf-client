@@ -42,13 +42,19 @@ define('STACK_ID', $argv[5] ?? 1);
 
 if (empty(ALIAS_NAME)) {
   echo "Must supply the alias prefix. If your alias is @example.01live then `example` is expected.\n\n";
-  printf("Example: php %s example tags/2.4.2-build tags/2.4.2-build\n", basename(__FILE__));
+  printf(
+    "Example: php %s example tags/2.4.2-build tags/2.4.2-build\n",
+    basename(__FILE__)
+  );
   die(1);
 }
 
 if (empty(LIVE_REF) || empty(UAT_REF)) {
   echo "Must supply both a live and uat code reference.\n\n";
-  printf("Example: php %s example tags/2.4.2-build tags/2.4.2-build\n", basename(__FILE__));
+  printf(
+    "Example: php %s example tags/2.4.2-build tags/2.4.2-build\n",
+    basename(__FILE__)
+  );
   die(1);
 }
 
@@ -117,7 +123,8 @@ exit(0);
  *
  * @return void
  */
-function blt_double_check(string $prefix, string $env, int $stackId = 1) : void {
+function blt_double_check(string $prefix, string $env, int $stackId = 1): void {
+
   $alias = escapeshellarg(sprintf('@%s.%02d%s', $prefix, $stackId, $env));
   passthru(sprintf('drush %s sfml updatedb -y', $alias));
   passthru(sprintf('drush %s sfml cim sync -y', $alias));
@@ -129,7 +136,8 @@ function blt_double_check(string $prefix, string $env, int $stackId = 1) : void 
  *
  * @return void
  */
-function pre_deploy_message() : void {
+function pre_deploy_message(): void {
+
   echo <<< 'EOM'
 
 ------------------------[ ACSF Production Release ]-------------------------
@@ -167,7 +175,7 @@ EOM;
  *
  * @return void
  */
-function post_deploy_message() : void {
+function post_deploy_message(): void {
 
   echo <<< 'EOM'
 Deployment should be complete. If there were any errors during the process you
@@ -195,7 +203,8 @@ EOM;
  *
  * @return void
  */
-function display_error_helper_script() : void {
+function display_error_helper_script(): void {
+
   echo <<< 'EOM'
 
 --------------------------------------------------------------------------------

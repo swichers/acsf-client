@@ -38,18 +38,19 @@ printf("Deploying code for %s\n", TARGET_ENV);
 printf("Current code: %s\n", $refs['current']);
 printf("New code: %s\n", CODE_REF);
 
-$task_info = $client->getAction('Update')->updateCode(CODE_REF, ['stack_id' => STACK_ID]);
+$task_info =
+  $client->getAction('Update')->updateCode(CODE_REF, ['stack_id' => STACK_ID]);
 $client->getEntity('Task', (int) $task_info['task_id'])->wait(
-    60,
-    static function (EntityInterface $task, array $task_status) {
+  60,
+  static function (EntityInterface $task, array $task_status) {
 
-      printf(
-        "Code Deploy (%d): %s\n",
-        $task->id(),
-        $task_status['status_string']
-      );
-    }
-  );
+    printf(
+      "Code Deploy (%d): %s\n",
+      $task->id(),
+      $task_status['status_string']
+    );
+  }
+);
 
 printf("Deployment on %s is complete.\n", TARGET_ENV);
 

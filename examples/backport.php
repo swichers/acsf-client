@@ -63,12 +63,12 @@ $task_info = $client->getAction('Stage')->backport(
 );
 
 $client->getEntity('Task', (int) $task_info['task_id'])->wait(
-    60,
-    static function (EntityInterface $task, array $taskStatus) {
+  60,
+  static function (EntityInterface $task, array $taskStatus) {
 
-      printf("Backport (%d): %s\n", $task->id(), $taskStatus['status_string']);
-    }
-  );
+    printf("Backport (%d): %s\n", $task->id(), $taskStatus['status_string']);
+  }
+);
 
 run_script('create-custom-domains', TARGET_ENV);
 run_script('deploy', TARGET_ENV, $DEPLOY_REF, STACK_ID);

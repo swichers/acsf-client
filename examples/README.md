@@ -1,12 +1,14 @@
 # Library Usage Examples
 
-This folder contains some examples of how to use the library to script ACSF  deployments and associated tasks. To use these examples copy the `.env.dist` file to `.env` in this folder. Then edit and configure each value in that file.
+This folder contains some examples of how to use the library to script ACSF deployments and associated tasks. To use
+these examples copy the `.env.dist` file to `.env` in this folder. Then edit and configure each value in that file.
 
 ```sh
 cp ../.env.dist .env
 ```
 
-The provided scripts allow you to perform many of the common tasks you might need right out of the box, but the real power in this library comes from using these scripts as a starting point for your own more complex scripts.
+The provided scripts allow you to perform many of the common tasks you might need right out of the box, but the real
+power in this library comes from using these scripts as a starting point for your own more complex scripts.
 
 ## Examples provided
 
@@ -44,7 +46,8 @@ Deploys a new tag or branch to the target environment.
 
 Usage: `php prod-release.php example tags/2.7.0-build tags/2.7.0-beta.1-build`
 
-Perform a production release. Deploys code to both the production and UAT environments after creating a backup. Shows how to combine the example scripts to perform complex tasks.
+Perform a production release. Deploys code to both the production and UAT environments after creating a backup. Shows
+how to combine the example scripts to perform complex tasks.
 
 ### redeploy.php
 

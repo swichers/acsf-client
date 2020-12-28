@@ -37,12 +37,23 @@ $client = ClientFactory::createFromEnvironment(TARGET_ENV);
 
 printf("Creating backups including %s\n", BACKUP_COMPONENTS);
 
-$client->getAction('Sites')->backupAll([
-  'components' => explode(',', BACKUP_COMPONENTS),
-], TRUE, 60, static function (EntityInterface $task, $taskStatus) use ($client) {
-  $site_name = get_site_name($client, (int) $taskStatus['nid']);
-  printf("Backup (%d, %s): %s\n", $task->id(), $site_name, $taskStatus['status_string']);
-});
+$client->getAction('Sites')->backupAll(
+  [
+    'components' => explode(',', BACKUP_COMPONENTS),
+  ],
+  TRUE,
+  60,
+  static function (EntityInterface $task, $taskStatus) use ($client) {
+
+    $site_name = get_site_name($client, (int) $taskStatus['nid']);
+    printf(
+      "Backup (%d, %s): %s\n",
+      $task->id(),
+      $site_name,
+      $taskStatus['status_string']
+    );
+  }
+);
 
 $diff = $start_time->diff(new DateTime());
 printf("Script complete. Time elapsed: %s\n", $diff->format('%H:%I:%S'));

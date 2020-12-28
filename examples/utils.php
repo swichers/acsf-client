@@ -20,6 +20,7 @@ use swichers\Acsf\Client\ClientInterface;
  *   The ACSF git reference (tag or branch name, hash ID) to check for.
  */
 function check_ref_exists(ClientInterface $client, string $targetEnv, string $ref) {
+
   $original_environment = $client->getEnvironment();
   $client->setEnvironment($targetEnv);
 
@@ -35,6 +36,7 @@ function check_ref_exists(ClientInterface $client, string $targetEnv, string $re
  * Pause script execution.
  */
 function pause() {
+
   printf("Paused. Press the return key to continue.\n");
   $fh = fopen('php://stdin', 'rb');
   fgets($fh);
@@ -54,7 +56,8 @@ function pause() {
  * @return string
  *   The name of the site with the given ID.
  */
-function get_site_name(ClientInterface $client, int $siteId) : string {
+function get_site_name(ClientInterface $client, int $siteId): string {
+
   static $siteIds = [];
 
   if (!isset($siteIds[$siteId]) || is_null($siteIds[$siteId])) {
@@ -74,12 +77,16 @@ function get_site_name(ClientInterface $client, int $siteId) : string {
  * @param mixed ...$args
  *   Arguments to pass to the script.
  */
-function run_script(string $scriptName, ...$args) : void {
+function run_script(string $scriptName, ...$args): void {
 
   array_unshift($args, sprintf('%s/%s.php', __DIR__, $scriptName));
-  $args = array_map(static function ($element) {
-    return escapeshellarg($element);
-  }, $args);
+  $args = array_map(
+    static function ($element) {
+
+      return escapeshellarg($element);
+    },
+    $args
+  );
 
   passthru('php ' . implode(' ', $args));
 }
