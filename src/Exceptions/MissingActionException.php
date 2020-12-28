@@ -2,11 +2,9 @@
 
 namespace swichers\Acsf\Client\Exceptions;
 
-use Exception;
-
 /**
- * Class MissingActionException.
+ * Exception for when an action does not exist.
  */
-class MissingActionException extends Exception {
+class MissingActionException extends \Exception {
 
 }

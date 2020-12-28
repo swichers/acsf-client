@@ -5,7 +5,7 @@ namespace swichers\Acsf\Client\Endpoints\Entity;
 use swichers\Acsf\Client\Endpoints\EndpointInterface;
 
 /**
- * Interface EntityInterface.
+ * Entity contract.
  *
  * Primarily used for type hinting and restriction.
  */

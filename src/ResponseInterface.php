@@ -5,7 +5,7 @@ namespace swichers\Acsf\Client;
 use Symfony\Contracts\HttpClient\ResponseInterface as HttpClientResponseInterface;
 
 /**
- * Interface ResponseInterface.
+ * Contract for responses.
  */
 interface ResponseInterface {
 

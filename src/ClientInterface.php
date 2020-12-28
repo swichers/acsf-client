@@ -6,7 +6,7 @@ use swichers\Acsf\Client\Endpoints\Action\ActionInterface;
 use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 
 /**
- * Interface ClientInterface.
+ * Contract for Clients.
  */
 interface ClientInterface {
 

@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
- * Class ServiceLoaderTest.
+ * Tests the ServiceLoader.
  *
  * @coversDefaultClass \swichers\Acsf\Client\ServiceLoader
  *
@@ -26,8 +26,8 @@ class ServiceLoaderTest extends TestCase {
   public function testBuild() {
 
     $loader = ServiceLoader::build();
-    $this->assertInstanceOf(ContainerBuilder::class, $loader);
-    $this->assertInstanceOf(HttpClientInterface::class, $loader->get('acsf.http_client'));
+    self::assertInstanceOf(ContainerBuilder::class, $loader);
+    self::assertInstanceOf(HttpClientInterface::class, $loader->get('acsf.http_client'));
   }
 
 }

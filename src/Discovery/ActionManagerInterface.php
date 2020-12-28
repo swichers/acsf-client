@@ -3,7 +3,7 @@
 namespace swichers\Acsf\Client\Discovery;
 
 /**
- * Interface ActionManagerInterface.
+ * Contract for action managers.
  */
 interface ActionManagerInterface extends ManagerInterface {
 

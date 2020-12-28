@@ -2,11 +2,9 @@
 
 namespace swichers\Acsf\Client\Exceptions;
 
-use Exception;
-
 /**
- * Class InvalidCredentialsException.
+ * Exception for when credentials are invalid.
  */
-class InvalidCredentialsException extends Exception {
+class InvalidCredentialsException extends \RuntimeException {
 
 }

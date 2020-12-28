@@ -2,11 +2,9 @@
 
 namespace swichers\Acsf\Client\Exceptions;
 
-use Exception;
-
 /**
- * Class MissingEndpointException.
+ * Exception for when an endpoint does not exist.
  */
-class MissingEndpointException extends Exception {
+class MissingEndpointException extends \RuntimeException {
 
 }

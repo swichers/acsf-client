@@ -5,7 +5,7 @@ namespace swichers\Acsf\Client\Endpoints\Entity;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 
 /**
- * Class Backup.
+ * Backup endpoint wrapper.
  *
  * @\swichers\Acsf\Client\Annotation\Entity(name = "Backup")
  */
