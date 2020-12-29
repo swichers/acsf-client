@@ -24,7 +24,7 @@ require __DIR__ . '/utils.php';
 for ($i = 1; $i <= 2; $i++) {
   if (empty($argv[$i])) {
     print "You must pass in an ACSF git reference for live and uat.\n";
-    print "Usage: php prod-release.php tags/2.17.0-build tags/2.18.0-beta.1-build\n";
+    print "Usage: php prod-release.php example tags/2.17.0-build tags/2.18.0-beta.1-build\n";
     die(1);
   }
 }
@@ -167,6 +167,7 @@ During this time production sites will remain available and accessible to the
 public.
 
 --------------------------------------------------------------------------------
+
 EOM;
 }
 
