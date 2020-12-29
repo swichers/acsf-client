@@ -70,7 +70,6 @@ $client->getEntity('Task', (int) $task_info['task_id'])->wait(
   }
 );
 
-run_script('create-custom-domains', TARGET_ENV);
 run_script('deploy', TARGET_ENV, $DEPLOY_REF, STACK_ID);
 
 $diff = $start_time->diff(new DateTime());
