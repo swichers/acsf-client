@@ -192,8 +192,6 @@ It can be helpful to run this script anyway since the BLT deployment does not al
 
 Review the above output for errors.
 
-Make sure the domains were recreated on lower environments.
-
 ❗❗❗ Be sure to send the post-deployment completion e-mail. A reply-all to the pre-deployment e-mail will suffice. ❗❗❗
 
 EOM;

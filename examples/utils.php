@@ -83,7 +83,7 @@ function run_script(string $scriptName, ...$args): void {
   $args = array_map(
     static function ($element) {
 
-      return escapeshellarg($element);
+      return is_int($element) ? $element : escapeshellarg($element);
     },
     $args
   );
