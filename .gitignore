@@ -2,6 +2,7 @@
 .idea/*
 /vendor/
 .phpcs-cache
+.phpunit.result.cache
 
 # macOS
 
@@ -9,6 +10,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+.env
 
 # Icon must end with two \r
 Icon

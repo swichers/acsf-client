@@ -3,7 +3,6 @@
 namespace swichers\Acsf\Client\Tests\Endpoints\Action;
 
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use swichers\Acsf\Client\Client;
 use swichers\Acsf\Client\Endpoints\Action\AbstractAction;
 use swichers\Acsf\Client\Tests\Traits\AcsfClientTrait;
@@ -31,11 +30,11 @@ class AbstractActionTest extends TestCase {
       [$this->getMockAcsfClient()]
     )->getMockForAbstractClass();
 
-    $reflectionClass = new ReflectionClass(AbstractAction::class);
+    $reflectionClass = new \ReflectionClass(AbstractAction::class);
     $reflectionProperty = $reflectionClass->getProperty('client');
     $reflectionProperty->setAccessible(TRUE);
 
-    $this->assertInstanceOf(
+    self::assertInstanceOf(
       Client::class,
       $reflectionProperty->getValue($mock)
     );

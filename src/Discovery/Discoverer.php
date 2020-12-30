@@ -3,11 +3,10 @@
 namespace swichers\Acsf\Client\Discovery;
 
 use Doctrine\Common\Annotations\Reader;
-use ReflectionClass;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Class Discoverer.
+ * Dynamic Endpoint and Action discoverer.
  */
 class Discoverer implements DiscovererInterface {
 
@@ -102,7 +101,7 @@ class Discoverer implements DiscovererInterface {
     foreach ($finder as $file) {
       $class = $this->namespace . '\\' . $file->getBasename('.php');
       $annotation = $this->annotationReader->getClassAnnotation(
-        new ReflectionClass($class),
+        new \ReflectionClass($class),
         $this->annotationClass
       );
       if (!$annotation) {

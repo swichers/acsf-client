@@ -6,7 +6,7 @@ use swichers\Acsf\Client\Endpoints\Action\ActionInterface;
 use swichers\Acsf\Client\Endpoints\Entity\EntityInterface;
 
 /**
- * Interface ClientInterface.
+ * Contract for Clients.
  */
 interface ClientInterface {
 
@@ -136,5 +136,24 @@ interface ClientInterface {
    *   The current client configuration.
    */
   public function getConfig(): array;
+
+  /**
+   * Set the active environment.
+   *
+   * @param string $environment
+   *   The environment to change to.
+   *
+   * @return string
+   *   The previous environment.
+   */
+  public function setEnvironment(string $environment): string;
+
+  /**
+   * Get the active environment.
+   *
+   * @return string
+   *   The active environment.
+   */
+  public function getEnvironment(): string;
 
 }

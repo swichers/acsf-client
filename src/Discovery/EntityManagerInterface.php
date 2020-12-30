@@ -3,7 +3,7 @@
 namespace swichers\Acsf\Client\Discovery;
 
 /**
- * Interface EntityManagerInterface.
+ * Contract for entity managers.
  */
 interface EntityManagerInterface extends ManagerInterface {
 

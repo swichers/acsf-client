@@ -3,7 +3,6 @@
 namespace swichers\Acsf\Client\Endpoints;
 
 use swichers\Acsf\Client\Exceptions\InvalidOptionException;
-use const FILTER_VALIDATE_URL;
 
 /**
  * Shared Action and Entity validation helpers.
@@ -131,7 +130,7 @@ trait ValidationTrait {
   protected function validateBackupOptions(array $options) {
 
     if (isset($options['callback_url'])) {
-      if (!filter_var($options['callback_url'], FILTER_VALIDATE_URL)) {
+      if (!filter_var($options['callback_url'], \FILTER_VALIDATE_URL)) {
         throw new InvalidOptionException(
           sprintf(
             'callback_url was set to an invalid url: %s',

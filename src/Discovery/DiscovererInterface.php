@@ -3,7 +3,7 @@
 namespace swichers\Acsf\Client\Discovery;
 
 /**
- * Interface DiscovererInterface.
+ * Contract for discoverers.
  */
 interface DiscovererInterface {
 

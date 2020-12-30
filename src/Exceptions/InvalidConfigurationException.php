@@ -2,11 +2,9 @@
 
 namespace swichers\Acsf\Client\Exceptions;
 
-use Exception;
-
 /**
- * Class InvalidConfigurationException.
+ * Exception for when configuration is invalid.
  */
-class InvalidConfigurationException extends Exception {
+class InvalidConfigurationException extends \RuntimeException {
 
 }

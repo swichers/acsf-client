@@ -6,7 +6,7 @@ use swichers\Acsf\Client\Endpoints\EndpointInterface;
 use swichers\Acsf\Client\Exceptions\MissingEndpointException;
 
 /**
- * Class Manager.
+ * Base manager for discovering entities and actions.
  */
 class Manager implements ManagerInterface {
 

@@ -3,8 +3,6 @@
 namespace swichers\Acsf\Client\Tests\Endpoints;
 
 use PHPUnit\Framework\TestCase;
-use ReflectionObject;
-use stdClass;
 use swichers\Acsf\Client\Endpoints\ValidationTrait;
 use swichers\Acsf\Client\Exceptions\InvalidOptionException;
 
@@ -32,7 +30,7 @@ class ValidationTraitTest extends TestCase {
       'disallowed',
     ];
     $result = $method->invoke($object, array_flip($options), ['limit']);
-    $this->assertEquals(['limit' => 0], $result);
+    self::assertEquals(['limit' => 0], $result);
   }
 
   /**
@@ -53,23 +51,23 @@ class ValidationTraitTest extends TestCase {
     ];
 
     $result = $method->invoke($object, $options);
-    $this->assertEquals(1, $result['limit']);
-    $this->assertEquals(1, $result['page']);
-    $this->assertEquals('desc', $result['order']);
-    $this->assertEquals('random', $result['random']);
-    $this->assertEquals(
+    self::assertEquals(1, $result['limit']);
+    self::assertEquals(1, $result['page']);
+    self::assertEquals('desc', $result['order']);
+    self::assertEquals('random', $result['random']);
+    self::assertEquals(
       'asc',
       $method->invoke($object, ['order' => 'AsC'])['order']
     );
-    $this->assertEquals(
+    self::assertEquals(
       'desc',
       $method->invoke($object, ['order' => 'ANYTHING'])['order']
     );
-    $this->assertEquals(
+    self::assertEquals(
       100,
       $method->invoke($object, ['limit' => 2000])['limit']
     );
-    $this->assertEquals(
+    self::assertEquals(
       10,
       $method->invoke($object, ['limit' => 2000], 10)['limit']
     );
@@ -85,11 +83,11 @@ class ValidationTraitTest extends TestCase {
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'ensureSortOrder');
 
-    $this->assertEquals('asc', $method->invoke($object, 'asc'));
-    $this->assertEquals('asc', $method->invoke($object, 'ASC'));
-    $this->assertEquals('desc', $method->invoke($object, 'desc'));
-    $this->assertEquals('desc', $method->invoke($object, 'DESC'));
-    $this->assertEquals('desc', $method->invoke($object, 'abc123'));
+    self::assertEquals('asc', $method->invoke($object, 'asc'));
+    self::assertEquals('asc', $method->invoke($object, 'ASC'));
+    self::assertEquals('desc', $method->invoke($object, 'desc'));
+    self::assertEquals('desc', $method->invoke($object, 'DESC'));
+    self::assertEquals('desc', $method->invoke($object, 'abc123'));
   }
 
   /**
@@ -108,12 +106,12 @@ class ValidationTraitTest extends TestCase {
       5678,
       5678,
       5678,
-      new stdClass(),
+      new \stdClass(),
       '',
       NULL,
     ];
 
-    $this->assertEquals([1234, 5678], $method->invoke($object, $data));
+    self::assertEquals([1234, 5678], $method->invoke($object, $data));
   }
 
   /**
@@ -125,21 +123,21 @@ class ValidationTraitTest extends TestCase {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'ensureBool');
-    $this->assertTrue($method->invoke($object, 'true'));
-    $this->assertTrue($method->invoke($object, 'yes'));
-    $this->assertTrue($method->invoke($object, 'on'));
-    $this->assertTrue($method->invoke($object, '1'));
-    $this->assertTrue($method->invoke($object, 1));
-    $this->assertTrue($method->invoke($object, TRUE));
+    self::assertTrue($method->invoke($object, 'true'));
+    self::assertTrue($method->invoke($object, 'yes'));
+    self::assertTrue($method->invoke($object, 'on'));
+    self::assertTrue($method->invoke($object, '1'));
+    self::assertTrue($method->invoke($object, 1));
+    self::assertTrue($method->invoke($object, TRUE));
 
-    $this->assertFalse($method->invoke($object, 'false'));
-    $this->assertFalse($method->invoke($object, 'no'));
-    $this->assertFalse($method->invoke($object, 'off'));
-    $this->assertFalse($method->invoke($object, '0'));
-    $this->assertFalse($method->invoke($object, 'anything else'));
-    $this->assertFalse($method->invoke($object, -1));
-    $this->assertFalse($method->invoke($object, 0));
-    $this->assertFalse($method->invoke($object, FALSE));
+    self::assertFalse($method->invoke($object, 'false'));
+    self::assertFalse($method->invoke($object, 'no'));
+    self::assertFalse($method->invoke($object, 'off'));
+    self::assertFalse($method->invoke($object, '0'));
+    self::assertFalse($method->invoke($object, 'anything else'));
+    self::assertFalse($method->invoke($object, -1));
+    self::assertFalse($method->invoke($object, 0));
+    self::assertFalse($method->invoke($object, FALSE));
   }
 
   /**
@@ -161,8 +159,8 @@ class ValidationTraitTest extends TestCase {
 
     $expected = $options;
     $expected['caller_data'] = json_encode($expected['caller_data']);
-    $this->assertEquals($expected, $method->invoke($object, $options));
-    $this->assertEquals(
+    self::assertEquals($expected, $method->invoke($object, $options));
+    self::assertEquals(
       ['caller_data' => 'test'],
       $method->invoke($object, ['caller_data' => 'test'])
     );
@@ -242,7 +240,7 @@ class ValidationTraitTest extends TestCase {
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'requireOneOf');
 
-    $this->assertTrue($method->invoke($object, 'match', ['MaTcH']));
+    self::assertTrue($method->invoke($object, 'match', ['MaTcH']));
   }
 
   /**
@@ -270,7 +268,7 @@ class ValidationTraitTest extends TestCase {
 
     $object = $this->getWrappedTrait();
     $method = $this->getInvokableMethod($object, 'requirePatternMatch');
-    $this->assertTrue($method->invoke($object, 'match me', '/^match me$/'));
+    self::assertTrue($method->invoke($object, 'match me', '/^match me$/'));
   }
 
   /**
@@ -306,15 +304,15 @@ class ValidationTraitTest extends TestCase {
       'ALSO allowed',
     ];
 
-    $this->assertEquals(
+    self::assertEquals(
       ['allowed'],
       $method->invoke($object, $data, ['allowed'])
     );
-    $this->assertEquals(
+    self::assertEquals(
       ['allowed'],
       $method->invoke($object, $data, ['allowed'], TRUE)
     );
-    $this->assertEquals(
+    self::assertEquals(
       [
         'allowed',
         'also allowed',
@@ -356,7 +354,7 @@ class ValidationTraitTest extends TestCase {
    */
   protected function getInvokableMethod($object, $methodName) {
 
-    $ref = new ReflectionObject($object);
+    $ref = new \ReflectionObject($object);
     $method = $ref->getMethod($methodName);
     $method->setAccessible(TRUE);
 

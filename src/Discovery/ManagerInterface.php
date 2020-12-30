@@ -5,7 +5,7 @@ namespace swichers\Acsf\Client\Discovery;
 use swichers\Acsf\Client\Endpoints\EndpointInterface;
 
 /**
- * Interface ManagerInterface.
+ * Contract for managers.
  */
 interface ManagerInterface {
 

@@ -2,7 +2,6 @@
 
 namespace swichers\Acsf\Client\Tests;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
 use swichers\Acsf\Client\Client;
 use swichers\Acsf\Client\Discovery\ActionManager;
@@ -51,7 +50,7 @@ class ClientTest extends TestCase {
    */
   public function testConstructClient() {
 
-    $this->assertInstanceOf(Client::class, $this->getClient());
+    self::assertInstanceOf(Client::class, $this->getClient());
   }
 
   /**
@@ -210,52 +209,52 @@ class ClientTest extends TestCase {
       ]
     );
 
-    $this->assertEquals(
+    self::assertEquals(
       'https://www.dev-example.acsitefactory.com/api/v1/',
       $client->getApiUrl()
     );
-    $this->assertEquals(
+    self::assertEquals(
       'https://www.dev-example.acsitefactory.com/api/v1/',
       $client->getApiUrl(-1)
     );
-    $this->assertEquals(
+    self::assertEquals(
       'https://www.dev-example.acsitefactory.com/api/v2/',
       $client->getApiUrl(2)
     );
 
     $config = ['environment' => 'abc123'] + $client->getConfig();
     $client->setConfig($config);
-    $this->assertEquals(
+    self::assertEquals(
       'https://www.abc123-example.acsitefactory.com/api/v1/',
       $client->getApiUrl()
     );
-    $this->assertEquals(
+    self::assertEquals(
       'https://www.abc123-example.acsitefactory.com/api/v1/',
       $client->getApiUrl(-1)
     );
-    $this->assertEquals(
+    self::assertEquals(
       'https://www.abc123-example.acsitefactory.com/api/v2/',
       $client->getApiUrl(2)
     );
 
     $config = ['environment' => 'live'] + $client->getConfig();
     $client->setConfig($config);
-    $this->assertEquals(
+    self::assertEquals(
       'https://www.example.acsitefactory.com/api/v1/',
       $client->getApiUrl()
     );
-    $this->assertEquals(
+    self::assertEquals(
       'https://www.example.acsitefactory.com/api/v1/',
       $client->getApiUrl(-1)
     );
-    $this->assertEquals(
+    self::assertEquals(
       'https://www.example.acsitefactory.com/api/v2/',
       $client->getApiUrl(2)
     );
 
     $config = ['environment' => 'new-config'] + $client->getConfig();
     $client->setConfig($config);
-    $this->assertEquals(
+    self::assertEquals(
       'https://www.new-config-example.acsitefactory.com/api/v1/',
       $client->getApiUrl()
     );
@@ -271,10 +270,10 @@ class ClientTest extends TestCase {
   public function testTestConnection() {
 
     $client = $this->getClient();
-    $this->assertTrue($client->testConnection(FALSE));
+    self::assertTrue($client->testConnection(FALSE));
 
     $client->setConfig(['username' => 'abc123'] + $client->getConfig());
-    $this->assertFalse($client->testConnection(FALSE));
+    self::assertFalse($client->testConnection(FALSE));
   }
 
   /**
@@ -324,7 +323,7 @@ class ClientTest extends TestCase {
     $client = $this->getClient(['username' => 'abc123']);
     $client->testConnection(FALSE);
 
-    $this->expectException(Exception::class);
+    $this->expectException(\Exception::class);
     $client->testConnection(TRUE);
   }
 
@@ -339,22 +338,22 @@ class ClientTest extends TestCase {
 
     $client = $this->getClient();
     $resp = $client->apiGet('Unit/Test');
-    $this->assertInstanceOf(ResponseInterface::class, $resp);
-    $this->assertEquals(
+    self::assertInstanceOf(ResponseInterface::class, $resp);
+    self::assertEquals(
       'https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test',
       $resp->getOriginalResponse()->getInfo('url')
     );
 
     $resp = $client->apiGet(['Unit', 'Test']);
-    $this->assertInstanceOf(ResponseInterface::class, $resp);
-    $this->assertEquals(
+    self::assertInstanceOf(ResponseInterface::class, $resp);
+    self::assertEquals(
       'https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test',
       $resp->getOriginalResponse()->getInfo('url')
     );
 
     $resp = $client->apiGet(['Unit', 'Test'], [], 2);
-    $this->assertInstanceOf(ResponseInterface::class, $resp);
-    $this->assertEquals(
+    self::assertInstanceOf(ResponseInterface::class, $resp);
+    self::assertEquals(
       'https://www.ligula-dapibus.acsitefactory.com/api/v2/Unit/Test',
       $resp->getOriginalResponse()->getInfo('url')
     );
@@ -370,15 +369,15 @@ class ClientTest extends TestCase {
   public function testApiPost() {
 
     $resp = $this->getClient()->apiPost('Unit/Test', []);
-    $this->assertInstanceOf(ResponseInterface::class, $resp);
-    $this->assertEquals(
+    self::assertInstanceOf(ResponseInterface::class, $resp);
+    self::assertEquals(
       'https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test',
       $resp->getOriginalResponse()->getInfo('url')
     );
 
     $resp = $this->getClient()->apiPost('Unit/Test', [], 2);
-    $this->assertInstanceOf(ResponseInterface::class, $resp);
-    $this->assertEquals(
+    self::assertInstanceOf(ResponseInterface::class, $resp);
+    self::assertEquals(
       'https://www.ligula-dapibus.acsitefactory.com/api/v2/Unit/Test',
       $resp->getOriginalResponse()->getInfo('url')
     );
@@ -394,15 +393,15 @@ class ClientTest extends TestCase {
   public function testApiDelete() {
 
     $resp = $this->getClient()->apiDelete('Unit/Test', []);
-    $this->assertInstanceOf(ResponseInterface::class, $resp);
-    $this->assertEquals(
+    self::assertInstanceOf(ResponseInterface::class, $resp);
+    self::assertEquals(
       'https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test',
       $resp->getOriginalResponse()->getInfo('url')
     );
 
     $resp = $this->getClient()->apiDelete('Unit/Test', [], 2);
-    $this->assertInstanceOf(ResponseInterface::class, $resp);
-    $this->assertEquals(
+    self::assertInstanceOf(ResponseInterface::class, $resp);
+    self::assertEquals(
       'https://www.ligula-dapibus.acsitefactory.com/api/v2/Unit/Test',
       $resp->getOriginalResponse()->getInfo('url')
     );
@@ -418,15 +417,15 @@ class ClientTest extends TestCase {
   public function testApiPut() {
 
     $resp = $this->getClient()->apiPut('Unit/Test', []);
-    $this->assertInstanceOf(ResponseInterface::class, $resp);
-    $this->assertEquals(
+    self::assertInstanceOf(ResponseInterface::class, $resp);
+    self::assertEquals(
       'https://www.ligula-dapibus.acsitefactory.com/api/v1/Unit/Test',
       $resp->getOriginalResponse()->getInfo('url')
     );
 
     $resp = $this->getClient()->apiPut('Unit/Test', [], 2);
-    $this->assertInstanceOf(ResponseInterface::class, $resp);
-    $this->assertEquals(
+    self::assertInstanceOf(ResponseInterface::class, $resp);
+    self::assertEquals(
       'https://www.ligula-dapibus.acsitefactory.com/api/v2/Unit/Test',
       $resp->getOriginalResponse()->getInfo('url')
     );
@@ -440,7 +439,7 @@ class ClientTest extends TestCase {
   public function testGetAction() {
 
     $client = $this->getClient();
-    $this->assertInstanceOf(
+    self::assertInstanceOf(
       ActionInterface::class,
       $client->getAction('Status')
     );
@@ -466,7 +465,7 @@ class ClientTest extends TestCase {
   public function testGetEntity() {
 
     $client = $this->getClient();
-    $this->assertInstanceOf(
+    self::assertInstanceOf(
       EntityInterface::class,
       $client->getEntity('Backup', 123)
     );
@@ -516,7 +515,7 @@ class ClientTest extends TestCase {
 
       // Simulate a non-ClientException.
       if (3 == $calls) {
-        throw new Exception();
+        throw new \Exception();
       }
       // Simulate a 404.
       elseif (4 == $calls) {
