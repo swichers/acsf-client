@@ -63,13 +63,7 @@ class Vcs extends AbstractAction {
 
     $this->requireOneOf($options['type'], ['sites', 'factory']);
 
-    static $refs;
-    $ref = &$refs[$options['stack_id']][$options['type']];
-    if (is_null($ref)) {
-      $ref = $this->client->apiGet('vcs', $options)->toArray();
-    }
-
-    return $ref;
+    return $this->client->apiGet('vcs', $options)->toArray();
   }
 
 }
